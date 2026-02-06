@@ -11,17 +11,19 @@ import openCV from "./openCv.png";
 import typescript from "./typescript.webp";
 import wordpress from "./wordpress.png";
 import HTML from "./html.png";
+import CSS from "./css.png";
 
 export const imageMap: Array<{ name: string; src: string }> = [
     { name: "React", src: reactImg },
     { name: "Python", src: pythonImg },
     { name: "BootstrapMUI", src: bootstrap },
     { name: "Django", src: django },
-    { name: "DjangoRest", src: djangoRest },
+    { name: "Django Rest Framework", src: djangoRest },
     { name: "HTML&CSS", src: htmlCss },
     { name: "HTML", src: HTML },
+    { name: "CSS", src: CSS },
     { name: "JavaScript", src: javascript },
-    { name: "NextJs", src: nextJs },
+    { name: "Next.Js", src: nextJs },
     { name: "Numpy", src: numpy },
     { name: "TypeScript", src: typescript },
     { name: "WordPress", src: wordpress },
