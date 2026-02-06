@@ -1,15 +1,19 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-export default function Dropdown() {
+export default function Dropdown({label} : {label: string}) {
     const [isOpen, setIsOpen] = useState(false);
-    const [selectedLevel, setSelectedLevel] = useState("Easy");
+    const [selectedLevel, setSelectedLevel] = useState("Choose Level");
 
     const levels = ["Easy", "Medium", "Hard"];
 
     const toggleDropdown = () => setIsOpen(!isOpen);
 
+    const navigate = useNavigate();
+
     const handleSelect = (level: string) => {
         setSelectedLevel(level);
+        navigate(`/courses/${label}/${level.toLowerCase()}`);
         setIsOpen(false);
     };
 
