@@ -21,12 +21,15 @@ class LessonSerializer(serializers.ModelSerializer):
 
 class CourseSerializer(serializers.ModelSerializer):
     lessons = LessonSerializer(many=True, read_only=True)
+    started = serializers.SerializerMethodField()
 
     class Meta:
         model = Course
         fields = "__all__"
-
-
+    
+    def get_started(self, obj):
+        user = self.context['request'].user
+        return UserLessonProgress.objects.filter(user=user, lesson__course=obj).exists()
 
 
 class AttemptSerializer(serializers.ModelSerializer):

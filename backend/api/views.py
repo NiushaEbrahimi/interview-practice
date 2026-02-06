@@ -7,6 +7,7 @@ from .models import Course, Lesson, Question,  UserQuestionAttempt, UserLessonPr
 from .serializers import CourseSerializer, LessonSerializer, QuestionSerializer, AttemptSerializer, LessonProgressSerializer
 from .services import get_user_stats
 
+
 class CourseViewSet(ReadOnlyModelViewSet):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
@@ -23,6 +24,7 @@ class QuestionViewSet(ReadOnlyModelViewSet):
 
 
 class AttemptViewSet(viewsets.ModelViewSet):
+    queryset = UserQuestionAttempt.objects.all()
     serializer_class = AttemptSerializer
     permission_classes = [permissions.IsAuthenticated]
 
@@ -34,6 +36,7 @@ class AttemptViewSet(viewsets.ModelViewSet):
 
 
 class LessonProgressViewSet(viewsets.ModelViewSet):
+    queryset = UserLessonProgress.objects.all()
     serializer_class = LessonProgressSerializer
     permission_classes = [permissions.IsAuthenticated]
 
