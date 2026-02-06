@@ -14,10 +14,11 @@ class LessonSerializer(serializers.ModelSerializer):
         read_only=True
     )
     level_display = serializers.CharField(source='get_level_display', read_only=True)
+    course = serializers.CharField(source='course.title', read_only=True) 
 
     class Meta:
         model = Lesson
-        fields = ['id', 'name', 'level', 'level_display', 'questions_count']
+        fields = ['id', 'name', 'level', 'level_display', 'questions_count', 'course']
 
 
 class CourseSerializer(serializers.ModelSerializer):
@@ -29,8 +30,12 @@ class CourseSerializer(serializers.ModelSerializer):
         fields = "__all__"
     
     def get_started(self, obj):
-        user = self.context['request'].user
+        request = self.context.get('request')
+        user = getattr(request, 'user', None)
+        if not user or user.is_anonymous:
+            return False
         return UserLessonProgress.objects.filter(user=user, lesson__course=obj).exists()
+
 
 
 class AttemptSerializer(serializers.ModelSerializer):

@@ -1,20 +1,69 @@
+import { useEffect, useState } from "react";
 import Header from "../components/Header";
-import Card from "../components/Questions/Card"
-
-const username = "Niush"
+import LessonCard from "../components/Questions/LessonCard"
+import CourseCard from "../components/Questions/CourseCard";
 
 // this needs to be fetched from the api 
-const cards = [
-    {lable : "JavaScript" , courseName: "JavaScript Scoping and Promises" , level : "Hard" , lessons : "22" , Questions : "167"},
-    {lable : "React" , courseName : "React Hooks" ,  level : "medium" , lessons : "12" , Questions : "87"},
-    {lable : "JavaScript" , courseName: "JavaScript Scoping and Promises" , level : "Hard" , lessons : "22" , Questions : "167"},
-    {lable : "React" , courseName : "React Hooks" ,  level : "medium" , lessons : "12" , Questions : "87"},
-    {lable : "JavaScript" , courseName: "JavaScript Scoping and Promises" , level : "Hard" , lessons : "22" , Questions : "167"},
-    {lable : "React" , courseName : "React Hooks" ,  level : "medium" , lessons : "12" , Questions : "87"},
-    {lable : "JavaScript" , courseName: "JavaScript Scoping and Promises" , level : "Hard" , lessons : "22" , Questions : "167"},   
-]
+// const cards = [
+//     {lable : "JavaScript" , courseName: "JavaScript Scoping and Promises" , level : "Hard" , lessons : "22" , Questions : "167"},
+//     {lable : "React" , courseName : "React Hooks" ,  level : "medium" , lessons : "12" , Questions : "87"},
+// ]
 
-const Questions: React.FC = () => {
+type CardType = {
+  id: number;
+  name: string;
+  course: string;
+  level: number;
+  level_display: string;
+  questions_count: number;
+}
+
+type CourseType = {
+  id: number;
+  lessons: Array<CardType>;
+  title:string;
+  started: boolean;
+}
+
+export default function Questions() {
+  const username = "Niush";
+  const [courses, setCourses] = useState<CourseType[]>([]);
+  const [lessons, setLessons] = useState<CardType[]>([]);
+
+  useEffect(() => {
+
+    fetch('http://127.0.0.1:8000/api/lessons/', { method: 'GET' })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        // console.log("Fetched lessons:", data);
+        setLessons(data);
+      })
+      .catch((error) => {
+        console.error('Error fetching lessons:', error);
+      });
+
+    fetch('http://127.0.0.1:8000/api/courses/', { method: 'GET' })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Fetched courses:", data);
+        setCourses(data);
+      })
+      .catch((error) => {
+        console.error('Error fetching courses:', error);
+      });
+  }, []);
+
+
   return (
     <div className="min-h-screen bg-gray-100 flex py-6 px-15 ">      
 
@@ -42,8 +91,11 @@ const Questions: React.FC = () => {
           <section>
             <h1 className="text-gray-700 text-2xl font-medium p-3">Recent Searches</h1>
             <div className="overflow-y-scroll overflow-x-hidden h-100 flex flex-wrap justify-center gap-8 p-2">
-                {cards.map((card)=>(
-                    <Card cardLable={card.lable} cardCourseName={card.courseName} cardLevel={card.level} cardLesson={card.lessons} cardQuestions={card.Questions}/>
+                {courses && courses.map((course)=>(
+                  <CourseCard key={course.id} title={course.title} lessons_number={course.lessons.length} started={course.started}/>
+                ))}
+                {lessons && lessons.map((lesson)=>(
+                  <LessonCard key={lesson.id} cardLable={lesson.course} cardCourseName={lesson.name} cardLevel={lesson.level_display} cardLesson={lesson.name} cardQuestions={lesson.questions_count}/>
                 ))}
             </div>
           </section>
@@ -54,4 +106,3 @@ const Questions: React.FC = () => {
   );
 };
 
-export default Questions;
