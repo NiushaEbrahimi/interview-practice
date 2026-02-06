@@ -13,10 +13,11 @@ class LessonSerializer(serializers.ModelSerializer):
         source="questions.count",
         read_only=True
     )
+    level_display = serializers.CharField(source='get_level_display', read_only=True)
 
     class Meta:
         model = Lesson
-        fields = "__all__"
+        fields = ['id', 'name', 'level', 'level_display', 'questions_count']
 
 
 class CourseSerializer(serializers.ModelSerializer):

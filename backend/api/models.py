@@ -15,17 +15,18 @@ class Course(models.Model):
 
 
 class Lesson(models.Model):
-    course = models.ForeignKey(
-        Course,
-        related_name="lessons",
-        on_delete=models.CASCADE
-    )
+    class Level(models.IntegerChoices):
+        EASY = 1, "Easy"
+        MEDIUM = 2, "Medium"
+        HARD = 3, "Hard"
+
+    course = models.ForeignKey(Course, related_name="lessons", on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
-    level = models.IntegerField(default=1)
-    total_questions = models.PositiveIntegerField(default=0)  # cache
+    level = models.IntegerField(choices=Level.choices, default=Level.EASY)
+    total_questions = models.PositiveIntegerField(default=0)
 
     def __str__(self):
-        return self.name
+        return f"{self.name} ({self.get_level_display()})"
 
 
 class Question(models.Model):
@@ -34,8 +35,8 @@ class Question(models.Model):
         related_name="questions",
         on_delete=models.CASCADE
     )
-    text = models.TextField()
-    correct_answer = models.CharField(max_length=255)
+    question = models.TextField()
+    correct_answer = models.TextField()
 
     def __str__(self):
         return f"Q-{self.id}"
