@@ -1,5 +1,10 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+
+type paramsURLType = {
+    label : string,
+    level? : string
+}
 
 export default function Dropdown({label} : {label: string}) {
     const [isOpen, setIsOpen] = useState(false);
@@ -7,13 +12,21 @@ export default function Dropdown({label} : {label: string}) {
 
     const levels = ["Easy", "Medium", "Hard"];
 
+    const params = useParams<paramsURLType>();
+    useEffect(() => {
+        if(params.level){
+            // eslint-disable-next-line react-hooks/set-state-in-effect
+            setSelectedLevel(params.level);
+        }
+    }, [params.level]);
+
     const toggleDropdown = () => setIsOpen(!isOpen);
 
     const navigate = useNavigate();
 
     const handleSelect = (level: string) => {
         setSelectedLevel(level);
-        navigate(`/courses/${label}/${level.toLowerCase()}`);
+        navigate(`/courses/${label}/${level}`);
         setIsOpen(false);
     };
 

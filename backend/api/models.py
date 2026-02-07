@@ -5,7 +5,6 @@ from django.conf import settings
 class User(AbstractUser):
     pass
 
-
 class Course(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField(blank=True)
@@ -23,7 +22,6 @@ class Lesson(models.Model):
     course = models.ForeignKey(Course, related_name="lessons", on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
     level = models.IntegerField(choices=Level.choices, default=Level.EASY)
-    total_questions = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return f"{self.name} ({self.get_level_display()})"

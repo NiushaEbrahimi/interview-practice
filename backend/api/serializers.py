@@ -21,6 +21,7 @@ class LessonSerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'level', 'level_display', 'questions_count', 'course']
 
 
+
 class CourseSerializer(serializers.ModelSerializer):
     lessons = LessonSerializer(many=True, read_only=True)
     started = serializers.SerializerMethodField()
@@ -35,7 +36,6 @@ class CourseSerializer(serializers.ModelSerializer):
         if not user or user.is_anonymous:
             return False
         return UserLessonProgress.objects.filter(user=user, lesson__course=obj).exists()
-
 
 
 class AttemptSerializer(serializers.ModelSerializer):

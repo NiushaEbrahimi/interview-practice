@@ -7,6 +7,7 @@ from .models import Course, Lesson, Question,  UserQuestionAttempt, UserLessonPr
 from .serializers import CourseSerializer, LessonSerializer, QuestionSerializer, AttemptSerializer, LessonProgressSerializer
 from .services import get_user_stats
 
+from django.db.models import Count
 
 class CourseViewSet(ReadOnlyModelViewSet):
     queryset = Course.objects.all()
@@ -17,10 +18,37 @@ class LessonViewSet(ReadOnlyModelViewSet):
     queryset = Lesson.objects.all()
     serializer_class = LessonSerializer
 
+    def get_queryset(self):
+        qs = super().get_queryset()
+
+        course = self.request.query_params.get("course")
+        level = self.request.query_params.get("level")
+
+        if course:
+            qs = qs.filter(course__title__iexact=course)
+
+        if level:
+            qs = qs.filter(level=int(level))
+
+        return qs
+
 
 class QuestionViewSet(ReadOnlyModelViewSet):
     queryset = Question.objects.all()
     serializer_class = QuestionSerializer
+    Lesson.objects.annotate(
+        total_questions=Count("questions")
+    )
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+
+        lesson = self.request.query_params.get("lesson")
+
+        if lesson:
+            qs = qs.filter(course__title__iexact=lesson)
+
+        return qs
 
 
 class AttemptViewSet(viewsets.ModelViewSet):

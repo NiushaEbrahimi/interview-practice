@@ -1,31 +1,56 @@
 import Header from "../components/Header"
-import {Link, useNavigate, useParams } from "react-router-dom"
+import {useNavigate, useParams } from "react-router-dom"
 import Dropdown from "../components/Courses/Dropdown";
 import BackIcon from "../components/Courses/BackIcon";
+import { useEffect, useState } from "react";
 
 type paramsURLType = {
-    label? : string,
+    label : string,
     level? : string
+}
+
+type lessonType = {
+    id: number,
+    name: string,
+    level : number,
+    level_display : string,
+    questions_count : number,
+    course : string
 }
 
 export default function Course(){
     const username = "Niusha";
+
+    const [lessons, setLessons] = useState<lessonType[]>([]);
+
     const paramsURL = useParams<paramsURLType>();
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if(paramsURL.level){
+            const level = paramsURL.level === "Easy" ? 1 : paramsURL.level === "Medium" ? 2 : 3;
+            fetch(`http://127.0.0.1:8000/api/lessons/?course=${paramsURL.label}&level=${level}`)
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);
+                setLessons(data);
+                }
+            )
+        }else{
+            fetch(`http://127.0.0.1:8000/api/lessons/?course=${paramsURL.label}`)
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);
+                setLessons(data);
+                }
+            )
+        }
+    },[paramsURL])
     // TODO: get it from api based on the paramsURL
     // TODO: i think it has to be like :
     // if there is no level in paramsURL -> get all lessons of that course
     // if there is level in paramsURL -> get lessons of that course with that level
-    const lessons = [
-        { lessonName : "Closures" , level : "Hard" , percent : 50 },
-        { lessonName : "JSX" , level : "Easy" , percent : 50 }, 
-        { lessonName : "React Hooks" , level : "Medium" , percent : 0 },
-        { lessonName : "useEffect" , level : "Medium" , percent : 0 },
-        { lessonName : "useState" , level : "Medium" , percent : 0 },
-        { lessonName : "useMemo" , level : "Hard" , percent : 0 },
-        { lessonName : "SPA render" , level : "Hard" , percent : 0 },
-    ]
-    console.log(paramsURL);
+
 
     return(
         <div className="min-h-screen bg-gray-100 flex py-6 px-15 ">      
@@ -50,28 +75,28 @@ export default function Course(){
                     </div>
                 </section>
                 <section className="grid gap-7 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                    {lessons.map((e , index)=>(
+                    {lessons && lessons.map((e , index)=>(
                         <div 
-                            className="text-gray-700 bg-white flex flex-col px-2 py-3 rounded-2xl shadow-md gap-3" 
+                            className="text-gray-700 bg-white grid grid-rows-[3fr_20px] px-2 py-3 rounded-2xl shadow-md gap-3 min-w-45 cursor-pointer" 
                             key={index}
-                            onClick={() => navigate(`/courses/${paramsURL.label}/${paramsURL.level}/${e.lessonName.replace(" ","-")}`)}
+                            onClick={() => navigate(`/courses/${paramsURL.label}/${paramsURL.level}/${e.name.replace(" ","-")}`)}
                         >
-                            <div className="text-center">
-                                <h3 className="text-3xl font-medium">{e.lessonName}</h3>
+                            <div className="text-center ">
+                                <h3 className="text-md font-medium">{e.name}</h3>
                             </div>
-                            <div className="flex flex-row text-center">
+                            <div className="flex flex-row text-center ">
                                 <p
                                     className={
                                         `text-sm flex-1 
-                                        ${e.level === "Hard" ? "text-red-600" : ""}
-                                        ${e.level === "Medium" ? "text-yellow-600" : ""}
-                                        ${e.level === "Easy" ? "text-green-600" : ""}
+                                        ${e.level_display === "Hard" ? "text-red-600" : ""}
+                                        ${e.level_display === "Medium" ? "text-yellow-600" : ""}
+                                        ${e.level_display === "Easy" ? "text-green-600" : ""}
                                         `
                                     }
                                 >
-                                    {e.level}
+                                    {e.level_display}
                                 </p>
-                                <p className="text-sm flex-1">spent: {e.percent}%</p>
+                                <p className="text-sm flex-1">spent: {e.questions_count}%</p>
                             </div>
                         </div>
                     ))}
