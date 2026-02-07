@@ -41,13 +41,18 @@ class QuestionViewSet(ReadOnlyModelViewSet):
     )
 
     def get_queryset(self):
-        qs = super().get_queryset()
+        qs = Question.objects.all()
 
         lesson = self.request.query_params.get("lesson")
+        lesson_id = Lesson.objects.filter(name=lesson).values_list("id", flat=True).first()
 
-        if lesson:
-            qs = qs.filter(course__title__iexact=lesson)
+        print("this is lesson : " , lesson)
+        print("lesson_id:", lesson_id)
 
+        if lesson_id:
+            qs = qs.filter(lesson=lesson_id)
+            
+        print("qs : \n",qs)
         return qs
 
 

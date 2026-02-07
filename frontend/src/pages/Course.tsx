@@ -79,7 +79,7 @@ export default function Course(){
                         <div 
                             className="text-gray-700 bg-white grid grid-rows-[3fr_20px] px-2 py-3 rounded-2xl shadow-md gap-3 min-w-45 cursor-pointer" 
                             key={index}
-                            onClick={() => navigate(`/courses/${paramsURL.label}/${paramsURL.level}/${e.name.replace(" ","-")}`)}
+                            onClick={() => navigate(`/courses/${paramsURL.label}/${e.level === 1 ? "Easy" : e.level === 2 ? "Medium" : "Hard"}/${e.name}`)}
                         >
                             <div className="text-center ">
                                 <h3 className="text-md font-medium">{e.name}</h3>

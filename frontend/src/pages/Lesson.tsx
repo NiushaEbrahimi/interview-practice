@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import Header from "../components/Header"
 import Question from "../components/Lesson/Question";
 import { useParams } from "react-router-dom";
@@ -8,15 +9,26 @@ type paramsURLType = {
     lesson? : string
 }
 
+type QuestionType = {
+    question: string,
+    correct_answer: string
+}
+
 export default function Course(){
-    
+    const [questions, setQuestions] = useState<QuestionType[]>([]);
+
     const username = "Niusha";
     const paramsURL = useParams<paramsURLType>();
     
-    // TODO: get it from api based on the paramsURL
-    // TODO: i think it has to be like :
-    // if there is no level in paramsURL -> get all lessons of that course
-    // if there is level in paramsURL -> get lessons of that course with that level
+    useEffect(()=>{
+        fetch(`http://127.0.0.1:8000/api/questions/?lesson=${paramsURL.lesson}`)
+        .then(res => res.json())
+        .then(data => {
+            console.log(data);
+            setQuestions(data);
+            })
+        .catch(error => {console.error("Error fetching questions:", error)});
+    },[])
     
     console.log(paramsURL);
 
@@ -32,7 +44,9 @@ export default function Course(){
                     <h3 className="text-5xl">{paramsURL.lesson}</h3>
                     <p className="text-2xl ml-4">{paramsURL.level}</p>
                 </section>
-                
+                {questions.map((question, index) => (
+                    <Question key={index} question={question.question} answer={question.correct_answer}/>
+                ))}
             </main>
             </div>
         </div>
