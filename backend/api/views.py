@@ -46,9 +46,6 @@ class QuestionViewSet(ReadOnlyModelViewSet):
         lesson = self.request.query_params.get("lesson")
         lesson_id = Lesson.objects.filter(name=lesson).values_list("id", flat=True).first()
 
-        print("this is lesson : " , lesson)
-        print("lesson_id:", lesson_id)
-
         if lesson_id:
             qs = qs.filter(lesson=lesson_id)
             

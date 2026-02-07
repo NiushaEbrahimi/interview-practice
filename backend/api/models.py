@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.conf import settings
 
 class User(AbstractUser):
@@ -58,10 +59,7 @@ class UserQuestionAttempt(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
 
-    selected_answer = models.CharField(max_length=255)
-    is_correct = models.BooleanField()
-
-    confidence_rate = models.IntegerField(default=3)
+    confidence_rate = models.IntegerField(default=3, validators=[MinValueValidator(1), MaxValueValidator(5)])
     come_back_again = models.BooleanField(default=False)
 
     answered_at = models.DateTimeField(auto_now_add=True)

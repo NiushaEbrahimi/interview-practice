@@ -10,8 +10,10 @@ type paramsURLType = {
 }
 
 type QuestionType = {
+    id: number,
     question: string,
-    correct_answer: string
+    correct_answer: string,
+    lesson: number
 }
 
 export default function Course(){
@@ -45,7 +47,7 @@ export default function Course(){
                     <p className="text-2xl ml-4">{paramsURL.level}</p>
                 </section>
                 {questions.map((question, index) => (
-                    <Question key={index} question={question.question} answer={question.correct_answer}/>
+                    <Question key={index} id={question.id} question={question.question} answer={question.correct_answer}/>
                 ))}
             </main>
             </div>

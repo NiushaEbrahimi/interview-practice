@@ -1,34 +1,38 @@
 import { useState } from "react";
 // import { useNavigate } from "react-router-dom";
 
-export default function Question({question, answer} : {question: string, answer: string}){
+export default function Question({id, question, answer} : {id: number, question: string, answer: string}){
 
     const [score, setScore] = useState<number | null>(null);
     // const navigate = useNavigate();
     const [answerDisplay, setAnswerDisplay] = useState(false);
+    // TODO: Add come back again functionality
+    const [comeBack, setComeBack] = useState(false);
 
-    const handleRate = (value: number) => {
+    const handleRate = (value : number) => {
         setScore(value);
-        // fetch("http://localhost:8000/api/score/", {
-        //     method: "POST",
-        //     headers: {
-        //         "Content-Type": "application/json",
-        //     },
-        //     body: JSON.stringify({
-        //         score: value
-        //     })
-        // })
+        fetch(`http://127.0.0.1:8000/api/questions/${id}/`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                question: id,
+                confidence_rate: value,
+            })
+        })
     }
-    const handleComeBack = () => {
-        // fetch("http://localhost:8000/api/score/", {
-        //     method: "POST",
-        //     headers: {
-        //         "Content-Type": "application/json",
-        //     },
-        //     body: JSON.stringify({
-        //         score: value
-        //     })
-        // })
+    const handleComeBack = (value : boolean) => {
+        fetch(`http://127.0.0.1:8000/api/questions/${id}/`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                question: id,
+                come_back_again: value,
+            })
+        })
         
     }
 
@@ -76,7 +80,13 @@ export default function Question({question, answer} : {question: string, answer:
             <div className="flex">
                 <div className="border-gray-400 border-1-css rounded-md p-2 shadow">
                     <label className="flex items-center text-sm">
-                        <input type="checkbox" name="come-back-again" className="mr-2 mt-1" onClick={handleComeBack}/>
+                        <input type="checkbox" name="come-back-again" className="mr-2 mt-1" 
+                            onClick={(e) => {
+                                console.log(e.target.checked);
+                                setComeBack(!e.target.checked);
+                                handleComeBack();
+                            }}
+                        />
                         come back again
                     </label>
                 </div>
