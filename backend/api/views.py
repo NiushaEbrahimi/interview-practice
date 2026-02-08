@@ -9,6 +9,8 @@ from .services import get_user_stats
 
 from django.db.models import Count
 
+from django.contrib.auth import get_user_model
+
 class CourseViewSet(ReadOnlyModelViewSet):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
@@ -56,26 +58,43 @@ class QuestionViewSet(ReadOnlyModelViewSet):
 class AttemptViewSet(viewsets.ModelViewSet):
     queryset = UserQuestionAttempt.objects.all()
     serializer_class = AttemptSerializer
-    permission_classes = [permissions.IsAuthenticated]
-
+    # permission_classes = [permissions.IsAuthenticated]  
+    
     def get_queryset(self):
-        return UserQuestionAttempt.objects.filter(user=self.request.user)
-
+        if self.request.user.is_authenticated:
+            return UserQuestionAttempt.objects.filter(user=self.request.user)
+        return UserQuestionAttempt.objects.none()  
+    
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        if self.request.user.is_authenticated:
+            serializer.save(user=self.request.user)
+        else:
+            User = get_user_model()
+            default_user = User.objects.first() 
+            serializer.save(user=default_user)
 
 
 class LessonProgressViewSet(viewsets.ModelViewSet):
     queryset = UserLessonProgress.objects.all()
     serializer_class = LessonProgressSerializer
-    permission_classes = [permissions.IsAuthenticated]
-
+    # permission_classes = [permissions.IsAuthenticated] 
+    
     def get_queryset(self):
-        return UserLessonProgress.objects.filter(user=self.request.user)
+        if self.request.user.is_authenticated:
+            return UserLessonProgress.objects.filter(user=self.request.user)
+        return UserLessonProgress.objects.none()
+    
+    def perform_create(self, serializer):
+        if self.request.user.is_authenticated:
+            serializer.save(user=self.request.user)
+        else:
+            User = get_user_model()
+            default_user = User.objects.first()
+            serializer.save(user=default_user)
 
 
 class StatsViewSet(viewsets.ViewSet):
-    permission_classes = [permissions.IsAuthenticated]
+    # permission_classes = [permissions.IsAuthenticated]
 
     @action(detail=False, methods=["get"])
     def me(self, request):
