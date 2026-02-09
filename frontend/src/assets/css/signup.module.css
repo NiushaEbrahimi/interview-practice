@@ -1,0 +1,27 @@
+.signup{
+    height: 100vh;
+    max-height: 100vh;
+}
+.background{
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    filter: blur(10px);
+}
+.formContainer{
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    background-color: rgba(255, 255, 255, 0.17);
+    min-height: 70vh;
+}
+form{
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+form div{
+    width: 90%;
+}

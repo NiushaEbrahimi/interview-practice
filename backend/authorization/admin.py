@@ -8,12 +8,11 @@ class UserAdmin(BaseUserAdmin):
     model = User
     list_display = ['email', 'is_staff', 'is_active', 'is_verified', 'created_at']
     list_filter = ['is_staff', 'is_active', 'is_verified']
-    search_fields = ['email', 'phone_number']
+    search_fields = ['email']
     ordering = ['-created_at']
     
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
-        (_('Personal info'), {'fields': ('phone_number',)}),
         (_('Permissions'), {
             'fields': ('is_active', 'is_staff', 'is_superuser', 'is_verified', 'groups', 'user_permissions'),
         }),

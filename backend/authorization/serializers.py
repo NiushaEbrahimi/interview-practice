@@ -50,7 +50,7 @@ class UserSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = User
-        fields = ['id', 'email', 'phone_number', 'is_verified', 'is_active', 
+        fields = ['id', 'email', 'is_verified', 'is_active', 
                   'created_at', 'profile']
         read_only_fields = ['id', 'created_at', 'is_verified', 'is_active']
 
@@ -91,13 +91,12 @@ class RegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = [
-            'email', 'password', 'password2', 'phone_number',
+            'email', 'password', 'password2',
             'full_name', 'experience_level', 'years_of_experience',
             'known_technologies', 'learning_technologies'
         ]
         extra_kwargs = {
             'email': {'required': True},
-            'phone_number': {'required': False},
         }
 
     def validate(self, attrs):
