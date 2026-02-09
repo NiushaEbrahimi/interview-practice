@@ -85,13 +85,13 @@ export default function Profile(){
                 <section className="flex-2 bg-gray-500 rounded-2xl shadow py-2 px-4 overflow-y-scroll">
                     <h1 className="text-3xl font-medium p-4">Courses</h1>
                     <div className="flex gap-4 px-8">
-                        {courses.map((e)=>(
+                        {courses && courses.map((e)=>(
                             <CourseCard label={e.label} courseName={e.courseName} level={e.level} percent={e.percent}/>
                         ))}
                     </div>
                     <h1 className="text-3xl font-medium p-4">Will Study Later</h1>
                     <div className="flex gap-4 px-8">
-                        {courses.map((e)=>(
+                        {courses &&courses.map((e)=>(
                             <CourseCard label={e.label} courseName={e.courseName} level={e.level} percent={e.percent}/>
                         ))}
                     </div>

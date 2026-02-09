@@ -1,10 +1,8 @@
-from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
-from django.conf import settings
+from django.contrib.auth import get_user_model
 
-class User(AbstractUser):
-    pass
+User = get_user_model() 
 
 class Course(models.Model):
     title = models.CharField(max_length=255)
@@ -42,7 +40,7 @@ class Question(models.Model):
 
 
 class UserLessonProgress(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
 
     progress_percent = models.FloatField(default=0)
@@ -56,7 +54,7 @@ class UserLessonProgress(models.Model):
 
 
 class UserQuestionAttempt(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
 
     confidence_rate = models.IntegerField(default=3, validators=[MinValueValidator(1), MaxValueValidator(5)])

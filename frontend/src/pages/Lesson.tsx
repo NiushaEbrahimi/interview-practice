@@ -46,7 +46,7 @@ export default function Course(){
                     <h3 className="text-5xl">{paramsURL.lesson}</h3>
                     <p className="text-2xl ml-4">{paramsURL.level}</p>
                 </section>
-                {questions.map((question, index) => (
+                {questions && questions.map((question, index) => (
                     <Question key={index} id={question.id} question={question.question} answer={question.correct_answer}/>
                 ))}
             </main>
