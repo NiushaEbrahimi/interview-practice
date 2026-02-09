@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.utils.translation import gettext_lazy as _
+from django.conf import settings
 
 class CustomUserManager(BaseUserManager):
     
@@ -46,3 +47,67 @@ class User(AbstractUser):
         ordering = ['-created_at']
         verbose_name = 'User'
         verbose_name_plural = 'Users'
+
+
+class UserProfile(models.Model):
+    
+    class ExperienceLevel(models.TextChoices):
+        BEGINNER = 'beginner', 'Beginner'
+        INTERMEDIATE = 'intermediate', 'Intermediate'
+        ADVANCED = 'advanced', 'Advanced'
+        EXPERT = 'expert', 'Expert'
+
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='profile'
+    )
+    
+    # Personal Information
+    full_name = models.CharField(max_length=255, blank=True)
+    
+    # Professional Information
+    experience_level = models.CharField(
+        max_length=20,
+        choices=ExperienceLevel.choices,
+        default=ExperienceLevel.BEGINNER
+    )
+    years_of_experience = models.IntegerField(default=0)
+    
+    # Skills and Technologies 
+    known_technologies = models.TextField(
+        blank=True,
+        help_text="Comma-separated list of technologies"
+    )
+    learning_technologies = models.TextField(
+        blank=True,
+        help_text="Comma-separated list of technologies to learn"
+    )
+    
+    # Timestamps
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.user.email}'s Profile"
+
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name = 'User Profile'
+        verbose_name_plural = 'User Profiles'
+    
+    def get_known_technologies_list(self):
+        if self.known_technologies:
+            return [tech.strip() for tech in self.known_technologies.split(',') if tech.strip()]
+        return []
+    
+    def get_learning_technologies_list(self):
+        if self.learning_technologies:
+            return [tech.strip() for tech in self.learning_technologies.split(',') if tech.strip()]
+        return []
+    
+    def set_known_technologies_list(self, tech_list):
+        self.known_technologies = ', '.join(tech_list)
+    
+    def set_learning_technologies_list(self, tech_list):
+        self.learning_technologies = ', '.join(tech_list)
