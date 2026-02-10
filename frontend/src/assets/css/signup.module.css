@@ -7,7 +7,19 @@
     top: 0;
     left: 0;
     z-index: -1;
-    filter: blur(10px);
+    /* filter: blur(10px); */
+    animation: blury 5s infinite;
+}
+@keyframes blury {
+    0%{
+        filter: blur(20px);
+    }
+    50%{
+        filter: blur(0px);
+    }
+    100%{
+        filter: blur(20px);
+    }
 }
 .formContainer{
     border: 1px solid rgba(255, 255, 255, 0.6);

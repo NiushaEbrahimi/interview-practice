@@ -99,6 +99,18 @@ class RegisterSerializer(serializers.ModelSerializer):
             'email': {'required': True},
         }
 
+    def validate_email(self, value):
+        email = value.strip().lower()
+        
+        if not email:
+            raise serializers.ValidationError("Email cannot be empty")
+        
+        if User.objects.filter(email__iexact=email).exists():
+            raise serializers.ValidationError("This email is already registered. Please use a different email or login.")
+        
+        return email
+
+    
     def validate(self, attrs):
         if attrs['password'] != attrs['password2']:
             raise serializers.ValidationError({

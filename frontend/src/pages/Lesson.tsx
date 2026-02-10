@@ -3,6 +3,8 @@ import Header from "../components/Header"
 import Question from "../components/Lesson/Question";
 import { useParams } from "react-router-dom";
 
+import { Splide, SplideSlide } from '@splidejs/react-splide';
+
 type paramsURLType = {
     label? : string,
     level? : string,
@@ -46,9 +48,11 @@ export default function Course(){
                     <h3 className="text-5xl">{paramsURL.lesson}</h3>
                     <p className="text-2xl ml-4">{paramsURL.level}</p>
                 </section>
+                <Splide>
                 {questions && questions.map((question, index) => (
-                    <Question key={index} id={question.id} question={question.question} answer={question.correct_answer}/>
+                    <SplideSlide><Question key={index} id={question.id} question={question.question} answer={question.correct_answer}/></SplideSlide>
                 ))}
+                </Splide>
             </main>
             </div>
         </div>

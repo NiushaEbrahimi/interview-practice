@@ -1,6 +1,7 @@
 from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
 from rest_framework_simplejwt.exceptions import TokenError
 from django.contrib.auth import authenticate, get_user_model
@@ -206,3 +207,25 @@ class VerifyEmailView(APIView):
             'message': 'Email verified successfully',
             'is_verified': user.is_verified
         }, status=status.HTTP_200_OK)
+    
+
+class CheckEmailView(APIView):
+    
+    permission_classes = [AllowAny]
+    
+    def post(self, request):
+        email = request.data.get('email', '').strip()
+        
+        if not email:
+            return Response({
+                'error': 'Email is required'
+            }, status=400)
+        
+        exists = User.objects.filter(email__iexact=email).exists()
+        
+        return Response({
+            'email': email,
+            'exists': exists,
+            'available': not exists,
+            'message': 'Email is available' if not exists else 'Email is already registered'
+        })
