@@ -1,38 +1,46 @@
 import axios from 'axios';
-import React, { useState } from 'react';
+import React from 'react';
 
-export async function checkEmailAvailability({emailValue, setEmailAvailable, setEmailError}
-     : {emailValue:string,
-        setEmailAvailable: React.Dispatch<React.SetStateAction<boolean>>,
-        setEmailError: React.Dispatch<React.SetStateAction<string>>}) {
+// eslint-disable-next-line react-refresh/only-export-components
+export async function checkEmailAvailability(
+    {email,
+    setEmailAvailable
+    }
+    :{email: string,
+    setEmailAvailable: React.Dispatch<React.SetStateAction<boolean | null>>
+}) {
     try {
         const response = await axios.post(
             'http://127.0.0.1:8000/api/auth/check-email/',
-            { email: emailValue }
+            { email: email }
         );
         setEmailAvailable(response.data.available);
-        setEmailError(response.data.exists ? 'Email is already registered' : '');
         
         return response.data.available;
     } catch (error) {
         console.error('Error checking email:', error);
-        setEmailError('Error checking email availability');
         return false;
     }
 };
     
-export default function EmailInput({email, setEmail}:{email : string, setEmail : (email : string) => void}){
-    const [emailError, setEmailError] = useState('');
-    const [emailAvailable, setEmailAvailable] = useState(null);
+export default function EmailInput(
+    {email, setEmail, emailAvailable, setEmailAvailable}
+    :
+    {email : string, 
+    setEmail : (email : string) => void,
+    emailAvailable: boolean | null,
+    setEmailAvailable: React.Dispatch<React.SetStateAction<boolean | null>>
+}){
+
     const handleEmailChange = (e : React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
         setEmail(value);
+
         
         if (value && value.includes('@gmail.com')) {
             setTimeout(() => checkEmailAvailability({
-                emailValue: value,
-                setEmailAvailable,
-                setEmailError
+                email,
+                setEmailAvailable
         }), 500);
         }
     };
@@ -49,7 +57,7 @@ export default function EmailInput({email, setEmail}:{email : string, setEmail :
                 required
             />
             {emailAvailable === false && (
-                <span style={{ color: 'red' }}>{emailError}</span>
+                <span style={{ color: 'red' }}>Invalid Email</span>
             )}
             {emailAvailable === true && (
                 <span style={{ color: 'green' }}>✓ Email is available</span>
