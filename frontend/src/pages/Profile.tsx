@@ -4,6 +4,9 @@ import userProfileIMG from "../assets/user-profile.png"
 import positionsCSS from "../assets/css/positionsCSS.module.css"
 
 import CourseCard from "../components/Profile/CourseCard"
+import { useEffect, useState } from "react"
+import axios from "axios"
+import { useNavigate } from "react-router-dom"
 
 function EditIcon(){
     return(
@@ -26,11 +29,18 @@ function EditIcon(){
     )
 }
 
-type UserInfos = {
-  Email: string;
-  Interest: string;
-  Techs : string,
-};
+type UserProfile = {
+    created_at : Date;
+    email: string;
+    id: number;
+    is_active: boolean;
+    is_verified: boolean;
+    profile: {
+        experience_level: "junior" | 'beginner' | 'mid-level' | 'senior';
+        full_name: string;
+        known_technologies: string;
+    }
+}
 
 type Course = {
   label: string;
@@ -41,22 +51,60 @@ type Course = {
 
 
 export default function Profile(){
+    const navigate = useNavigate();
+    
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+    const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
+    // const [courses, setCourses] = useState<Course[]>([]);
 
-    const username = "Niush"
+    const getAuthTokens = () => {
+        const tokensStr = localStorage.getItem('authTokens');
+        return tokensStr ? JSON.parse(tokensStr) : null;
+    };
 
-    // this needs to be fetched from the api:
-    const userInfos : UserInfos = {
-        Email : "n.ebra@gmail.com",
-        Interest : "Frontend Development",
-        Techs : "JavaScript HTML CSS"
-    }
+    const fetchProfile = async () => {
+        const tokens = getAuthTokens();
+        
+        if (!tokens?.access) {
+            navigate('/login');
+            return;
+        }
+
+        try {
+            const response = await axios.get('http://127.0.0.1:8000/api/auth/profile/', {
+                headers: {
+                    'Authorization': `Bearer ${tokens.access}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            console.log('Profile response:', response.data);
+            setUserProfile(response.data);
+            setLoading(false);
+            
+        } catch (err: any) {
+            console.error('Fetch profile error:', err);
+            
+            if (err.response?.status === 401) {
+                localStorage.removeItem('authTokens');
+                navigate('/login');
+            } else {
+                setError('Failed to load profile. Please try again.');
+                setLoading(false);
+            }
+        }
+    };
+
+    useEffect(() => {
+        fetchProfile();
+    },[])
     
     // this needs to be fetched from the api:
     const courses :  Course[] = [
         {label : "JavaScript", courseName : "JavaScript Closures", level : "Medium" , percent : 50},
         {label : "Django" ,courseName : "SQL Queries", level : "Easy" , percent : 20},
     ]
-
+    const username = userProfile?.profile.full_name || "User";
     return(
         <div className="min-h-screen bg-gray-100 flex py-6 px-15 ">      
     
@@ -76,9 +124,8 @@ export default function Profile(){
                         
                         <div className="flex gap-4 flex-col my-2">
                             <h1 className="text-center text-gray-700 text-3xl font-medium">{username}</h1>
-                            {Object.entries(userInfos).map(([key,value])=>(
-                                <p className="text-gray-700">{key} : {value}</p>
-                            ))}
+                            {/* TODO: add the other infos */}
+                            <p className="text-gray-700">Experience Level: {userProfile.profile.experience_level}</p>
                         </div>
                     </div>
                 </section>
