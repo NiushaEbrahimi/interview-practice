@@ -52,9 +52,9 @@ class UserProfile(models.Model):
     
     class ExperienceLevel(models.TextChoices):
         BEGINNER = 'beginner', 'Beginner'
-        INTERMEDIATE = 'intermediate', 'Intermediate'
-        ADVANCED = 'advanced', 'Advanced'
-        EXPERT = 'expert', 'Expert'
+        JUNIOR = 'junior', 'Junior'
+        MID_LEVEL = 'mid-level', 'Mid-Level'
+        SENIOR = 'senior', 'Senior'
 
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
@@ -71,7 +71,6 @@ class UserProfile(models.Model):
         choices=ExperienceLevel.choices,
         default=ExperienceLevel.BEGINNER
     )
-    years_of_experience = models.IntegerField(default=0)
     
     # Skills and Technologies 
     known_technologies = models.TextField(

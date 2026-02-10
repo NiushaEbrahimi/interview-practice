@@ -14,8 +14,8 @@ export async function checkEmailAvailability(
             'http://127.0.0.1:8000/api/auth/check-email/',
             { email: email }
         );
+        console.log(response.data)
         setEmailAvailable(response.data.available);
-        
         return response.data.available;
     } catch (error) {
         console.error('Error checking email:', error);
@@ -35,15 +35,16 @@ export default function EmailInput(
     const handleEmailChange = (e : React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
         setEmail(value);
-
         
         if (value && value.includes('@gmail.com')) {
+            console.log(emailAvailable)
             setTimeout(() => checkEmailAvailability({
                 email,
                 setEmailAvailable
         }), 500);
         }
     };
+
     return(
         <div>
             <label htmlFor="email" className="block text-sm font-medium mb-1">Email</label>

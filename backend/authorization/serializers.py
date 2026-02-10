@@ -14,7 +14,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
         fields = [
-            'full_name', 'experience_level', 'years_of_experience',
+            'full_name', 'experience_level',
             'known_technologies', 'learning_technologies',
             'known_technologies_list', 'learning_technologies_list'
         ]
@@ -75,7 +75,6 @@ class RegisterSerializer(serializers.ModelSerializer):
         required=False,
         default=UserProfile.ExperienceLevel.BEGINNER
     )
-    years_of_experience = serializers.IntegerField(default=0, required=False, min_value=0)
     
     known_technologies = serializers.ListField(
         child=serializers.CharField(max_length=100),
@@ -92,7 +91,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         model = User
         fields = [
             'email', 'password', 'password2',
-            'full_name', 'experience_level', 'years_of_experience',
+            'full_name', 'experience_level',
             'known_technologies', 'learning_technologies'
         ]
         extra_kwargs = {
@@ -123,7 +122,6 @@ class RegisterSerializer(serializers.ModelSerializer):
             'full_name': validated_data.pop('full_name', ''),
             'experience_level': validated_data.pop('experience_level', 
                                                    UserProfile.ExperienceLevel.BEGINNER),
-            'years_of_experience': validated_data.pop('years_of_experience', 0),
         }
         
         known_tech_list = validated_data.pop('known_technologies', [])

@@ -5,6 +5,7 @@ import Profile from "./pages/Profile";
 import Course from "./pages/Course";
 import Lesson from "./pages/Lesson";
 
+import Login from "./pages/authentication/login";
 import SignUp from "./pages/authentication/signup";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -18,6 +19,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Dashboard />} />
         <Route path="/signup" element={<SignUp />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/courses" element={<Questions />} />
         <Route path="/courses/:label" element={<Course/>} />
         <Route path="/courses/:label/:level" element={<Course/>} />

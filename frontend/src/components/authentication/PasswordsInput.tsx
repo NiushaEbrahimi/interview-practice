@@ -10,9 +10,12 @@ export default function PasswordsInput(
         setConfirmPassword: (confirmPassword: string) => void
     }
 ) {
+
     const [errorPassword,setErrorPassword] = useState<string>('');
     const rejex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[A-Za-z\d@$!%*?&]{8,}$/;
+
     const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setErrorPassword('');
         const value = e.target.value;
         console.log(rejex.test(value));
         if(rejex.test(value)){
@@ -22,7 +25,9 @@ export default function PasswordsInput(
         }
         setPassword(value);
     };
+    
     const handleConfirmPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setErrorPassword('');
         const value = e.target.value;
         console.log(value);
         setConfirmPassword(value);

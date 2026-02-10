@@ -31,6 +31,6 @@ class UserAdmin(BaseUserAdmin):
 
 @admin.register(UserProfile)
 class UserProfileAdmin(admin.ModelAdmin):
-    list_display = ['user', 'full_name', 'experience_level', 'years_of_experience']
+    list_display = ['user', 'full_name', 'experience_level']
     search_fields = ['user__email', 'full_name']
     list_filter = ['experience_level']
