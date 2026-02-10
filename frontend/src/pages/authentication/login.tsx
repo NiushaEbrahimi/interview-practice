@@ -1,67 +1,56 @@
 import Background from '../../assets/Background.jpg';
-import css from "../../assets/css/signup.module.css";
-import { useState, type FormEventHandler } from 'react';
+import css from '../../assets/css/signup.module.css';
+import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import axios from 'axios';
+import { useAuth } from '../../context/AuthContext';
 
 export default function Login() {
-    const navigate = useNavigate();
-    const [buttonContent, setButtonContent] = useState('Login');
-    
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [buttonContent, setButtonContent] = useState(false);
+  
+  const { login } = useAuth();
+  const navigate = useNavigate();
 
-    const [error, setError] = useState<string>('');
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+    setButtonContent(true);
 
-    const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
-        e.preventDefault();
-        setError('');
-        setButtonContent('Loading...');
+    try {
+      const response = await fetch('http://127.0.0.1:8000/api/auth/login/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
 
-        try {
-            const response = await axios.post('http://127.0.0.1:8000/api/auth/login/', {
-                email: email,
-                password: password
-            }, {
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Invalid credentials');
+      }
 
-            const { access, refresh } = response.data;
-            localStorage.setItem('authTokens', JSON.stringify({
-                access: access,
-                refresh: refresh
-            }));
+      const data = await response.json();
+      
+      if (data.token && data.user) {
+        console.log('Login successful:', data);
+        
+        login(data.token, data.user);
+        
+        navigate('/', { replace: true });
+      } else {
+        throw new Error('Invalid response from server');
+      }
+    } catch (err) {
+      console.error('Login error:', err);
+      setError(err instanceof Error ? err.message : 'Login failed');
+    } finally {
+      setButtonContent(false);
+    }
+  };
 
-            console.log('Login successful');
-            
-            navigate('/profile');
-            
-        } catch (error : any) {
-            console.error('Login error:', error);
-            
-            if (error.response) {
-                if (error.response.status === 401) {
-                    setError('Invalid email or password');
-                } else if (error.response.data?.email) {
-                    setError(error.response.data.email[0] || 'Invalid email');
-                } else if (error.response.data?.password) {
-                    setError(error.response.data.password[0] || 'Invalid password');
-                } else if (error.response.data?.detail) {
-                    setError(error.response.data.detail);
-                } else {
-                    setError('Login failed. Please try again.');
-                }
-            } else if (error.request) {
-                setError('No response from server. Please check your connection.');
-            } else {
-                setError('An error occurred. Please try again.');
-            }
-            
-            setButtonContent('Login');
-        }
-    };
 
     return (
         <div className={`min-h-screen ${css.signup} flex justify-center items-center relative`}>
@@ -100,7 +89,7 @@ export default function Login() {
                     <button 
                         type="submit" 
                         className="bg-blue-600 text-white p-2 rounded-md hover:bg-blue-700 transition duration-300 cursor-pointer w-full"
-                        disabled={buttonContent === 'Loading...'}
+                        disabled={buttonContent === true}
                     >
                         {buttonContent}
                     </button>

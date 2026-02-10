@@ -25,7 +25,6 @@ function EditIcon(){
             3 21l1.412-4.125L16.862 3.487z"
         />
         </svg>
-
     )
 }
 
@@ -53,8 +52,6 @@ type Course = {
 export default function Profile(){
     const navigate = useNavigate();
     
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
     const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
     // const [courses, setCourses] = useState<Course[]>([]);
 
@@ -63,6 +60,7 @@ export default function Profile(){
         return tokensStr ? JSON.parse(tokensStr) : null;
     };
 
+    useEffect(() => {
     const fetchProfile = async () => {
         const tokens = getAuthTokens();
         
@@ -80,24 +78,18 @@ export default function Profile(){
             });
             console.log('Profile response:', response.data);
             setUserProfile(response.data);
-            setLoading(false);
             
-        } catch (err: any) {
+        } catch (err) {
             console.error('Fetch profile error:', err);
             
-            if (err.response?.status === 401) {
-                localStorage.removeItem('authTokens');
-                navigate('/login');
-            } else {
-                setError('Failed to load profile. Please try again.');
-                setLoading(false);
-            }
+            // if (err.response?.status === 401) {
+            //     localStorage.removeItem('authTokens');
+            //     navigate('/login');
+            // }
         }
     };
-
-    useEffect(() => {
-        fetchProfile();
-    },[])
+    fetchProfile();
+    },[navigate]);
     
     // this needs to be fetched from the api:
     const courses :  Course[] = [
@@ -125,7 +117,8 @@ export default function Profile(){
                         <div className="flex gap-4 flex-col my-2">
                             <h1 className="text-center text-gray-700 text-3xl font-medium">{username}</h1>
                             {/* TODO: add the other infos */}
-                            <p className="text-gray-700">Experience Level: {userProfile.profile.experience_level}</p>
+                            <p className="text-gray-700">Email: {userProfile?.email}</p>
+                            <p className="text-gray-700">Experience Level: {userProfile?.profile.experience_level}</p>
                         </div>
                     </div>
                 </section>
