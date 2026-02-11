@@ -1,5 +1,6 @@
 import React from "react";
 import Header from "../components/Header"
+import { useAuth } from "../context/AuthContext";
 // this needs to be fetched from the api:
 const stats = [
   { label: "Questions Practiced", value: "15" },
@@ -7,9 +8,6 @@ const stats = [
   { label: "Accuracy Rate", value: "78%" },
   { label: "Courses", value: "12" },
 ];
-
-// this needs to be fetched from the api:
-const username = "Niush";
 
 // this needs to be fetched from the api:
 const recentStudies = [
@@ -24,12 +22,13 @@ const recommended = [
 ]
 
 const Dashboard: React.FC = () => {
+  const { user } = useAuth();
   return (
     <div className="min-h-screen bg-gray-100 flex py-6 px-15 ">      
 
       <div className="flex-1 flex flex-col bg-gray-200 rounded-2xl overflow-hidden">
 
-        <Header username={username}/>
+      <Header username={user?.profile.full_name || "User"} />
 
         <main className="flex-1 py-6 px-10 space-y-6">
           <h1 className="text-gray-700 text-2xl font-medium">Welcome Back, {username}</h1>

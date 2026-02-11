@@ -24,15 +24,14 @@ type CourseType = {
 export default function Questions() {
   const { user } = useAuth();
   const authFetch = useAuthFetch();
+  
   const [courses, setCourses] = useState<CourseType[]>([]);
   const [lessons, setLessons] = useState<CardType[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        setLoading(true);
         setError(null);
 
         const lessonsData = await authFetch('http://127.0.0.1:8000/api/lessons/');
@@ -44,29 +43,16 @@ export default function Questions() {
       } catch (err) {
         console.error('Error fetching ', err);
         setError(err instanceof Error ? err.message : 'Unknown error');
-      } finally {
-        setLoading(false);
-      }
+      } 
     };
 
     fetchData();
   }, [authFetch]);
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-500 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading data...</p>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen bg-gray-100 flex py-6 px-6">
       <div className="flex-1 flex flex-col bg-gray-200 rounded-2xl overflow-hidden">
-        <Header username={user?.username || "User"} />
+        <Header username={user?.profile.full_name || "User"} />
         
         <main className="flex-1 py-6 px-10 space-y-2">
           {error && (

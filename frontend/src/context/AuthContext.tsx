@@ -1,10 +1,22 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+interface UserProfile {
+  full_name: string;
+  experience_level: string;
+  known_technologies: string;
+  learning_technologies: string;
+  known_technologies_list: string[];
+  learning_technologies_list: string[];
+}
+
 interface User {
   id: number;
-  username: string;
   email: string;
+  is_verified: boolean;
+  is_active: boolean;
+  created_at: string;
+  profile: UserProfile;
 }
 
 interface AuthContextType {
@@ -21,15 +33,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const navigate = useNavigate(); // حالا مشکلی ندارد چون داخل BrowserRouter است
+  const navigate = useNavigate();
 
   useEffect(() => {
     const storedToken = localStorage.getItem('authToken');
     const storedUser = localStorage.getItem('user');
     
     if (storedToken && storedUser) {
-      setToken(storedToken);
-      setUser(JSON.parse(storedUser));
+      try {
+        const parsedUser = JSON.parse(storedUser);
+        
+        setToken(storedToken);
+        setUser(parsedUser);
+      } catch (error) {
+        console.error('Error parsing stored user:', error);
+        logout();
+      }
     }
     
     setIsLoading(false);
@@ -47,7 +66,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     localStorage.removeItem('user');
     setToken(null);
     setUser(null);
-    navigate('/login');
+    navigate('/login', { replace: true });
   };
 
   return (

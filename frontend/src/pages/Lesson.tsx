@@ -3,6 +3,8 @@ import Header from "../components/Header"
 import Question from "../components/Lesson/Question";
 import { useParams } from "react-router-dom";
 
+import { useAuth } from "../context/AuthContext";
+
 import { Splide, SplideSlide } from '@splidejs/react-splide';
 
 type paramsURLType = {
@@ -19,9 +21,9 @@ type QuestionType = {
 }
 
 export default function Course(){
+    const { user } = useAuth()
     const [questions, setQuestions] = useState<QuestionType[]>([]);
 
-    const username = "Niusha";
     const paramsURL = useParams<paramsURLType>();
     
     useEffect(()=>{
@@ -41,7 +43,7 @@ export default function Course(){
     
             <div className="flex-1 flex flex-col bg-gray-200 rounded-2xl overflow-hidden">
     
-            <Header username={username}/>
+            <Header username={user?.profile.full_name || "User"} />
     
             <main className={`flex-1 py-6 px-10 space-y-6 flex flex-col text-gray-900`}>
                 <section className="flex items-end">

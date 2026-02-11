@@ -3,6 +3,8 @@ import {useNavigate, useParams } from "react-router-dom"
 import Dropdown from "../components/Courses/Dropdown";
 import BackIcon from "../components/Courses/BackIcon";
 import { useEffect, useState } from "react";
+import { useAuth } from "../context/AuthContext";
+import { useAuthFetch } from "../hooks/useAuthFetch";
 
 type paramsURLType = {
     label : string,
@@ -19,32 +21,30 @@ type lessonType = {
 }
 
 export default function Course(){
-    const username = "Niusha";
-
+    const { user } = useAuth();
+    const authFetch = useAuthFetch();
+    
     const [lessons, setLessons] = useState<lessonType[]>([]);
 
     const paramsURL = useParams<paramsURLType>();
     const navigate = useNavigate();
 
     useEffect(() => {
-        if(paramsURL.level){
-            const level = paramsURL.level === "Easy" ? 1 : paramsURL.level === "Medium" ? 2 : 3;
-            fetch(`http://127.0.0.1:8000/api/lessons/?course=${paramsURL.label}&level=${level}`)
-            .then(res => res.json())
-            .then(data => {
-                console.log(data);
-                setLessons(data);
+        const fetchData = async ()=> {
+            try{
+                if(paramsURL.level){
+                    const level = paramsURL.level === "Easy" ? 1 : paramsURL.level === "Medium" ? 2 : 3;
+                    const lessonsData = await authFetch(`http://127.0.0.1:8000/api/lessons/?course=${paramsURL.label}&level=${level}`)
+                    setLessons(lessonsData)
+                }else{
+                    const lessonsData = await authFetch(`http://127.0.0.1:8000/api/lessons/?course=${paramsURL.label}`)
+                    setLessons(lessonsData)
                 }
-            )
-        }else{
-            fetch(`http://127.0.0.1:8000/api/lessons/?course=${paramsURL.label}`)
-            .then(res => res.json())
-            .then(data => {
-                console.log(data);
-                setLessons(data);
-                }
-            )
+            }catch(err){
+                console.log(err)
+            }
         }
+        fetchData();
     },[paramsURL])
     // TODO: get it from api based on the paramsURL
     // TODO: i think it has to be like :
@@ -57,7 +57,7 @@ export default function Course(){
     
             <div className="flex-1 flex flex-col bg-gray-200 rounded-2xl overflow-hidden">
     
-            <Header username={username}/>
+            <Header username={user?.profile.full_name || "User"} />
     
             <main className={`flex-1 py-6 px-10 space-y-6 flex flex-col`}>
                 <section className="flex flex-row text-gray-700 justify-start items-center max-h-10 gap-2">

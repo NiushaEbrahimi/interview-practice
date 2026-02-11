@@ -8,7 +8,6 @@ export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [buttonContent, setButtonContent] = useState(false);
   
   const { login } = useAuth();
   const navigate = useNavigate();
@@ -16,7 +15,6 @@ export default function Login() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-    setButtonContent(true);
 
     try {
       const response = await fetch('http://127.0.0.1:8000/api/auth/login/', {
@@ -33,11 +31,12 @@ export default function Login() {
       }
 
       const data = await response.json();
+      console.log('Login response:', data);
       
-      if (data.token && data.user) {
+      if (data.access && data.user) {
         console.log('Login successful:', data);
         
-        login(data.token, data.user);
+        login(data.access, data.user);
         
         navigate('/', { replace: true });
       } else {
@@ -46,8 +45,6 @@ export default function Login() {
     } catch (err) {
       console.error('Login error:', err);
       setError(err instanceof Error ? err.message : 'Login failed');
-    } finally {
-      setButtonContent(false);
     }
   };
 
@@ -89,9 +86,8 @@ export default function Login() {
                     <button 
                         type="submit" 
                         className="bg-blue-600 text-white p-2 rounded-md hover:bg-blue-700 transition duration-300 cursor-pointer w-full"
-                        disabled={buttonContent === true}
                     >
-                        {buttonContent}
+                        login
                     </button>
 
                     <div className="text-center">

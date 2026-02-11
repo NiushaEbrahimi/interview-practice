@@ -1,18 +1,19 @@
 import Header from "../components/Header";
-
-const username = "Niush"
-
+import { useAuth } from "../context/AuthContext";
 
 // this needs to be fetched from the api 
 const information  = {questionsPracticed : 27 , avgConfidence : 3.6} 
 
-const Progress: React.FC = () => {
+export default function Progress(){
+
+  const { user } = useAuth();
+
   return (
     <div className="min-h-screen bg-gray-100 flex py-6 px-15 ">      
 
       <div className="flex-1 flex flex-col bg-gray-200 rounded-2xl overflow-hidden">
 
-        <Header username={username}/>
+        <Header username={user?.profile.full_name || "User"} />
         
         <main className="grid py-6 px-10 space-y-6 grid-cols-2 gap-2 text-gray-500">
             <div className="border-r-2 flex flex-col gap-4 justify-center items-center">
@@ -61,5 +62,3 @@ const Progress: React.FC = () => {
     </div>
   );
 };
-
-export default Progress;
