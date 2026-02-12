@@ -18,15 +18,15 @@ def get_user_stats(user):
     streak = 0
     today = date.today()
 
-    courses_count = attempts.aggregate(
-        total=Count("question__lesson__course", distinct=True)
-    )["total"]
-
     for d in dates:
         if d == today - timedelta(days=streak):
             streak += 1
         else:
             break
+
+    courses_count = attempts.aggregate(
+        total=Count("question__lesson__course", distinct=True)
+    )["total"]
 
     return {
         "questions_practiced": total,
@@ -34,7 +34,6 @@ def get_user_stats(user):
         "days_streak": streak,
         "courses": courses_count
     }
-
 
 
 def courses_with_question_count():
