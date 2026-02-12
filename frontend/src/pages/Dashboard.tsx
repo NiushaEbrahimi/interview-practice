@@ -1,13 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../components/Header"
 import { useAuth } from "../context/AuthContext";
-// this needs to be fetched from the api:
-const stats = [
-  { label: "Questions Practiced", value: "15" },
-  { label: "Current Streak", value: "5 days" },
-  { label: "Accuracy Rate", value: "78%" },
-  { label: "Courses", value: "12" },
-];
+import { useAuthFetch } from "../hooks/useAuthFetch";
 
 // this needs to be fetched from the api:
 const recentStudies = [
@@ -21,8 +15,30 @@ const recommended = [
   {id : 2, courseName : "JavaScript Closures", level : "Medium" , percent : "50%"},
 ]
 
+type statsType = {
+  questions_practiced: number,
+  accuracy_rate: number,
+  days_streak: number,
+  courses: number
+}
+
 const Dashboard: React.FC = () => {
   const { user } = useAuth();
+  const authFetch = useAuthFetch();
+  const [stats,setStats] = useState<statsType[]>();
+
+  useEffect(()=>{
+    const fetchData = async () =>{
+      try{
+        const response = await authFetch("http://127.0.0.1:8000/api/stats/me/")
+        console.log(response)
+        setStats(response)
+      }catch(err){
+        console.log(err)
+      }
+    }
+    fetchData()
+  },[])
   return (
     <div className="min-h-screen bg-gray-100 flex py-6 px-15 ">      
 
@@ -33,17 +49,10 @@ const Dashboard: React.FC = () => {
         <main className="flex-1 py-6 px-10 space-y-6">
           <h1 className="text-gray-700 text-2xl font-medium">Welcome Back, {user?.profile.full_name}</h1>
           <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
-            {stats.map((item) => (
-              <div
-                key={item.label}
-                className="bg-white rounded-lg shadow p-2 px-3"
-              >
-                <p className="text-sm text-gray-500">
-                  {item.label}
-                </p>
-                <p className="text-2xl font-semibold text-gray-800">
-                  {item.value}
-                </p>
+            {stats && Object.entries(stats).map(([key, value]) => (
+              <div key={key} className="bg-white rounded-lg shadow p-2 px-3">
+                <p className="text-sm text-gray-500">{key.replace("_"," ")}</p>
+                <p className="text-2xl font-semibold text-gray-800">{key === "accuracy_rate" ? `${Number(value) * 100}%` : value}</p>
               </div>
             ))}
           </section>
