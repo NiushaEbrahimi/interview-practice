@@ -54,16 +54,29 @@ class QuestionViewSet(ReadOnlyModelViewSet):
         print("qs : \n",qs)
         return qs
 
-
 class AttemptViewSet(viewsets.ModelViewSet):
     queryset = UserQuestionAttempt.objects.all()
     serializer_class = AttemptSerializer
-    # permission_classes = [permissions.IsAuthenticated]  
-    
+
     def get_queryset(self):
+        qs = super().get_queryset()
+        qs = qs.order_by("-answered_at")
+
         if self.request.user.is_authenticated:
-            return UserQuestionAttempt.objects.filter(user=self.request.user)
-        return UserQuestionAttempt.objects.none()  
+            qs = qs.filter(user=self.request.user)
+        else:
+            return qs.none()
+
+        lesson = self.request.query_params.get("lesson")
+        if lesson:
+            qs = qs.filter(question__lesson__name=lesson)
+
+        question = self.request.query_params.get("question")
+        if question:
+            qs = qs.filter(question_id=question)
+
+        return qs
+
     
     def perform_create(self, serializer):
         if self.request.user.is_authenticated:

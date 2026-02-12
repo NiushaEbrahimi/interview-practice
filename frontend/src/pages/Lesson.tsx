@@ -1,9 +1,11 @@
-import { useState, useEffect } from "react";
 import Header from "../components/Header"
 import Question from "../components/Lesson/Question";
+
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 import { useAuth } from "../context/AuthContext";
+import { useAuthFetch } from "../hooks/useAuthFetch";
 
 import { Splide, SplideSlide } from '@splidejs/react-splide';
 
@@ -21,22 +23,25 @@ type QuestionType = {
 }
 
 export default function Course(){
-    const { user } = useAuth()
+    const { user } = useAuth();
+    const authFetch = useAuthFetch();
+
     const [questions, setQuestions] = useState<QuestionType[]>([]);
 
     const paramsURL = useParams<paramsURLType>();
     
     useEffect(()=>{
-        fetch(`http://127.0.0.1:8000/api/questions/?lesson=${paramsURL.lesson}`)
-        .then(res => res.json())
-        .then(data => {
-            console.log(data);
-            setQuestions(data);
-            })
-        .catch(error => {console.error("Error fetching questions:", error)});
+        const fetchData = async () =>{
+            try{
+                console.log(paramsURL)
+                const questionsData = await authFetch(`http://127.0.0.1:8000/api/questions/?lesson=${paramsURL.lesson}`);
+                setQuestions(questionsData);
+            }catch(err){
+                console.log(err);
+            }
+        };
+        fetchData();
     },[])
-    
-    console.log(paramsURL);
 
     return(
         <div className="min-h-screen bg-gray-100 flex py-6 px-15 ">      
@@ -52,7 +57,7 @@ export default function Course(){
                 </section>
                 <Splide>
                 {questions && questions.map((question, index) => (
-                    <SplideSlide><Question key={index} id={question.id} question={question.question} answer={question.correct_answer}/></SplideSlide>
+                    <SplideSlide key={index}><Question key={index} id={question.id} question={question.question} answer={question.correct_answer}/></SplideSlide>
                 ))}
                 </Splide>
             </main>

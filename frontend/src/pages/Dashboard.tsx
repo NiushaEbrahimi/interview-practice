@@ -17,8 +17,8 @@ const recentStudies = [
 
 // this needs to be fetched from the api:
 const recommended = [
-  {courseName : "JavaScript Closures", level : "Medium" , percent : "50%"},
-  {courseName : "JavaScript Closures", level : "Medium" , percent : "50%"},
+  {id : 1, courseName : "JavaScript Closures", level : "Medium" , percent : "50%"},
+  {id : 2, courseName : "JavaScript Closures", level : "Medium" , percent : "50%"},
 ]
 
 const Dashboard: React.FC = () => {
@@ -31,7 +31,7 @@ const Dashboard: React.FC = () => {
       <Header username={user?.profile.full_name || "User"} />
 
         <main className="flex-1 py-6 px-10 space-y-6">
-          <h1 className="text-gray-700 text-2xl font-medium">Welcome Back, {username}</h1>
+          <h1 className="text-gray-700 text-2xl font-medium">Welcome Back, {user?.profile.full_name}</h1>
           <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
             {stats.map((item) => (
               <div
@@ -76,7 +76,7 @@ const Dashboard: React.FC = () => {
             <div className="grid justify-start align-middle gap-2 py-2">
             {recommended.map((item)=>(
               <div
-                key={item.courseName}
+                key={item.id}
                 className="bg-white rounded-lg shadow p-2 px-3 grid grid-cols-4"
               >
                 <span className="text-start text-gray-500">

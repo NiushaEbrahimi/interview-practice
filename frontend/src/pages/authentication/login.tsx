@@ -31,10 +31,8 @@ export default function Login() {
       }
 
       const data = await response.json();
-      console.log('Login response:', data);
       
       if (data.access && data.user) {
-        console.log('Login successful:', data);
         
         login(data.access, data.user);
         

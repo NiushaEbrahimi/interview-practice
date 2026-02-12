@@ -72,7 +72,6 @@ export default function Profile(){
                         'Content-Type': 'application/json'
                     }
                 });
-                console.log('Profile response:', response.data);
                 setUserProfile(response.data);
                 
             } catch (err: any) {
