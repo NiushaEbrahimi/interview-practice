@@ -5,7 +5,7 @@ export default function LessonCard({cardLable, cardCourseName, cardLevel, cardLe
     : {cardLable : string, cardCourseName: string, cardLevel: string, cardLesson: string, cardQuestions: number}){
     const notShow = false;
     return(
-        <Link to={`/courses/${cardLable}/`}>
+        <Link to={`/courses/${cardLable}/${cardLevel}/${cardLesson}`}>
             <div className="rounded bg-white w-50 h-80 text-center text-gray-500 p-4 shadow cursor-pointer grid grid-rows-4-3-2-1-1">
                 <div className="flex justify-center items-center" style={{width : "100%"}}>
                     <img src={returnImageSrc({name: cardLable})} className="rounded max-h-40 mb-3"/>

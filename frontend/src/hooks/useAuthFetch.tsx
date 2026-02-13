@@ -1,11 +1,13 @@
 import { useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 interface FetchOptions extends RequestInit {
   headers?: HeadersInit;
 }
 
 export const useAuthFetch = () => {
+  const navigate = useNavigate();
   const { token, logout } = useContext(AuthContext);
 
   const authFetch = async (url: string, options: FetchOptions = {}) => {
@@ -30,6 +32,7 @@ export const useAuthFetch = () => {
       }
 
       if (response.status === 403) {
+        navigate('/login/')
         throw new Error('Forbidden - You do not have permission');
       }
 
