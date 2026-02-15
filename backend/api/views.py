@@ -7,7 +7,8 @@ from .models import Course, Lesson, Question,  UserQuestionAttempt, UserLessonPr
 from .serializers import CourseSerializer, LessonSerializer, QuestionSerializer, AttemptSerializer, LessonProgressSerializer
 from .services import get_user_stats
 
-from django.db.models import Count
+from django.db.models import Count, Subquery, OuterRef, Value, Q
+from django.db.models.functions import Coalesce
 
 from django.contrib.auth import get_user_model
 
@@ -22,6 +23,44 @@ class LessonViewSet(ReadOnlyModelViewSet):
 
     def get_queryset(self):
         qs = super().get_queryset()
+        user = self.request.user
+
+        # Total questions per lesson (1 query for all lessons)
+        qs = qs.annotate(
+            questions_count=Count('questions')
+        )
+        
+        # User's answered count (1 query for all lessons)
+        if user.is_authenticated:
+            answered_subq = (
+                UserQuestionAttempt.objects.filter(
+                    user=user,
+                    question__lesson=OuterRef('pk')
+                )
+                .values('question__lesson')
+                .annotate(cnt=Count('question', distinct=True))
+                .values('cnt')[:1]
+            )
+            qs = qs.annotate(
+                questions_answered=Coalesce(Subquery(answered_subq), Value(0))
+            )
+            
+            # Started flag (has user attempted any question in this lesson?)
+            started_subq = (
+                UserQuestionAttempt.objects.filter(
+                    user=user,
+                    question__lesson=OuterRef('pk')
+                )
+                .values('pk')[:1]
+            )
+            qs = qs.annotate(
+                started=Q(pk__in=Subquery(started_subq.values('question__lesson')))
+            )
+        else:
+            qs = qs.annotate(
+                questions_answered=Value(0),
+                started=Value(False)
+            )
 
         course = self.request.query_params.get("course")
         level = self.request.query_params.get("level")

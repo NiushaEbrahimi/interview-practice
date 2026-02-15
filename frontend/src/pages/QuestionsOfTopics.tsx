@@ -12,6 +12,7 @@ type LessonType = {
   level: number;
   level_display: string;
   questions_count: number;
+  questions_answered: number;
   started : boolean,
 }
 
@@ -80,7 +81,8 @@ export default function Questions() {
                   cardCourseName={lesson.name} 
                   cardLevel={lesson.level_display} 
                   cardLesson={lesson.name} 
-                  cardQuestions={lesson.questions_count}
+                  cardQuestionsTotal={lesson.questions_count}
+                  cardQuestionsAnswered={lesson.questions_answered}
                   started={lesson.started}
                 />
               ))}

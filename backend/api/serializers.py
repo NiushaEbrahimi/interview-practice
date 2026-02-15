@@ -10,6 +10,10 @@ class QuestionSerializer(serializers.ModelSerializer):
 
 class LessonSerializer(serializers.ModelSerializer):
     questions_count = serializers.IntegerField(source="questions.count", read_only=True)
+    # this is easier but it's not scalable and does a lot of queries
+    # questions_answered = serializers.SerializerMethodField()
+    # this code below is the scalable way to get the number of answered questions:
+    questions_answered = serializers.IntegerField(read_only=True)
     level_display = serializers.CharField(source='get_level_display', read_only=True)
     course = serializers.CharField(source='course.title', read_only=True)
     started = serializers.SerializerMethodField()  
@@ -18,7 +22,7 @@ class LessonSerializer(serializers.ModelSerializer):
         model = Lesson
         fields = [
             'id', 'name', 'level', 'level_display', 
-            'questions_count', 'course', 'started'
+            'questions_count','questions_answered', 'course', 'started'
         ]
     
     def get_started(self, obj):
