@@ -5,18 +5,19 @@ import Header from "../components/Header";
 import LessonCard from "../components/Questions/LessonCard";
 import CourseCard from "../components/Questions/CourseCard";
 
-type CardType = {
+type LessonType = {
   id: number;
   name: string;
   course: string;
   level: number;
   level_display: string;
   questions_count: number;
+  started : boolean,
 }
 
 type CourseType = {
   id: number;
-  lessons: Array<CardType>;
+  lessons: Array<LessonType>;
   title: string;
   started: boolean;
 }
@@ -26,7 +27,7 @@ export default function Questions() {
   const authFetch = useAuthFetch();
   
   const [courses, setCourses] = useState<CourseType[]>([]);
-  const [lessons, setLessons] = useState<CardType[]>([]);
+  const [lessons, setLessons] = useState<LessonType[]>([]);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -36,7 +37,7 @@ export default function Questions() {
 
         const lessonsData = await authFetch('http://127.0.0.1:8000/api/lessons/');
         const coursesData = await authFetch('http://127.0.0.1:8000/api/courses/');
-        
+
         setLessons(lessonsData);
         setCourses(coursesData);
 
@@ -80,6 +81,7 @@ export default function Questions() {
                   cardLevel={lesson.level_display} 
                   cardLesson={lesson.name} 
                   cardQuestions={lesson.questions_count}
+                  started={lesson.started}
                 />
               ))}
             </div>

@@ -104,8 +104,7 @@ class LessonProgressViewSet(viewsets.ModelViewSet):
             User = get_user_model()
             default_user = User.objects.first()
             serializer.save(user=default_user)
-
-
+            
 class StatsViewSet(viewsets.ViewSet):
     # permission_classes = [permissions.IsAuthenticated]
 

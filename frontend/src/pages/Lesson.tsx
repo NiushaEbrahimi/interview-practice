@@ -24,10 +24,10 @@ type QuestionType = {
     lesson: number
 }
 
-const CheckSVGIcon = ({zoomIn, zoomOut} : {zoomIn: boolean, zoomOut: boolean}) => {
+const CheckSVGIcon = ({zoomIn} : {zoomIn: boolean}) => {
     return (
         <svg
-            className={`ms-2 ${!zoomIn ? css.zoomIn : !zoomOut ? css.zoomOut : "" }`}
+            className={`ms-2 ${!zoomIn ? css.zoomIn : "" }`}
             xmlns="http://www.w3.org/2000/svg" 
             width="26" 
             height="40" 
@@ -39,13 +39,13 @@ const CheckSVGIcon = ({zoomIn, zoomOut} : {zoomIn: boolean, zoomOut: boolean}) =
     )
 }
 
-const SquareSVGIcon = ({zoomIn, zoomOut} : {zoomIn: boolean, zoomOut: boolean}) => {
+const SquareSVGIcon = ({zoomIn} : {zoomIn: boolean}) => {
     return (
         <svg 
-            className={`ms-2 ${zoomIn ? css.zoomIn : zoomOut ? css.zoomOut : "" }`}
+            className={`ms-2 ${zoomIn ? css.zoomIn : "" }`}
             xmlns="http://www.w3.org/2000/svg" 
-            width="20" 
-            height="26" 
+            width="15" 
+            height="20" 
             fill="currentColor" 
             viewBox="0 0 16 16"
         >
@@ -63,7 +63,6 @@ export default function Course(){
     const paramsURL = useParams<paramsURLType>();
 
     const [zoomIn , setZoomIn ] = useState(false);
-    const [zoomOut, setZoomOut] = useState(false);
     const [square, setSquare] = useState(true);
     
     useEffect(()=>{
@@ -72,6 +71,18 @@ export default function Course(){
                 console.log(paramsURL)
                 const questionsData = await authFetch(`http://127.0.0.1:8000/api/questions/?lesson=${paramsURL.lesson}`);
                 setQuestions(questionsData);
+
+                const responseStudyLater = await authFetch(`http://127.0.0.1:8000/api/progress/`, {
+                    method: "POST",
+                    body: JSON.stringify({
+                        // user: user?.id,
+                        lesson: paramsURL.lesson,
+                        will_study_later: !square,
+                        
+                    })
+                });
+                console.log(responseStudyLater);
+
             }catch(err){
                 console.log(err);
             }
@@ -96,14 +107,16 @@ export default function Course(){
                         className={`bg-blue-200 rounded-2xl flex justify-center items-center border-2 border-blue-50 px-3 shadow ${css.svgParent}`}
                         onClick={()=>{ 
                             setZoomIn(!zoomIn);
-                            setZoomOut(!zoomOut);
-                            setSquare(!square);
+                            setTimeout(() => {
+                                setSquare(prev => !prev);
+                            }, 300);
+                            
                         }}
                     >
                         <span>Study Later</span>
                         <span>
-                            {square ? <SquareSVGIcon zoomIn={zoomIn} zoomOut={zoomOut}/>
-                            : <CheckSVGIcon zoomIn={zoomIn} zoomOut={zoomOut}/>}
+                            {square ? <SquareSVGIcon zoomIn={zoomIn} />
+                            : <CheckSVGIcon zoomIn={zoomIn}/>}
                         </span>
                     </button>
                 </section>
