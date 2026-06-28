@@ -1,31 +1,32 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Header from "../components/Header"
 import { useAuth } from "../context/AuthContext";
 import { useAuthFetch } from "../hooks/useAuthFetch";
+import type { StatsType } from "../assets/types";
 
-// this needs to be fetched from the api:
+// TODO: this needs to be fetched from the api:
 const recentStudies = [
   {courseName : "JavaScript Closures", level : "Medium" , percent : "50%"},
   {courseName : "SQL Queries", level : "Easy" , percent : "20%"},
 ]
 
-// this needs to be fetched from the api:
+// TODO: this needs to be fetched from the api:
 const recommended = [
   {id : 1, courseName : "JavaScript Closures", level : "Medium" , percent : "50%"},
   {id : 2, courseName : "JavaScript Closures", level : "Medium" , percent : "50%"},
 ]
 
-type statsType = {
-  questions_practiced: number,
-  accuracy_rate: number,
-  days_streak: number,
-  courses: number
-}
-
-const Dashboard: React.FC = () => {
+export default function Dashboard(){
   const { user } = useAuth();
   const authFetch = useAuthFetch();
-  const [stats,setStats] = useState<statsType[]>();
+  const [stats,setStats] = useState<StatsType[]>();
+  
+  const formatValue = (key: string, value: number) => {
+    if (key === "accuracy_rate") {
+      return `${(value * 100).toFixed(1)}%`
+    }
+    return value
+  }
 
   useEffect(()=>{
     const fetchData = async () =>{
@@ -38,7 +39,9 @@ const Dashboard: React.FC = () => {
       }
     }
     fetchData()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
+
   return (
     <div className="min-h-screen bg-gray-100 flex py-6 px-15 ">      
 
@@ -51,10 +54,13 @@ const Dashboard: React.FC = () => {
           <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
             {stats && Object.entries(stats).map(([key, value]) => (
               <div key={key} className="bg-white rounded-lg shadow p-2 px-3">
-                <p className="text-sm text-gray-500">{key.replace("_"," ")}</p>
-                <p className="text-2xl font-semibold text-gray-800">{key === "accuracy_rate" ? `${Number(value) * 100}%` : value}</p>
+                <p className="text-sm text-gray-500">{key.replaceAll("_"," ")}</p>
+                <p className="text-2xl font-semibold text-gray-800">
+                  {formatValue(key, Number(value))}
+                </p>
               </div>
             ))}
+
           </section>
 
           <section>
@@ -108,5 +114,3 @@ const Dashboard: React.FC = () => {
     </div>
   );
 };
-
-export default Dashboard;

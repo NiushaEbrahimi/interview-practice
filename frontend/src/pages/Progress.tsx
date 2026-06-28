@@ -2,19 +2,13 @@ import { useEffect, useState } from "react";
 import Header from "../components/Header";
 import { useAuth } from "../context/AuthContext";
 import { useAuthFetch } from "../hooks/useAuthFetch";
-
-type statsType = {
-  questions_practiced: number,
-  accuracy_rate: number,
-  days_streak: number,
-  courses: number
-}
+import type { StatsType } from "../assets/types";
 
 export default function Progress(){
 
   const { user } = useAuth();
   const authFetch = useAuthFetch();
-  const [response,setResponse] = useState<statsType>()
+  const [response,setResponse] = useState<StatsType>()
 
   useEffect(()=>{
     const fetchData = async () =>{
@@ -28,6 +22,7 @@ export default function Progress(){
     }
     fetchData();
     console.log(response)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
 
   return (
@@ -41,7 +36,7 @@ export default function Progress(){
             <div className="border-r-2 flex flex-col gap-4 justify-center items-center">
               <div className="border-b-2 flex flex-col gap-4 w-120 p-4">
                 <h3>Questions Practiced: <span className="ml-2 font-bold">{response?.questions_practiced}</span></h3>
-                <h3>Avg Confidence: <span className="ml-2 font-bold">{response?.accuracy_rate*100}%</span></h3>
+                <h3>Avg Confidence: <span className="ml-2 font-bold">{(response?.accuracy_rate ?? 0) * 100}%</span></h3>
               </div>
               <div className="border-b-2 flex flex-col gap-2 w-120 p-2">
                 <h1 className="text-gray-700 text-2xl font-medium mb-2">Progress by Level</h1>

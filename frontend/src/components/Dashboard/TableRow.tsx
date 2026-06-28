@@ -1,9 +1,10 @@
-const TableRow: React.FC<{
-  id: string;
-  customer: string;
-  status: "Paid" | "Pending" | "Failed";
-  amount: string;
-}> = ({ id, customer, status, amount }) => {
+export default function TableRow(
+    { id, customer, status, amount }:
+    {id: string;
+    customer: string;
+    status: "Paid" | "Pending" | "Failed";
+    amount: string;}
+  ){
   const statusColor =
     status === "Paid"
       ? "text-green-600"
@@ -22,5 +23,3 @@ const TableRow: React.FC<{
     </tr>
   );
 };
-
-export default TableRow;

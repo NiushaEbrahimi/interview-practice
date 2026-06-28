@@ -1,10 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-
-type paramsURLType = {
-    label : string,
-    level? : string
-}
+import type { paramsURLType } from "../../assets/types";
 
 export default function Dropdown({label} : {label: string}) {
     const [isOpen, setIsOpen] = useState(false);

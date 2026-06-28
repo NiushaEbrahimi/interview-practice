@@ -4,24 +4,7 @@ import { useAuthFetch } from "../hooks/useAuthFetch";
 import Header from "../components/Header";
 import LessonCard from "../components/Questions/LessonCard";
 import CourseCard from "../components/Questions/CourseCard";
-
-type LessonType = {
-  id: number;
-  name: string;
-  course: string;
-  level: number;
-  level_display: string;
-  questions_count: number;
-  questions_answered: number;
-  started : boolean,
-}
-
-type CourseType = {
-  id: number;
-  lessons: Array<LessonType>;
-  title: string;
-  started: boolean;
-}
+import type { CourseType, LessonType } from "../assets/types";
 
 export default function Questions() {
   const { user } = useAuth();

@@ -1,30 +1,17 @@
 import Header from "../components/Header"
 import {useNavigate, useParams } from "react-router-dom"
 import Dropdown from "../components/Courses/Dropdown";
-import BackIcon from "../components/Courses/BackIcon";
+import BackIcon from "../components/Icons/BackIcon";
 import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useAuthFetch } from "../hooks/useAuthFetch";
-
-type paramsURLType = {
-    label : string,
-    level? : string
-}
-
-type lessonType = {
-    id: number,
-    name: string,
-    level : number,
-    level_display : string,
-    questions_count : number,
-    course : string
-}
+import type { LessonType, paramsURLType } from "../assets/types";
 
 export default function Course(){
     const { user } = useAuth();
     const authFetch = useAuthFetch();
     
-    const [lessons, setLessons] = useState<lessonType[]>([]);
+    const [lessons, setLessons] = useState<LessonType[]>([]);
 
     const paramsURL = useParams<paramsURLType>();
     const navigate = useNavigate();
@@ -91,8 +78,7 @@ export default function Course(){
                                         ${e.level_display === "Hard" ? "text-red-600" : ""}
                                         ${e.level_display === "Medium" ? "text-yellow-600" : ""}
                                         ${e.level_display === "Easy" ? "text-green-600" : ""}
-                                        `
-                                    }
+                                        `}
                                 >
                                     {e.level_display}
                                 </p>

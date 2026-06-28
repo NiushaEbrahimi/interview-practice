@@ -3,7 +3,6 @@ export default function Experience({experienceLevel, setExperienceLevel}:{
     experienceLevel: string,
     setExperienceLevel: React.Dispatch<React.SetStateAction<string>>
 }){
-
     return(
         <div>
             <label className="block text-sm font-medium mb-2">Experience Level</label>

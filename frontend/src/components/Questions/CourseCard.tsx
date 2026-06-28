@@ -3,7 +3,9 @@ import { Link } from "react-router-dom"
 
 export default function CourseCard(
     {title, lessons_number, started} : 
-    {title: string, lessons_number: number, started: boolean}
+    {title: string,
+    lessons_number: number,
+    started: boolean}
     ){
     return(
         <Link to={`/courses/${title}`}>

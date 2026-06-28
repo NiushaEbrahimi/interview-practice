@@ -6,55 +6,18 @@ import { useEffect, useState } from "react"
 import axios from "axios"
 import { useNavigate } from "react-router-dom"
 import { useAuth } from "../context/AuthContext"
-
-function EditIcon(){
-    return(
-        <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        strokeWidth="1.5"
-        stroke="currentColor"
-        className="w-5 h-5"
-        >
-        <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M16.862 3.487a2.25 2.25 0 113.182 3.182L7.125 19.588
-            3 21l1.412-4.125L16.862 3.487z"
-        />
-        </svg>
-    )
-}
-
-type UserProfile = {
-    created_at: string;
-    email: string;
-    id: number;
-    is_active: boolean;
-    is_verified: boolean;
-    profile: {
-        experience_level: "junior" | 'beginner' | 'mid-level' | 'senior';
-        full_name: string;
-        known_technologies: string;
-        learning_technologies: string;
-        known_technologies_list: string[];
-        learning_technologies_list: string[];
-    }
-}
-
-type Course = {
-  label: string;
-  courseName: string;
-  level: "Easy" | "Medium" | "Hard";
-  percent: number;
-};
+import { useAuthFetch } from "../hooks/useAuthFetch"
+import type { UserProfile, Course, StudyLater } from "../assets/types"
+import { EditIcon } from "../components/Icons/EditIcon"
 
 export default function Profile(){
     const navigate = useNavigate();
     const { user, token, logout } = useAuth();
     
     const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
+    const [studyLaterQuestions, setStudyLaterQuestions] = useState<StudyLater[]>()
+
+    const authFetch = useAuthFetch()
 
     useEffect(() => {
 
@@ -74,6 +37,7 @@ export default function Profile(){
                 });
                 setUserProfile(response.data);
                 
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             } catch (err: any) {
                 console.error('Fetch profile error:', err);
                 
@@ -82,8 +46,21 @@ export default function Profile(){
                 }
             }
         };
+
+        const fetchStudyLater = async () => {
+            try{
+                const studyLaterData = await authFetch(`http://127.0.0.1:8000/api/attempts/?come_back_again=true`)
+                setStudyLaterQuestions(studyLaterData)
+                console.log(`study later : ${studyLaterData.length}`)
+            }catch(err){
+                console.log(`error is : ${err}`)
+            }
+        }
         
         fetchProfile();
+        fetchStudyLater();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [token, user, navigate, logout]);
     
     const courses: Course[] = [
@@ -92,6 +69,7 @@ export default function Profile(){
     ]
     
     const username = userProfile?.profile.full_name || user?.profile?.full_name || "User";
+    const userExp : string = String(userProfile?.profile.experience_level) || String(user?.profile?.experience_level)
     
     if (!userProfile && (!user || !token)) {
         return <div>Loading...</div>;
@@ -113,8 +91,9 @@ export default function Profile(){
                             <div className="flex gap-4 flex-col my-2">
                                 <h1 className="text-center text-gray-700 text-3xl font-medium">{username}</h1>
                                 <p className="text-gray-700">Email: {userProfile?.email || user?.email}</p>
-                                <p className="text-gray-700">Experience Level: {userProfile?.profile.experience_level || user?.profile?.experience_level}</p>
+                                <p className="text-gray-700">Experience Level:  {userExp.replace(userExp.charAt(0),userExp.charAt(0).toUpperCase()) }</p>
                             </div>
+                            <button className="bg-red-500 py-2 px-3 rounded-2xl hover:bg-red-600 cursor-pointer" onClick={()=>{logout()}}>Log Out</button>
                         </div>
                     </section>
                     <section className="flex-2 bg-gray-500 rounded-2xl shadow py-2 px-4 overflow-y-scroll">
@@ -129,6 +108,16 @@ export default function Profile(){
                             {courses && courses.map((e)=>(
                                 <CourseCard label={e.label} courseName={e.courseName} level={e.level} percent={e.percent}/>
                             ))}
+                        </div>
+                        <div className="bg-white text-black mt-10 mb-10 rounded-2xl" style={{height:"70%"}}>
+                            <h1 className="text-3xl font-medium p-4">Will Study Later questions</h1>
+                            <div className="flex gap-4 p-8 flex-col overflow-y-auto overflow-x-hidden" style={{maxHeight:"70%"}}>
+                                {studyLaterQuestions && studyLaterQuestions.map((e)=>(
+                                    <div className=" bg-gray-100 border-2 border-black rounded-2xl p-2 cursor-pointer hover:bg-gray-300">
+                                        <p>{e.question}</p>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
                     </section>
                 </main>

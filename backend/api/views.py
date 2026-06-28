@@ -114,6 +114,19 @@ class AttemptViewSet(viewsets.ModelViewSet):
         if question:
             qs = qs.filter(question_id=question)
 
+        come_back_again = self.request.query_params.get("come_back_again")
+        if come_back_again is not None:
+
+            latest_attempt = self.queryset.filter(
+                question=OuterRef("pk")
+            ).order_by("-answered_at")
+
+            qs = Question.objects.annotate(
+                last_come_back=Subquery(
+                    latest_attempt.values("come_back_again")[:1]
+                )
+            ).filter(last_come_back=True)
+
         return qs
 
     

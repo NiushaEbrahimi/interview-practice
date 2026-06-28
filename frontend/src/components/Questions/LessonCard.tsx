@@ -7,7 +7,7 @@ export default function LessonCard({cardLable, cardCourseName, cardLevel, cardLe
     : {cardLable : string, cardCourseName: string, cardLevel: string, cardLesson: string, cardQuestionsTotal: number, cardQuestionsAnswered:number, started: boolean}){
     
     const progress_percent = (cardQuestionsAnswered/cardQuestionsTotal)*100;
-    console.log(progress_percent)
+
     return(
         <Link to={`/courses/${cardLable}/${cardLevel}/${cardLesson}`}>
             <div className="rounded bg-white w-50 h-90 text-center text-gray-500 p-4 shadow cursor-pointer grid grid-rows-4-2-1-2-1">

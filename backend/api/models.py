@@ -9,7 +9,7 @@ class Course(models.Model):
     description = models.TextField(blank=True)
 
     def __str__(self):
-        return self.title
+        return self.title 
 
 
 class Lesson(models.Model):

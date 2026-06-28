@@ -66,5 +66,4 @@ class LessonProgressSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserLessonProgress
         fields = "__all__"
-        read_only_fields = ("user","progress_percent")
-        # read_only_fields = ("user",)    
+        read_only_fields = ("user", "progress_percent")

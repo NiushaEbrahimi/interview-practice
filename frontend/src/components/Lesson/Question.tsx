@@ -1,15 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAuthFetch } from "../../hooks/useAuthFetch";
 import { useParams } from "react-router-dom";
-
-type responseType = {
-    answered_at: string;
-    come_back_again: boolean;
-    confidence_rate: number;
-    id: number;
-    question: number;
-    user : number;
-}
+// import type { responseType } from "../../assets/types";
 
 export default function Question({id, question, answer} : {id: number, question: string, answer: string}){
     const paramsURL = useParams()
@@ -18,7 +10,7 @@ export default function Question({id, question, answer} : {id: number, question:
     const [score, setScore] = useState<number | null>(null);
     const [answerDisplay, setAnswerDisplay] = useState(false);
     const [comeBack, setComeBack] = useState(false);
-    const [allResponses,setAllResponses] = useState<responseType[]>()
+    // const [allResponses,setAllResponses] = useState<responseType[]>()
 
     useEffect(() => {
         const fetchData = async () => {
@@ -27,7 +19,7 @@ export default function Question({id, question, answer} : {id: number, question:
                     `http://127.0.0.1:8000/api/attempts/?lesson=${paramsURL.lesson}&question=${id}`
                 );
 
-                setAllResponses(response);
+                // setAllResponses(response);
 
                 const last = response?.[0];
                 setScore(last?.confidence_rate ?? null);
