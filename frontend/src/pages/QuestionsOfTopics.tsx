@@ -5,7 +5,7 @@ import Header from "../components/Header";
 import LessonCard from "../components/Questions/LessonCard";
 import CourseCard from "../components/Questions/CourseCard";
 import type { CourseType, LessonType } from "../assets/types";
-
+import Skeleton from "../components/Skeleton";
 
 export default function Questions() {
   const { user } = useAuth();
@@ -16,6 +16,8 @@ export default function Questions() {
   const [showCourses, setShowCourses] = useState(true);
   const [showLessons, setShowLessons] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -31,7 +33,9 @@ export default function Questions() {
       } catch (err) {
         console.error('Error fetching ', err);
         setError(err instanceof Error ? err.message : 'Unknown error');
-      } 
+      } finally{
+        setLoading(false)
+      }
     };
 
     fetchData();
@@ -121,6 +125,11 @@ export default function Questions() {
             </div>
             </div>
             <div className="flex flex-wrap justify-center gap-8 p-2">
+            {loading
+            ? Array.from({ length: 6 }).map((_, i) => (
+              <Skeleton key={i} className="w-50 h-80"/>
+            ))
+            : <>
               { showCourses && courses.map((course) => (
                 <CourseCard 
                   key={course.id} 
@@ -141,6 +150,8 @@ export default function Questions() {
                   started={lesson.started}
                 />
               ))}
+            </>
+            }
             </div>
           </section>
         </main>
