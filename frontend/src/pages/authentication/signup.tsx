@@ -68,7 +68,6 @@ export default function SignUp(){
                 'Content-Type': 'application/json'
             }
         });
-        // console.log('Registration successful:', response.data);
         setButtonContent('loading')
         navigate('/login');
             }catch(error){

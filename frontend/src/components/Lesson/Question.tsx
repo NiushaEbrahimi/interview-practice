@@ -31,7 +31,7 @@ export default function Question({id, question, answer} : {id: number, question:
         };
 
         fetchData();
-    }, []);
+    }, [authFetch, id, paramsURL.lesson]);
 
     const handleRate = async (value : number) => {
         setScore(value);

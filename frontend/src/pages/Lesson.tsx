@@ -28,7 +28,6 @@ export default function Lesson(){
                 setQuestions(questionsData);
                 
                 const newRes = await authFetch(`http://127.0.0.1:8000/api/lessons/`)
-                console.log(`new REs : ${newRes} params URL : ${paramsURL}`)
                 const lessonId = newRes.find((lesson: { name: string | undefined; }) => lesson.name === paramsURL.lesson).id;
                 const responseStudyLater = await authFetch(`http://127.0.0.1:8000/api/progress/`, {
                     method: "POST",
@@ -46,7 +45,6 @@ export default function Lesson(){
             }
         };
         fetchData();
-        console.log(questions);
     },[])
 
     return(

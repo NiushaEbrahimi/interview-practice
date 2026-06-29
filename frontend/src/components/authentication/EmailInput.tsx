@@ -14,7 +14,6 @@ export async function checkEmailAvailability(
             'http://127.0.0.1:8000/api/auth/check-email/',
             { email: email }
         );
-        console.log(response.data)
         setEmailAvailable(response.data.available);
         return response.data.available;
     } catch (error) {
@@ -37,7 +36,6 @@ export default function EmailInput(
         setEmail(value);
         
         if (value && value.includes('@gmail.com')) {
-            console.log(emailAvailable)
             setTimeout(() => checkEmailAvailability({
                 email,
                 setEmailAvailable

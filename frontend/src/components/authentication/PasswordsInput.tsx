@@ -17,7 +17,6 @@ export default function PasswordsInput(
     const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setErrorPassword('');
         const value = e.target.value;
-        console.log(rejex.test(value));
         if(rejex.test(value)){
             setErrorPassword('');
         } else {
@@ -29,7 +28,6 @@ export default function PasswordsInput(
     const handleConfirmPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setErrorPassword('');
         const value = e.target.value;
-        console.log(value);
         setConfirmPassword(value);
     };
     return(

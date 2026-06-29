@@ -63,7 +63,22 @@ class AttemptSerializer(serializers.ModelSerializer):
 
 
 class LessonProgressSerializer(serializers.ModelSerializer):
+    lesson_name = serializers.CharField(source='lesson.name', read_only=True)
+    lesson_level_display = serializers.CharField(source='lesson.get_level_display', read_only=True)
+    course_title = serializers.CharField(source='lesson.course.title', read_only=True)
+
     class Meta:
         model = UserLessonProgress
-        fields = "__all__"
+        fields = [
+            'id',
+            'user',
+            'lesson',
+            'lesson_name',
+            'lesson_level_display',
+            'course_title',
+            'progress_percent',
+            'will_study_later',
+            'started_at',
+            'completed_at',
+        ]
         read_only_fields = ("user", "progress_percent")

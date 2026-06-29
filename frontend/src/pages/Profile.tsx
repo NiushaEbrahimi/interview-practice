@@ -51,7 +51,6 @@ export default function Profile(){
             try{
                 const studyLaterData = await authFetch(`http://127.0.0.1:8000/api/attempts/?come_back_again=true`)
                 setStudyLaterQuestions(studyLaterData)
-                console.log(`study later : ${studyLaterData.length}`)
             }catch(err){
                 console.log(`error is : ${err}`)
             }
