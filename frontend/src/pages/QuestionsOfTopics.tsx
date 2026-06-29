@@ -6,12 +6,15 @@ import LessonCard from "../components/Questions/LessonCard";
 import CourseCard from "../components/Questions/CourseCard";
 import type { CourseType, LessonType } from "../assets/types";
 
+
 export default function Questions() {
   const { user } = useAuth();
   const authFetch = useAuthFetch();
   
   const [courses, setCourses] = useState<CourseType[]>([]);
   const [lessons, setLessons] = useState<LessonType[]>([]);
+  const [showCourses, setShowCourses] = useState(true);
+  const [showLessons, setShowLessons] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -34,6 +37,32 @@ export default function Questions() {
     fetchData();
   }, [authFetch]);
 
+  const toggleFilter = (filter: 'course' | 'lesson') => {
+    if (filter === 'course') {
+      if (showCourses && !showLessons) {
+        return;
+      }
+      setShowCourses((current) => {
+        const next = !current;
+        if (!next && !showLessons) {
+          return current;
+        }
+        return next;
+      });
+    } else {
+      if (showLessons && !showCourses) {
+        return;
+      }
+      setShowLessons((current) => {
+        const next = !current;
+        if (!next && !showCourses) {
+          return current;
+        }
+        return next;
+      });
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 flex py-6 px-15 ">      
       <div className="flex-1 flex flex-col bg-gray-200 rounded-2xl overflow-hidden">
@@ -47,9 +76,52 @@ export default function Questions() {
           )}
 
           <section>
-            <h1 className="text-gray-700 text-2xl font-medium p-3">Recent Searches</h1>
+            <div className="flex justify-between">
+              <h1 className="text-gray-700 text-2xl font-medium p-3">Recent Searches</h1>
+              <div className="flex gap-2 bg-gray-300 p-1 rounded-xl">
+              <button
+                onClick={() => toggleFilter("course")}
+                className={`
+                  px-4 py-1.5 rounded-lg text-sm font-medium transition-all
+                  flex items-center gap-2
+                  ${showCourses
+                    ? "bg-white text-gray-900 shadow"
+                    : "text-gray-600 hover:text-gray-900"
+                  }
+                `}
+              >
+                <span
+                  className={`
+                    w-2 h-2 rounded-full
+                    ${showCourses ? "bg-blue-500" : "bg-gray-400"}
+                  `}
+                />
+                Courses
+              </button>
+
+              <button
+                onClick={() => toggleFilter("lesson")}
+                className={`
+                  px-4 py-1.5 rounded-lg text-sm font-medium transition-all
+                  flex items-center gap-2
+                  ${showLessons
+                    ? "bg-white text-gray-900 shadow"
+                    : "text-gray-600 hover:text-gray-900"
+                  }
+                `}
+              >
+                <span
+                  className={`
+                    w-2 h-2 rounded-full
+                    ${showLessons ? "bg-green-500" : "bg-gray-400"}
+                  `}
+                />
+                Lessons
+              </button>
+            </div>
+            </div>
             <div className="flex flex-wrap justify-center gap-8 p-2">
-              {courses.map((course) => (
+              { showCourses && courses.map((course) => (
                 <CourseCard 
                   key={course.id} 
                   title={course.title} 
@@ -57,7 +129,7 @@ export default function Questions() {
                   started={course.started}
                 />
               ))}
-              {lessons.map((lesson) => (
+              {showLessons && lessons.map((lesson) => (
                 <LessonCard 
                   key={lesson.id} 
                   cardLable={lesson.course} 
