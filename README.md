@@ -13,8 +13,9 @@ A React project built to explore and practice both frontend and backend, mostly 
 
 ## Demo
 
-Live demo:
-👁️ ... coming up
+Live demo: [https://interview-practice.vercel.app](https://interview-practice.vercel.app)
+
+> The demo runs in **mock mode** — no backend required. All data is simulated locally in your browser.
 
 ---
 
@@ -128,12 +129,23 @@ python manage.py runserver
 
 The backend API will be available on the configured Django development port.
 
+### Demo Mode
+
+When the backend is not available (e.g. on Vercel), the frontend automatically activates **demo mode** with simulated data. No configuration needed — just deploy the `frontend/` directory to Vercel:
+
+1. Connect your GitHub repo to Vercel
+2. Set the **Root Directory** to `frontend`
+3. Framework: Vite (auto-detected)
+4. Deploy
+
+The app will show a "Demo Mode" banner and all features will work with mock data.
+
 ---
 
 ## Roadmap
 
-* [ ] mock data for vercel and preview
-* [ ] deployment
+* [x] mock data for vercel and preview
+* [x] deployment
 * [ ] improving responsive
 
 ---

@@ -15,7 +15,7 @@ export default function SignUp(){
     const navigate = useNavigate();
     const [buttonContent, setButtonContent] = useState('Create Account');
     
-    const [emailAvailable, setEmailAvailable] = useState(null);
+    const [emailAvailable, setEmailAvailable] = useState<boolean | null>(null);
     const [email, setEmail] = useState('');
 
     const [password, setPassword] = useState('');
