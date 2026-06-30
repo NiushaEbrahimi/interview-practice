@@ -35,13 +35,15 @@ export async function checkBackend(): Promise<boolean> {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 3000);
 
-    const res = await fetch(`${API_BASE}/api/courses/`, {
+    await fetch(`${API_BASE}/api/courses/`, {
       method: "GET",
       signal: controller.signal,
     });
     clearTimeout(timeout);
-    return res.ok;
+    // Any response (even 401/403) means the backend is running
+    return true;
   } catch {
+    // Network error means the backend is unreachable
     return false;
   }
 }
