@@ -9,6 +9,7 @@ import { Splide, SplideSlide } from '@splidejs/react-splide';
 import type { paramsURLType, QuestionType } from "../assets/types";
 import { CheckSVGIcon } from "../components/Icons/CheckSVGIcon";
 import { SquareSVGIcon } from "../components/Icons/SquareSVGIcon.tsx";
+import type { Lesson } from "../types/types.ts";
 
 export default function Lesson(){
     const { user } = useAuth();
@@ -19,26 +20,13 @@ export default function Lesson(){
     const paramsURL = useParams<paramsURLType>();
 
     const [zoomIn , setZoomIn ] = useState(false);
-    const [square, setSquare] = useState(true);
+    const [willStudyLater, setWillStudyLater] = useState(false);
     
     useEffect(()=>{
         const fetchData = async () =>{
             try{
                 const questionsData = await authFetch(`http://127.0.0.1:8000/api/questions/?lesson=${paramsURL.lesson}`);
                 setQuestions(questionsData);
-                
-                const newRes = await authFetch(`http://127.0.0.1:8000/api/lessons/`)
-                const lessonId = newRes.find((lesson: { name: string | undefined; }) => lesson.name === paramsURL.lesson).id;
-                const responseStudyLater = await authFetch(`http://127.0.0.1:8000/api/progress/`, {
-                    method: "POST",
-                    body: JSON.stringify({
-                        lesson: lessonId,
-                        will_study_later: !square,
-                        
-                    })
-                });
-                console.log(responseStudyLater)
-                
 
             }catch(err){
                 console.log(err);
@@ -46,6 +34,31 @@ export default function Lesson(){
         };
         fetchData();
     },[])
+
+    const toggleStudyLater = async () => {
+        try{
+            setZoomIn((z) => !z);
+            // find lesson id by name (limit request to lessons list and find match)
+            const lessons = await authFetch(`http://127.0.0.1:8000/api/lessons/?course=${paramsURL.label}`);
+            const lesson = lessons.find((l: Readonly<Lesson>) => l.name === paramsURL.lesson);
+            if (!lesson) return;
+            const lessonId = lesson.id;
+
+            const payload = {
+                lesson: lessonId,
+                will_study_later: !willStudyLater,
+            };
+
+            await authFetch(`http://127.0.0.1:8000/api/progress/`, {
+                method: "POST",
+                body: JSON.stringify(payload),
+            });
+
+            setWillStudyLater((s) => !s);
+        }catch(err){
+            console.log(err);
+        }
+    }
 
     return(
         <div className="min-h-screen bg-gray-100 flex py-6 px-15 ">      
@@ -57,22 +70,16 @@ export default function Lesson(){
             <main className={`flex-1 py-6 px-10 space-y-6 flex flex-col text-gray-900`}>
                 <section className="flex justify-between">
                     <div className="flex items-end">
-                        <h3 className="text-5xl">{paramsURL.lesson}</h3>
-                        <p className="text-2xl ml-4">{paramsURL.level}</p>
+                        <h3 className="text-3xl text-md-5xl">{paramsURL.lesson}</h3>
+                        <p className="text-xl text-md-2xl ml-2 ml-md-4">{paramsURL.level}</p>
                     </div>
                     <button 
                         className={`bg-blue-200 rounded-2xl flex justify-center items-center border-2 border-blue-50 px-3 shadow ${css.svgParent}`}
-                        onClick={()=>{ 
-                            setZoomIn(!zoomIn);
-                            setTimeout(() => {
-                                setSquare(prev => !prev);
-                            }, 300);
-                        }}
+                        onClick={toggleStudyLater}
                     >
-                        <span>Study Later</span>
+                        <span className="mr-2">Study Later</span>
                         <span>
-                            {square ? <SquareSVGIcon zoomIn={zoomIn} />
-                            : <CheckSVGIcon zoomIn={zoomIn}/>}
+                            {!willStudyLater ? <SquareSVGIcon zoomIn={zoomIn} /> : <CheckSVGIcon zoomIn={zoomIn}/>} 
                         </span>
                     </button>
                 </section>

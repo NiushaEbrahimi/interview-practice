@@ -3,14 +3,14 @@ import { Link } from "react-router-dom";
 
 import progressBar from "../../assets/css/ProgressBar.module.css"
 
-export default function LessonCard({cardLable, cardCourseName, cardLevel, cardLesson, cardQuestionsTotal, cardQuestionsAnswered, started} 
-    : {cardLable : string, cardCourseName: string, cardLevel: string, cardLesson: string, cardQuestionsTotal: number, cardQuestionsAnswered:number, started: boolean}){
+export default function LessonCard({cardLable, cardCourseName, cardLevel, cardLesson, cardQuestionsTotal, cardQuestionsAnswered, started, width, height} 
+    : {cardLable : string, cardCourseName: string, cardLevel: string, cardLesson: string, cardQuestionsTotal: number, cardQuestionsAnswered:number, started: boolean, width:string, height: string}){
     
     const progress_percent = (cardQuestionsAnswered/cardQuestionsTotal)*100;
 
     return(
         <Link to={`/courses/${cardLable}/${cardLevel}/${cardLesson}`}>
-            <div className="rounded bg-white w-50 h-90 text-center text-gray-500 p-4 shadow cursor-pointer grid grid-rows-4-2-1-2-1">
+            <div className={`rounded bg-white ${width} ${height} text-center text-gray-500 p-4 shadow cursor-pointer grid grid-rows-4-2-1-2-1`}>
                 <div className="flex justify-center items-center" style={{width : "100%"}}>
                     <img src={returnImageSrc({name: cardLable})} className="rounded max-h-40 mb-3"/>
                 </div>

@@ -14,7 +14,7 @@ export default function Questions() {
   const [courses, setCourses] = useState<CourseType[]>([]);
   const [lessons, setLessons] = useState<LessonType[]>([]);
   const [showCourses, setShowCourses] = useState(true);
-  const [showLessons, setShowLessons] = useState(true);
+  const [showLessons, setShowLessons] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const [loading, setLoading] = useState(true);
@@ -148,6 +148,8 @@ export default function Questions() {
                   cardQuestionsTotal={lesson.questions_count}
                   cardQuestionsAnswered={lesson.questions_answered}
                   started={lesson.started}
+                  width="w-50"
+                  height="h-90"
                 />
               ))}
             </>

@@ -78,21 +78,26 @@ export default function Profile(){
         <div className="min-h-screen bg-gray-100 flex py-6 px-15 ">      
             <div className="flex-1 flex flex-col bg-gray-200 rounded-2xl overflow-hidden">
                 <Header username={username}/>
-                <main className={`flex-1 py-6 px-10 space-y-6 flex flex-row gap-4 ${positionsCSS.mainHeight}`}>
+                <main className={`flex-1 py-6 px-10 space-y-6 flex flex-col lg:flex-row gap-4 ${positionsCSS.mainHeight}`}>
                     <section className=" flex-1 m-0 justify-center bg-gray-300 rounded-2xl shadow py-2">
-                        <div className="flex justify-center items-center flex-col gap-4">
+                        <div className="flex lg:justify-center px-6 lg:px-0 items-center flex-row lg:flex-col gap-10 lg:gap-4">
                             <div className="relative">
-                                <img src={userProfileIMG} className="rounded-full"/>
+                                <img
+                                src={userProfileIMG}
+                                className="rounded-full object-cover w-40 h-40 lg:w-full lg:h-full"
+                                />
                                 <button className={`flex items-center gap-2 border-2 px-3 py-1 rounded-2xl text-gray-600 hover:border-transparent hover:bg-gray-600 hover:text-white cursor-pointer active:bg-gray-700 ${positionsCSS.editButton}`}>
                                     <EditIcon />edit
                                 </button>
                             </div>
                             <div className="flex gap-4 flex-col my-2">
-                                <h1 className="text-center text-gray-700 text-3xl font-medium">{username}</h1>
+                                <h1 className="text-gray-700 lg:text-3xl font-medium">{username}</h1>
                                 <p className="text-gray-700">Email: {userProfile?.email || user?.email}</p>
                                 <p className="text-gray-700">Experience Level:  {userExp.replace(userExp.charAt(0),userExp.charAt(0).toUpperCase()) }</p>
+                                <div>
+                                <button className="bg-red-500 py-2 px-3 rounded-2xl hover:bg-red-600 cursor-pointer" onClick={()=>{logout()}}>Log Out</button>
+                                </div>
                             </div>
-                            <button className="bg-red-500 py-2 px-3 rounded-2xl hover:bg-red-600 cursor-pointer" onClick={()=>{logout()}}>Log Out</button>
                         </div>
                     </section>
                     <section className="flex-2 bg-gray-500 rounded-2xl shadow py-2 px-4 overflow-y-scroll">

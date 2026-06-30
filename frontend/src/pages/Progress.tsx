@@ -3,6 +3,7 @@ import Header from "../components/Header";
 import { useAuth } from "../context/AuthContext";
 import { useAuthFetch } from "../hooks/useAuthFetch";
 import type { StatsType } from "../assets/types";
+import { useNavigate } from "react-router-dom";
 
 type LessonProgressType = {
   id: number;
@@ -17,6 +18,8 @@ type LessonProgressType = {
 const LEVELS = ["Easy", "Medium", "Hard"] as const;
 
 export default function Progress() {
+  const navigate = useNavigate();
+
   const { user } = useAuth();
   const authFetch = useAuthFetch();
   const [stats, setStats] = useState<StatsType | null>(null);
@@ -47,6 +50,13 @@ export default function Progress() {
   }, []);
 
   const progressByLevel = useMemo(() => {
+    if (stats?.levels?.length) {
+      return stats.levels.map((item) => ({
+        level: item.level_display,
+        percent: item.percent,
+      }));
+    }
+
     return LEVELS.map((level) => {
       const itemsAtLevel = progressItems.filter(
         (item) => item.lesson_level_display === level
@@ -60,9 +70,16 @@ export default function Progress() {
 
       return { level, percent };
     });
-  }, [progressItems]);
+  }, [progressItems, stats]);
 
   const progressByTopic = useMemo(() => {
+    if (stats?.topics?.length) {
+      return stats.topics.slice(0, 3).map((item) => ({
+        topic: item.topic,
+        percent: item.percent,
+      }));
+    }
+
     const topicMap = progressItems.reduce<Record<string, { total: number; count: number }>>(
       (acc, item) => {
         const topic = item.course_title || item.lesson_name || "Uncategorized";
@@ -83,7 +100,7 @@ export default function Progress() {
       }))
       .sort((a, b) => b.percent - a.percent)
       .slice(0, 3);
-  }, [progressItems]);
+  }, [progressItems, stats]);
 
   const needsReview = useMemo(
     () =>
@@ -93,6 +110,7 @@ export default function Progress() {
         .slice(0, 3),
     [progressItems]
   );
+  console.log(stats)
 
   return (
     <div className="min-h-screen bg-gray-100 flex py-6 px-15 ">      
@@ -115,7 +133,7 @@ export default function Progress() {
                 <div className="rounded-3xl bg-gray-50 p-4">
                   <p className="text-sm text-gray-500">Average confidence</p>
                   <p className="mt-2 text-3xl font-semibold text-gray-900">
-                    {(stats?.accuracy_rate ?? 0) * 100}%
+                    {Math.round((stats?.accuracy_rate ?? 0)/5) * 100}%
                   </p>
                 </div>
                 <div className="rounded-3xl bg-gray-50 p-4">
@@ -134,7 +152,9 @@ export default function Progress() {
 
               {error ? (
                 <p className="mt-6 text-sm text-red-600">{error}</p>
-              ) : isLoading ? (
+              ) 
+              // TODO: add skeleton
+              : isLoading ? (
                 <p className="mt-6 text-sm text-gray-600">Loading progress data…</p>
               ) : (
                 <div className="mt-8 grid gap-6 sm:grid-cols-2">
@@ -202,7 +222,10 @@ export default function Progress() {
                               {item.course_title} · {item.lesson_level_display}
                             </p>
                           </div>
-                          <button className="inline-flex items-center justify-center rounded-full bg-blue-500 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-600">
+                          <button
+                            onClick={()=>navigate(`/courses/${item.course_title}/${item.lesson_level_display}/${item.lesson_name}`)}
+                            className="inline-flex items-center justify-center rounded-full bg-blue-500 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-600"
+                          >
                             Resume
                           </button>
                         </div>
