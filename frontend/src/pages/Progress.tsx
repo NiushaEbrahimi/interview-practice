@@ -4,6 +4,7 @@ import { useAuth } from "../context/AuthContext";
 import { useAuthFetch } from "../hooks/useAuthFetch";
 import type { StatsType } from "../assets/types";
 import { useNavigate } from "react-router-dom";
+import Skeleton from "../components/Skeleton";
 
 type LessonProgressType = {
   id: number;
@@ -151,10 +152,12 @@ export default function Progress() {
 
               {error ? (
                 <p className="mt-6 text-sm text-red-600">{error}</p>
-              ) 
-              // TODO: add skeleton
-              : isLoading ? (
-                <p className="mt-6 text-sm text-gray-600">Loading progress data…</p>
+              ) : isLoading ? (
+                <div className="mt-8 grid gap-6 sm:grid-cols-2">
+                  {Array.from({ length: 2 }).map((_, i) => (
+                    <Skeleton key={i} className="!w-full !h-48" />
+                  ))}
+                </div>
               ) : (
                 <div className="mt-8 grid gap-6 sm:grid-cols-2">
                   <div className="rounded-3xl bg-gray-50 p-5">
@@ -211,7 +214,11 @@ export default function Progress() {
                   <p className="text-sm text-gray-500">Lessons with lower progress percent</p>
                 </div>
                 <div className="space-y-4">
-                  {needsReview.length ? (
+                  {isLoading ? (
+                    Array.from({ length: 3 }).map((_, i) => (
+                      <Skeleton key={i} className="!w-full !h-24" />
+                    ))
+                  ) : needsReview.length ? (
                     needsReview.map((item) => (
                       <div key={item.id} className="rounded-3xl bg-gray-50 p-4">
                         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">

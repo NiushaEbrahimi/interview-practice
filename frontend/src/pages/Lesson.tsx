@@ -10,6 +10,7 @@ import type { paramsURLType, QuestionType } from "../assets/types";
 import { CheckSVGIcon } from "../components/Icons/CheckSVGIcon";
 import { SquareSVGIcon } from "../components/Icons/SquareSVGIcon.tsx";
 import type { Lesson } from "../types/types.ts";
+import Skeleton from "../components/Skeleton";
 
 export default function Lesson(){
     const { user } = useAuth();
@@ -18,6 +19,9 @@ export default function Lesson(){
     const [questions, setQuestions] = useState<QuestionType[]>([]);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const splideRef = useRef<any>(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const [lessonId, setLessonId] = useState<number | null>(null);
+    const [progressId, setProgressId] = useState<number | null>(null);
 
     const paramsURL = useParams<paramsURLType>();
     const [searchParams] = useSearchParams();
@@ -31,6 +35,20 @@ export default function Lesson(){
                 const questionsData = await authFetch(`http://127.0.0.1:8000/api/questions/?lesson=${paramsURL.lesson}`);
                 setQuestions(questionsData);
 
+                // Get lesson info and existing progress
+                const lessons = await authFetch(`http://127.0.0.1:8000/api/lessons/?course=${paramsURL.label}`);
+                const lesson = lessons.find((l: Readonly<Lesson>) => l.name === paramsURL.lesson);
+                if (lesson) {
+                    setLessonId(lesson.id);
+                    
+                    // Check if progress record exists
+                    const progressList = await authFetch(`http://127.0.0.1:8000/api/progress/?lesson=${lesson.id}`);
+                    if (progressList.length > 0) {
+                        setProgressId(progressList[0].id);
+                        setWillStudyLater(progressList[0].will_study_later);
+                    }
+                }
+
                 const slideIndex = searchParams.get('q');
                 if (slideIndex && splideRef.current) {
                     setTimeout(() => {
@@ -40,6 +58,8 @@ export default function Lesson(){
 
             }catch(err){
                 console.log(err);
+            } finally {
+                setIsLoading(false);
             }
         };
         fetchData();
@@ -49,23 +69,32 @@ export default function Lesson(){
     const toggleStudyLater = async () => {
         try{
             setZoomIn((z) => !z);
-            // find lesson id by name (limit request to lessons list and find match)
-            const lessons = await authFetch(`http://127.0.0.1:8000/api/lessons/?course=${paramsURL.label}`);
-            const lesson = lessons.find((l: Readonly<Lesson>) => l.name === paramsURL.lesson);
-            if (!lesson) return;
-            const lessonId = lesson.id;
+            if (!lessonId) return;
 
+            const newValue = !willStudyLater;
             const payload = {
                 lesson: lessonId,
-                will_study_later: !willStudyLater,
+                will_study_later: newValue,
             };
 
-            await authFetch(`http://127.0.0.1:8000/api/progress/`, {
-                method: "POST",
-                body: JSON.stringify(payload),
-            });
+            if (progressId) {
+                // Update existing record
+                await authFetch(`http://127.0.0.1:8000/api/progress/${progressId}/`, {
+                    method: "PATCH",
+                    body: JSON.stringify({ will_study_later: newValue }),
+                });
+            } else {
+                // Create new record
+                const result = await authFetch(`http://127.0.0.1:8000/api/progress/`, {
+                    method: "POST",
+                    body: JSON.stringify(payload),
+                });
+                if (result?.id) {
+                    setProgressId(result.id);
+                }
+            }
 
-            setWillStudyLater((s) => !s);
+            setWillStudyLater(newValue);
         }catch(err){
             console.log(err);
         }
@@ -94,11 +123,15 @@ export default function Lesson(){
                         </span>
                     </button>
                 </section>
-                <Splide ref={splideRef}>
-                {questions && questions.map((question, index) => (
-                    <SplideSlide key={index}><Question key={index} id={question.id} question={question.question} answer={question.correct_answer}/></SplideSlide>
-                ))}
-                </Splide>
+                {isLoading ? (
+                    <Skeleton className="!w-full !h-96" />
+                ) : (
+                    <Splide ref={splideRef}>
+                    {questions && questions.map((question, index) => (
+                        <SplideSlide key={index}><Question key={index} id={question.id} question={question.question} answer={question.correct_answer}/></SplideSlide>
+                    ))}
+                    </Splide>
+                )}
             </main>
             </div>
         </div>

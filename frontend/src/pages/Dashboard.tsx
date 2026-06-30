@@ -6,6 +6,7 @@ import type { StatsType } from "../assets/types";
 import { useNavigate } from "react-router-dom";
 import type { Lesson } from "../types/types";
 import LessonCard from "../components/Questions/LessonCard";
+import Skeleton from "../components/Skeleton";
 
 type DashboardProgressItem = {
   id: number;
@@ -26,6 +27,7 @@ export default function Dashboard(){
   const [ stats , setStats ] = useState<StatsType | null>(null);
   const [ lessons , setLessons ] = useState<Lesson[]>([]);
   const [ progressItems , setProgressItems ] = useState<DashboardProgressItem[]>([]);
+  const [ isLoading , setIsLoading ] = useState(true);
 
   const formatValue = (key: string, value: number) => {
     if (key === "accuracy_rate") {
@@ -48,6 +50,8 @@ export default function Dashboard(){
         setLessons(lessonsData)
       }catch(err){
         console.log(err)
+      } finally {
+        setIsLoading(false)
       }
     }
     fetchData()
@@ -82,24 +86,34 @@ export default function Dashboard(){
           <h1 className="text-gray-700 text-2xl font-medium">Welcome Back, {user?.profile.full_name}</h1>
 
           <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {stats && Object.entries(stats).map(([key, value]) => {
-              if( key==="questions_practiced" || key==="accuracy_rate" || key==="days_streak" || key==="courses"){
-              return (
-                <div key={key} className="bg-white rounded-3xl shadow-sm p-5">
-                  <p className="text-sm text-gray-500">{key.replaceAll("_", " ")}</p>
-                  <p className="mt-3 text-3xl font-semibold text-gray-900">
-                    {formatValue(key, Number(value))}
-                  </p>
-                </div>
-              );
-            }
-            })}
+            {isLoading ? (
+              Array.from({ length: 4 }).map((_, i) => (
+                <Skeleton key={i} className="!w-full !h-28" />
+              ))
+            ) : stats ? (
+              Object.entries(stats).map(([key, value]) => {
+                if( key==="questions_practiced" || key==="accuracy_rate" || key==="days_streak" || key==="courses"){
+                return (
+                  <div key={key} className="bg-white rounded-3xl shadow-sm p-5">
+                    <p className="text-sm text-gray-500">{key.replaceAll("_", " ")}</p>
+                    <p className="mt-3 text-3xl font-semibold text-gray-900">
+                      {formatValue(key, Number(value))}
+                    </p>
+                  </div>
+                );
+              }
+              })
+            ) : null}
           </section>
           <div className="grid grid-cols-1 md:grid-cols-2 w-full gap-4">
             <section className="flex-1 rounded-3xl bg-white p-5 shadow-sm">
               <h2 className="text-gray-700 text-xl font-semibold mb-4">Continue Practicing</h2>
               <div className="space-y-4">
-                {continuePracticing.length ? (
+                {isLoading ? (
+                  Array.from({ length: 3 }).map((_, i) => (
+                    <Skeleton key={i} className="!w-full !h-24" />
+                  ))
+                ) : continuePracticing.length ? (
                   continuePracticing.map((item) => (
                     <div key={item.id} className="rounded-3xl bg-gray-50 p-4">
                       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -139,7 +153,11 @@ export default function Dashboard(){
             <section className="flex-1 rounded-3xl bg-white p-5 shadow-sm">
               <h2 className="text-gray-700 text-xl font-semibold mb-4">Explore More</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 rounded-3xl bg-gray-50 p-4">
-                {exploreMore.length ? (
+                {isLoading ? (
+                  Array.from({ length: 2 }).map((_, i) => (
+                    <Skeleton key={i} className="!w-full !h-40" />
+                  ))
+                ) : exploreMore.length ? (
                   exploreMore.map((item) => (
                     <LessonCard
                       key={item.id}

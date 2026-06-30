@@ -1,17 +1,21 @@
 import Header from "../components/Header"
-import {useNavigate, useParams } from "react-router-dom"
+import { useParams } from "react-router-dom"
 import Dropdown from "../components/Courses/Dropdown";
 import BackIcon from "../components/Icons/BackIcon";
 import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useAuthFetch } from "../hooks/useAuthFetch";
 import type { LessonType, paramsURLType } from "../assets/types";
+import Skeleton from "../components/Skeleton";
+import LessonCard from "../components/Questions/LessonCard";
+import { useNavigate } from "react-router-dom";
 
 export default function Course(){
     const { user } = useAuth();
     const authFetch = useAuthFetch();
     
     const [lessons, setLessons] = useState<LessonType[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
 
     const paramsURL = useParams<paramsURLType>();
     const navigate = useNavigate();
@@ -29,14 +33,13 @@ export default function Course(){
                 }
             }catch(err){
                 console.log(err)
+            } finally {
+                setIsLoading(false)
             }
         }
         fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[paramsURL])
-    // TODO: get it from api based on the paramsURL
-    // TODO: i think it has to be like :
-    // if there is no level in paramsURL -> get all lessons of that course
-    // if there is level in paramsURL -> get lessons of that course with that level
 
 
     return(
@@ -62,29 +65,23 @@ export default function Course(){
                     </div>
                 </section>
                 <section className="grid gap-7 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                    {lessons && lessons.map((e , index)=>(
-                        <div 
-                            className="text-gray-700 bg-white grid grid-rows-[3fr_20px] px-2 py-3 rounded-2xl shadow-md gap-3 min-w-45 cursor-pointer" 
-                            key={index}
-                            onClick={() => navigate(`/courses/${paramsURL.label}/${e.level === 1 ? "Easy" : e.level === 2 ? "Medium" : "Hard"}/${e.name}`)}
-                        >
-                            <div className="text-center ">
-                                <h3 className="text-md font-medium">{e.name}</h3>
-                            </div>
-                            <div className="flex flex-row text-center ">
-                                <p
-                                    className={
-                                        `text-sm flex-1 
-                                        ${e.level_display === "Hard" ? "text-red-600" : ""}
-                                        ${e.level_display === "Medium" ? "text-yellow-600" : ""}
-                                        ${e.level_display === "Easy" ? "text-green-600" : ""}
-                                        `}
-                                >
-                                    {e.level_display}
-                                </p>
-                                <p className="text-sm flex-1">spent: {e.questions_count}%</p>
-                            </div>
-                        </div>
+                    {isLoading ? (
+                        Array.from({ length: 8 }).map((_, i) => (
+                            <Skeleton key={i} className="!w-full !h-60" />
+                        ))
+                    ) : lessons && lessons.map((e) => (
+                        <LessonCard
+                            key={e.id}
+                            cardLable={paramsURL.label || ""}
+                            cardCourseName={e.name}
+                            cardLevel={e.level_display}
+                            cardLesson={e.name}
+                            cardQuestionsTotal={e.questions_count}
+                            cardQuestionsAnswered={e.questions_answered}
+                            started={e.started}
+                            width="w-full"
+                            height=""
+                        />
                     ))}
                 </section>
             </main>
