@@ -1,6 +1,6 @@
 from datetime import date, timedelta
 from django.db.models import Avg, Count, F, Q
-from .models import Lesson, Question, UserQuestionAttempt
+from .models import Lesson, Question, UserQuestionAttempt, UserLessonProgress
 
 def get_user_stats_by_level(user):
     level_map = {
@@ -74,6 +74,46 @@ def get_user_stats_by_topic(user):
     return sorted(topic_map.values(), key=lambda item: item["percent"], reverse=True)
 
 
+def get_study_later_lessons(user):
+    progress = UserLessonProgress.objects.filter(
+        user=user,
+        will_study_later=True
+    ).select_related('lesson', 'lesson__course')
+
+    return [
+        {
+            "id": p.lesson.id,
+            "name": p.lesson.name,
+            "level": p.lesson.level,
+            "level_display": p.lesson.get_level_display(),
+            "course": p.lesson.course.title,
+            "progress_percent": p.progress_percent,
+        }
+        for p in progress
+    ]
+
+
+def get_come_back_questions(user):
+    attempts = UserQuestionAttempt.objects.filter(
+        user=user,
+        come_back_again=True
+    ).select_related('question', 'question__lesson')
+
+    seen = set()
+    results = []
+    for a in attempts:
+        if a.question_id not in seen:
+            seen.add(a.question_id)
+            results.append({
+                "id": a.question.id,
+                "question": a.question.question,
+                "correct_answer": a.question.correct_answer,
+                "lesson": a.question.lesson.name,
+            })
+
+    return results
+
+
 def get_user_stats(user):
     attempts = UserQuestionAttempt.objects.filter(user=user)
     total = attempts.values("question").distinct().count()
@@ -106,6 +146,8 @@ def get_user_stats(user):
         "courses": courses_count,
         "levels": get_user_stats_by_level(user),
         "topics": get_user_stats_by_topic(user),
+        "study_later_lessons": get_study_later_lessons(user),
+        "come_back_questions": get_come_back_questions(user),
     }
 
 

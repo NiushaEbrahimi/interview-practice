@@ -8,12 +8,14 @@ interface FetchOptions extends RequestInit {
 
 export const useAuthFetch = () => {
   const navigate = useNavigate();
-  const { token, logout } = useContext(AuthContext);
+  const context = useContext(AuthContext);
+  const token = context?.token ?? null;
+  const refreshToken = context?.refreshToken ?? (async () => null);
 
   const authFetch = async (url: string, options: FetchOptions = {}) => {
-    const headers = {
+    const headers: Record<string, string> = {
       'Content-Type': 'application/json',
-      ...options.headers,
+      ...(options.headers as Record<string, string>),
     };
 
     if (token) {
@@ -21,14 +23,22 @@ export const useAuthFetch = () => {
     }
 
     try {
-      const response = await fetch(url, {
+      let response = await fetch(url, {
         ...options,
         headers,
       });
 
       if (response.status === 401) {
-        logout();
-        throw new Error('Unauthorized - Please login again');
+        const newToken = await refreshToken();
+        if (newToken) {
+          headers['Authorization'] = `Bearer ${newToken}`;
+          response = await fetch(url, {
+            ...options,
+            headers,
+          });
+        } else {
+          throw new Error('Session expired - Please login again');
+        }
       }
 
       if (response.status === 403) {

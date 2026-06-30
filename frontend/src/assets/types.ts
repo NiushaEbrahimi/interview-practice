@@ -43,6 +43,22 @@ export type StudyLater = {
     question : string,
 }
 
+export type StudyLaterLesson = {
+    id: number;
+    name: string;
+    level: number;
+    level_display: string;
+    course: string;
+    progress_percent: number;
+}
+
+export type ComeBackQuestion = {
+    id: number;
+    question: string;
+    correct_answer: string;
+    lesson: string;
+}
+
 export type LevelStatsType = {
   level: number;
   level_display: "Easy" | "Medium" | "Hard";
@@ -65,6 +81,8 @@ export type StatsType = {
   courses: number;
   levels: LevelStatsType[];
   topics: TopicStatsType[];
+  study_later_lessons: StudyLaterLesson[];
+  come_back_questions: ComeBackQuestion[];
 };
 
 export type QuestionType = {

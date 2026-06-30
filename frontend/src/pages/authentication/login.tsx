@@ -32,9 +32,9 @@ export default function Login() {
 
       const data = await response.json();
       
-      if (data.access && data.user) {
+      if (data.access && data.refresh && data.user) {
         
-        login(data.access, data.user);
+        login(data.access, data.refresh, data.user);
         
         navigate('/', { replace: true });
       } else {
