@@ -28,7 +28,6 @@ export default function Dashboard(){
   const [ progressItems , setProgressItems ] = useState<DashboardProgressItem[]>([]);
 
   const formatValue = (key: string, value: number) => {
-    console.log(value)
     if (key === "accuracy_rate") {
       return `${(value/5 * 100).toFixed(1)}%`
     }
@@ -74,8 +73,6 @@ export default function Dashboard(){
       .slice(0, 2);
   }, [lessons, progressItems]);
 
-  console.log(progressItems)
-
   return (
     <div className="min-h-screen bg-gray-100 flex py-6 px-15 ">      
       <div className="flex-1 flex flex-col bg-gray-200 rounded-2xl overflow-hidden">
@@ -86,8 +83,7 @@ export default function Dashboard(){
 
           <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {stats && Object.entries(stats).map(([key, value]) => {
-              if (key === "levels" || key === "topics") return null;
-
+              if( key==="questions_practiced" || key==="accuracy_rate" || key==="days_streak" || key==="courses"){
               return (
                 <div key={key} className="bg-white rounded-3xl shadow-sm p-5">
                   <p className="text-sm text-gray-500">{key.replaceAll("_", " ")}</p>
@@ -96,6 +92,7 @@ export default function Dashboard(){
                   </p>
                 </div>
               );
+            }
             })}
           </section>
           <div className="grid grid-cols-1 md:grid-cols-2 w-full gap-4">

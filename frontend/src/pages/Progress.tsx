@@ -105,12 +105,11 @@ export default function Progress() {
   const needsReview = useMemo(
     () =>
       progressItems
-        .filter((item) => item.progress_percent < 60)
+        .filter((item) => item.progress_percent > 0 && item.progress_percent < 100)
         .sort((a, b) => a.progress_percent - b.progress_percent)
         .slice(0, 3),
     [progressItems]
   );
-  console.log(stats)
 
   return (
     <div className="min-h-screen bg-gray-100 flex py-6 px-15 ">      

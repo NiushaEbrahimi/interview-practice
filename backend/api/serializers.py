@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from django.db.models import Count
 from .models import Course, Lesson, Question, UserQuestionAttempt, UserLessonProgress
 
 
@@ -66,6 +67,7 @@ class LessonProgressSerializer(serializers.ModelSerializer):
     lesson_name = serializers.CharField(source='lesson.name', read_only=True)
     lesson_level_display = serializers.CharField(source='lesson.get_level_display', read_only=True)
     course_title = serializers.CharField(source='lesson.course.title', read_only=True)
+    progress_percent = serializers.SerializerMethodField()
 
     class Meta:
         model = UserLessonProgress
@@ -81,4 +83,14 @@ class LessonProgressSerializer(serializers.ModelSerializer):
             'started_at',
             'completed_at',
         ]
-        read_only_fields = ("user", "progress_percent")
+        read_only_fields = ("user",)
+
+    def get_progress_percent(self, obj):
+        total = obj.lesson.questions.count()
+        if total == 0:
+            return 0
+        answered = UserQuestionAttempt.objects.filter(
+            user=obj.user,
+            question__lesson=obj.lesson
+        ).values('question').distinct().count()
+        return round((answered / total) * 100)

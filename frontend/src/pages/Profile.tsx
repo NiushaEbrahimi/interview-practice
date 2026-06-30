@@ -4,10 +4,10 @@ import positionsCSS from "../assets/css/positionsCSS.module.css"
 import CourseCard from "../components/Profile/CourseCard"
 import { useEffect, useState } from "react"
 import axios from "axios"
-import { Link, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { useAuth } from "../context/AuthContext"
 import { useAuthFetch } from "../hooks/useAuthFetch"
-import type { UserProfile, StatsType } from "../assets/types"
+import type { UserProfile, Course, StudyLater } from "../assets/types"
 import { EditIcon } from "../components/Icons/EditIcon"
 
 export default function Profile(){
@@ -15,7 +15,7 @@ export default function Profile(){
     const { user, token, logout } = useAuth();
     
     const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
-    const [stats, setStats] = useState<StatsType | null>(null);
+    const [studyLaterQuestions, setStudyLaterQuestions] = useState<StudyLater[]>()
 
     const authFetch = useAuthFetch()
 
@@ -28,6 +28,7 @@ export default function Profile(){
 
         const fetchProfile = async () => {
             try {
+                // TODO: get this with useAuthFetch in the hooks
                 const response = await axios.get('http://127.0.0.1:8000/api/auth/profile/', {
                     headers: {
                         'Authorization': `Bearer ${token}`,
@@ -46,20 +47,25 @@ export default function Profile(){
             }
         };
 
-        const fetchStats = async () => {
+        const fetchStudyLater = async () => {
             try{
-                const statsData = await authFetch(`http://127.0.0.1:8000/api/stats/me/`)
-                setStats(statsData)
+                const studyLaterData = await authFetch(`http://127.0.0.1:8000/api/attempts/?come_back_again=true`)
+                setStudyLaterQuestions(studyLaterData)
             }catch(err){
                 console.log(`error is : ${err}`)
             }
         }
         
         fetchProfile();
-        fetchStats();
+        fetchStudyLater();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [token, user, navigate, logout]);
+    
+    const courses: Course[] = [
+        {label: "JavaScript", courseName: "JavaScript Closures", level: "Medium", percent: 50},
+        {label: "Django", courseName: "SQL Queries", level: "Easy", percent: 20},
+    ]
     
     const username = userProfile?.profile.full_name || user?.profile?.full_name || "User";
     const userExp : string = String(userProfile?.profile.experience_level) || String(user?.profile?.experience_level)
@@ -96,57 +102,25 @@ export default function Profile(){
                     </section>
                     <section className="flex-2 bg-gray-500 rounded-2xl shadow py-2 px-4 overflow-y-scroll">
                         <h1 className="text-3xl font-medium p-4">Courses</h1>
-                        <div className="flex gap-4 px-8 flex-wrap">
-                            {stats?.topics && stats.topics.map((topic) => (
-                                <CourseCard 
-                                    key={topic.topic}
-                                    label={topic.topic} 
-                                    courseName={topic.topic} 
-                                    level={`${topic.answered}/${topic.total}`} 
-                                    percent={topic.percent}
-                                />
+                        <div className="flex gap-4 px-8">
+                            {courses && courses.map((e)=>(
+                                <CourseCard label={e.label} courseName={e.courseName} level={e.level} percent={e.percent}/>
                             ))}
                         </div>
                         <h1 className="text-3xl font-medium p-4">Will Study Later</h1>
-                        <div className="flex gap-4 px-8 flex-wrap">
-                            {stats?.study_later_lessons && stats.study_later_lessons.length > 0 ? (
-                                stats.study_later_lessons.map((lesson) => (
-                                    <Link 
-                                        key={lesson.id}
-                                        to={`/courses/${lesson.course}/${lesson.level_display}/${lesson.name}`}
-                                        className="rounded-2xl bg-blue-50 w-50 h-60 text-center text-gray-500 px-4 py-2 shadow cursor-pointer grid grid-rows-4-3-2-1-1 hover:bg-blue-100"
-                                    >
-                                        <div className="flex items-center justify-center">
-                                            <div className="w-16 h-16 rounded-full bg-blue-200 flex items-center justify-center text-2xl font-bold text-blue-600">
-                                                {lesson.name.charAt(0)}
-                                            </div>
-                                        </div>
-                                        <span className="flex items-center justify-center"><h3 className="text-gray-700 font-medium mb-2">{lesson.name}</h3></span>
-                                        <h5>{lesson.level_display} , {lesson.progress_percent}% </h5>
-                                        <p className="text-sm text-gray-400">{lesson.course}</p>
-                                    </Link>
-                                ))
-                            ) : (
-                                <p className="text-gray-300 px-4">No lessons saved for later</p>
-                            )}
+                        <div className="flex gap-4 px-8">
+                            {courses && courses.map((e)=>(
+                                <CourseCard label={e.label} courseName={e.courseName} level={e.level} percent={e.percent}/>
+                            ))}
                         </div>
                         <div className="bg-white text-black mt-10 mb-10 rounded-2xl" style={{height:"70%"}}>
-                            <h1 className="text-3xl font-medium p-4">Go Back to These Questions</h1>
+                            <h1 className="text-3xl font-medium p-4">Go back to these questions</h1>
                             <div className="flex gap-4 p-8 flex-col overflow-y-auto overflow-x-hidden" style={{maxHeight:"70%"}}>
-                                {stats?.come_back_questions && stats.come_back_questions.length > 0 ? (
-                                    stats.come_back_questions.map((q) => (
-                                        <Link 
-                                            key={q.id}
-                                            to={`/courses/${q.lesson}/${q.lesson}`}
-                                            className="bg-gray-100 border-2 border-black rounded-2xl p-4 cursor-pointer hover:bg-gray-300"
-                                        >
-                                            <p className="font-medium text-gray-700">{q.question}</p>
-                                            <p className="text-sm text-gray-500 mt-1">Lesson: {q.lesson}</p>
-                                        </Link>
-                                    ))
-                                ) : (
-                                    <p className="text-gray-400">No questions saved to come back to</p>
-                                )}
+                                {studyLaterQuestions && studyLaterQuestions.map((e)=>(
+                                    <div className=" bg-gray-100 border-2 border-black rounded-2xl p-2 cursor-pointer hover:bg-gray-300">
+                                        <p>{e.question}</p>
+                                    </div>
+                                ))}
                             </div>
                         </div>
                     </section>

@@ -57,6 +57,8 @@ export type ComeBackQuestion = {
     question: string;
     correct_answer: string;
     lesson: string;
+    level_display: string;
+    course: string;
 }
 
 export type LevelStatsType = {

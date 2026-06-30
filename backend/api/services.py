@@ -97,7 +97,7 @@ def get_come_back_questions(user):
     attempts = UserQuestionAttempt.objects.filter(
         user=user,
         come_back_again=True
-    ).select_related('question', 'question__lesson')
+    ).select_related('question', 'question__lesson', 'question__lesson__course')
 
     seen = set()
     results = []
@@ -109,6 +109,8 @@ def get_come_back_questions(user):
                 "question": a.question.question,
                 "correct_answer": a.question.correct_answer,
                 "lesson": a.question.lesson.name,
+                "level_display": a.question.lesson.get_level_display(),
+                "course": a.question.lesson.course.title,
             })
 
     return results

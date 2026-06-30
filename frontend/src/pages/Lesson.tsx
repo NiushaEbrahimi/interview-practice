@@ -1,8 +1,8 @@
 import Header from "../components/Header"
 import Question from "../components/Lesson/Question";
 import css from "../assets/css/svgTransitions.module.css"
-import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useState, useEffect, useRef } from "react";
+import { useParams, useSearchParams } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useAuthFetch } from "../hooks/useAuthFetch";
 import { Splide, SplideSlide } from '@splidejs/react-splide';
@@ -16,8 +16,11 @@ export default function Lesson(){
     const authFetch = useAuthFetch();
 
     const [questions, setQuestions] = useState<QuestionType[]>([]);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const splideRef = useRef<any>(null);
 
     const paramsURL = useParams<paramsURLType>();
+    const [searchParams] = useSearchParams();
 
     const [zoomIn , setZoomIn ] = useState(false);
     const [willStudyLater, setWillStudyLater] = useState(false);
@@ -28,11 +31,19 @@ export default function Lesson(){
                 const questionsData = await authFetch(`http://127.0.0.1:8000/api/questions/?lesson=${paramsURL.lesson}`);
                 setQuestions(questionsData);
 
+                const slideIndex = searchParams.get('q');
+                if (slideIndex && splideRef.current) {
+                    setTimeout(() => {
+                        splideRef.current?.go(parseInt(slideIndex, 10));
+                    }, 100);
+                }
+
             }catch(err){
                 console.log(err);
             }
         };
         fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
 
     const toggleStudyLater = async () => {
@@ -83,7 +94,7 @@ export default function Lesson(){
                         </span>
                     </button>
                 </section>
-                <Splide>
+                <Splide ref={splideRef}>
                 {questions && questions.map((question, index) => (
                     <SplideSlide key={index}><Question key={index} id={question.id} question={question.question} answer={question.correct_answer}/></SplideSlide>
                 ))}
