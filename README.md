@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  <img src="./src/assets/gif/demo.gif" alt="Project Demo" width="900">
+  <img src="./frontend/src/assets/demo.gif" alt="Project Demo" width="900">
 </p>
 
 
@@ -13,7 +13,7 @@ A React project built to explore and practice both frontend and backend, mostly 
 
 ## Demo
 
-Live demo: [https://interview-practice.vercel.app](https://interview-practice.vercel.app)
+Live demo: [https://interview-practice-demo-iota.vercel.app/](https://interview-practice-demo-iota.vercel.app/)
 
 > The demo runs in **mock mode** — no backend required. All data is simulated locally in your browser.
 
