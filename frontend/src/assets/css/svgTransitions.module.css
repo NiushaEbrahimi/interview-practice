@@ -1,25 +1,17 @@
-.zoomIn{
-    animation: zoom-in 0.5s forwards;
+.svgParent {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
-.zoomOut{
-    animation: zoom-out 0.5s forwards;
+.svgEnter {
+    opacity: 1;
+    transform: scale(1);
+    transition: opacity 300ms ease, transform 300ms ease;
 }
 
-@keyframes zoom-in {
-    0% {
-        transform: scale(1);
-        }
-    100% {
-        transform: scale(0);
-    }
-}
-
-@keyframes zoom-out {
-    0% {
-        transform: scale(0);
-        }
-    100% {
-        transform: scale(1);
-    }
+.svgExit {
+    opacity: 0;
+    transform: scale(0);
+    transition: opacity 300ms ease, transform 300ms ease;
 }

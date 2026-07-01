@@ -1,6 +1,5 @@
 import Header from "../components/Header"
 import Question from "../components/Lesson/Question";
-import css from "../assets/css/svgTransitions.module.css"
 import { useState, useEffect, useRef } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
@@ -26,7 +25,6 @@ export default function Lesson(){
     const paramsURL = useParams<paramsURLType>();
     const [searchParams] = useSearchParams();
 
-    const [zoomIn , setZoomIn ] = useState(false);
     const [willStudyLater, setWillStudyLater] = useState(false);
     
     useEffect(()=>{
@@ -68,7 +66,6 @@ export default function Lesson(){
 
     const toggleStudyLater = async () => {
         try{
-            setZoomIn((z) => !z);
             if (!lessonId) return;
 
             const newValue = !willStudyLater;
@@ -114,12 +111,13 @@ export default function Lesson(){
                         <p className="text-xl text-md-2xl ml-2 ml-md-4">{paramsURL.level}</p>
                     </div>
                     <button 
-                        className={`bg-blue-200 rounded-2xl flex justify-center items-center border-2 border-blue-50 px-3 shadow ${css.svgParent}`}
+                        className="bg-blue-200 rounded-2xl flex justify-center h-10 w-auto items-center border-2 border-blue-50 px-3 shadow gap-2"
                         onClick={toggleStudyLater}
                     >
-                        <span className="mr-2">Study Later</span>
-                        <span>
-                            {!willStudyLater ? <SquareSVGIcon zoomIn={zoomIn} /> : <CheckSVGIcon zoomIn={zoomIn}/>} 
+                        <span>Study Later</span>
+                        <span className="relative flex items-center justify-center" style={{width: 24, height: 24}}>
+                            <span className="absolute"><SquareSVGIcon isVisible={!willStudyLater} /></span>
+                            <span className="absolute"><CheckSVGIcon isVisible={willStudyLater} /></span>
                         </span>
                     </button>
                 </section>

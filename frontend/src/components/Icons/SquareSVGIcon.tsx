@@ -1,12 +1,12 @@
 import css from "../../assets/css/svgTransitions.module.css"
 
-export const SquareSVGIcon = ({zoomIn} : {zoomIn: boolean}) => {
+export const SquareSVGIcon = ({isVisible} : {isVisible: boolean}) => {
     return (
         <svg 
-            className={`ms-2 ${zoomIn ? css.zoomIn : "" }`}
+            className={isVisible ? css.svgEnter : css.svgExit}
             xmlns="http://www.w3.org/2000/svg" 
-            width="15"
-            height="20" 
+            width="24"
+            height="24" 
             fill="currentColor" 
             viewBox="0 0 16 16"
         >
