@@ -1,0 +1,13 @@
+.demoBadgeTooltip {
+    transition: opacity 200ms ease, visibility 200ms ease, transform 200ms ease;
+}
+.demoBadgeTooltipOff{
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(0);
+}
+.demoBadgeTooltipOn{
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0.5rem);
+}
