@@ -10,6 +10,7 @@ import { CheckSVGIcon } from "../components/Icons/CheckSVGIcon";
 import { SquareSVGIcon } from "../components/Icons/SquareSVGIcon.tsx";
 import type { Lesson } from "../types/types.ts";
 import Skeleton from "../components/Skeleton";
+import { usePageTitle } from "../hooks/usePageTitle";
 
 export default function Lesson(){
     const { user } = useAuth();
@@ -26,6 +27,8 @@ export default function Lesson(){
     const [searchParams] = useSearchParams();
 
     const [willStudyLater, setWillStudyLater] = useState(false);
+
+    usePageTitle(paramsURL.lesson ?? "Lesson");
     
     useEffect(()=>{
         const fetchData = async () =>{

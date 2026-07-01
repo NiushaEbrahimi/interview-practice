@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import type { Lesson } from "../types/types";
 import LessonCard from "../components/Questions/LessonCard";
 import Skeleton from "../components/Skeleton";
+import { usePageTitle } from "../hooks/usePageTitle";
 
 type DashboardProgressItem = {
   id: number;
@@ -21,6 +22,7 @@ type DashboardProgressItem = {
 };
 
 export default function Dashboard(){
+  usePageTitle("Dashboard");
   const { user } = useAuth();
   const authFetch = useAuthFetch();
   const navigate = useNavigate();

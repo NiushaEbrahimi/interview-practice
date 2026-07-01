@@ -6,8 +6,10 @@ import LessonCard from "../components/Questions/LessonCard";
 import CourseCard from "../components/Questions/CourseCard";
 import type { CourseType, LessonType } from "../assets/types";
 import Skeleton from "../components/Skeleton";
+import { usePageTitle } from "../hooks/usePageTitle";
 
 export default function Questions() {
+  usePageTitle("Courses");
   const { user } = useAuth();
   const authFetch = useAuthFetch();
   

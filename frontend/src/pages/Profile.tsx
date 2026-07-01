@@ -10,8 +10,10 @@ import { useAuthFetch } from "../hooks/useAuthFetch"
 import type { UserProfile, StatsType, ComeBackQuestion } from "../assets/types"
 import { EditIcon } from "../components/Icons/EditIcon"
 import Skeleton from "../components/Skeleton"
+import { usePageTitle } from "../hooks/usePageTitle"
 
 export default function Profile(){
+    usePageTitle("Profile");
     const navigate = useNavigate();
     const { user, token, logout } = useAuth();
     

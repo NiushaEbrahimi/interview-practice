@@ -9,6 +9,7 @@ import type { LessonType, paramsURLType } from "../assets/types";
 import Skeleton from "../components/Skeleton";
 import LessonCard from "../components/Questions/LessonCard";
 import { useNavigate } from "react-router-dom";
+import { usePageTitle } from "../hooks/usePageTitle";
 
 export default function Course(){
     const { user } = useAuth();
@@ -19,6 +20,8 @@ export default function Course(){
 
     const paramsURL = useParams<paramsURLType>();
     const navigate = useNavigate();
+
+    usePageTitle(paramsURL.label ?? "Course");
 
     useEffect(() => {
         const fetchData = async ()=> {

@@ -3,6 +3,7 @@ import css from "../../assets/css/signup.module.css"
 import { useState, type FormEventHandler } from 'react';
 import { checkEmailAvailability } from '../../components/authentication/EmailInput';
 import { useNavigate, Link } from 'react-router-dom';
+import { usePageTitle } from '../../hooks/usePageTitle';
 
 import EmailInput from '../../components/authentication/EmailInput';
 import PasswordsInput from '../../components/authentication/PasswordsInput';
@@ -12,6 +13,7 @@ import Experience from '../../components/authentication/ExxperienceInput';
 import axios from 'axios';
 
 export default function SignUp(){
+    usePageTitle("Sign Up");
     const navigate = useNavigate();
     const [buttonContent, setButtonContent] = useState('Create Account');
     

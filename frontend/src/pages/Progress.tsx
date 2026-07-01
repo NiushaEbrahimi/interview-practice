@@ -5,6 +5,7 @@ import { useAuthFetch } from "../hooks/useAuthFetch";
 import type { StatsType } from "../assets/types";
 import { useNavigate } from "react-router-dom";
 import Skeleton from "../components/Skeleton";
+import { usePageTitle } from "../hooks/usePageTitle";
 
 type LessonProgressType = {
   id: number;
@@ -19,6 +20,7 @@ type LessonProgressType = {
 const LEVELS = ["Easy", "Medium", "Hard"] as const;
 
 export default function Progress() {
+  usePageTitle("Progress");
   const navigate = useNavigate();
 
   const { user } = useAuth();
