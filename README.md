@@ -146,7 +146,8 @@ The app will show a "Demo Mode" banner and all features will work with mock data
 
 * [x] mock data for vercel and preview
 * [x] deployment
-* [ ] improving responsive
+* [x] improving responsive
+* [ ] adding AI SDK for checking the users answer and calculating the correctness
 
 ---
 
