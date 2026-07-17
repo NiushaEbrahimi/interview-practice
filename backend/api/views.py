@@ -3,7 +3,7 @@ from rest_framework import viewsets, permissions
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from .models import Course, Lesson, Question,  UserQuestionAttempt, UserLessonProgress
+from .models import Course, Lesson, Question, UserQuestionAttempt, UserLessonProgress
 from .serializers import CourseSerializer, LessonSerializer, QuestionSerializer, AttemptSerializer, LessonProgressSerializer
 from .services import get_user_stats
 
