@@ -1,7 +1,13 @@
+import json
+import os
+from dotenv import load_dotenv
+
 from rest_framework.viewsets import ReadOnlyModelViewSet
 from rest_framework import viewsets, permissions
-from rest_framework.decorators import action
+from rest_framework.decorators import action, api_view, permission_classes
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+from django.http import StreamingHttpResponse
 
 from .models import Course, Lesson, Question, UserQuestionAttempt, UserLessonProgress
 from .serializers import CourseSerializer, LessonSerializer, QuestionSerializer, AttemptSerializer, LessonProgressSerializer
@@ -11,6 +17,8 @@ from django.db.models import Count, Subquery, OuterRef, Value, Q
 from django.db.models.functions import Coalesce
 
 from django.contrib.auth import get_user_model
+
+load_dotenv()
 
 class CourseViewSet(ReadOnlyModelViewSet):
     queryset = Course.objects.all()
@@ -164,3 +172,46 @@ class StatsViewSet(viewsets.ViewSet):
     def me(self, request):
         stats = get_user_stats(request.user)
         return Response(stats)
+
+
+@api_view(["POST"])
+@permission_classes([IsAuthenticated])
+def score_answer(request):
+    from google import genai
+
+    data = request.data
+    question = data.get("question", "")
+    correct_answer = data.get("correctAnswer", "")
+    user_answer = data.get("userAnswer", "")
+
+    if not all([question, correct_answer, user_answer]):
+        return Response(
+            {"error": "question, correctAnswer, and userAnswer are required"},
+            status=400,
+        )
+
+    client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
+
+    def generate():
+        response = client.models.generate_content_stream(
+            model="gemini-2.0-flash",
+            contents=f"""You are an interview coach. Evaluate the user's answer to an interview question.
+
+Return ONLY a JSON object with two fields:
+- "score" (integer 1-5, where 1=poor, 5=excellent)
+- "feedback" (a short paragraph explaining the score)
+
+Do not include any other text, markdown, or code fences.
+
+Question: {question}
+
+Correct/Expected Answer: {correct_answer}
+
+User's Answer: {user_answer}""",
+        )
+
+        for chunk in response:
+            if chunk.text:
+                yield chunk.text
+
+    return StreamingHttpResponse(generate(), content_type="text/plain")

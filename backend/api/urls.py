@@ -1,5 +1,6 @@
+from django.urls import path
 from rest_framework.routers import DefaultRouter
-from .views import CourseViewSet, LessonViewSet, QuestionViewSet, AttemptViewSet, LessonProgressViewSet, StatsViewSet
+from .views import CourseViewSet, LessonViewSet, QuestionViewSet, AttemptViewSet, LessonProgressViewSet, StatsViewSet, score_answer
 
 router = DefaultRouter()
 
@@ -10,4 +11,6 @@ router.register("attempts", AttemptViewSet)
 router.register("progress", LessonProgressViewSet)
 router.register("stats", StatsViewSet, basename="stats")
 
-urlpatterns = router.urls
+urlpatterns = router.urls + [
+    path("score/", score_answer, name="score-answer"),
+]

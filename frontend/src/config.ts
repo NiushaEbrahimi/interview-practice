@@ -4,4 +4,4 @@
 
 const isProd = import.meta.env.PROD;
 
-export const AI_API_URL = isProd ? '/api/score' : 'http://localhost:3001/api/score';
+export const AI_API_URL = isProd ? '/api/score' : 'http://127.0.0.1:8000/api/score';

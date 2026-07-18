@@ -110,6 +110,7 @@ export default function Question({ id, question, answer }: { id: number; questio
     };
 
     const handleAIScore = async () => {
+        // TODO: should handle the edge cases of input, entering emojies or wrong lang 
         if (!userAnswer.trim()) return;
 
         setAiResult(null);
