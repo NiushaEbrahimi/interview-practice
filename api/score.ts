@@ -27,11 +27,11 @@ export default async function POST(request: Request) {
     );
   }
 
-  const { question, correctAnswer, userAnswer } = questionData;
+  const { question, userAnswer } = questionData;
 
-  if (!question || !correctAnswer || !userAnswer) {
+  if (!question || !userAnswer) {
     return new Response(
-      JSON.stringify({ error: 'question, correctAnswer, and userAnswer are required' }),
+      JSON.stringify({ error: 'question, and userAnswer are required' }),
       { status: 400, headers: { 'Content-Type': 'application/json' } }
     );
   }
@@ -41,8 +41,6 @@ export default async function POST(request: Request) {
     prompt: `You are an interview coach evaluating a candidate's answer.
 
 Question: ${question}
-
-Correct Answer: ${correctAnswer}
 
 Candidate's Answer: ${userAnswer}
 

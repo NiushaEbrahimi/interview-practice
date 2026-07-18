@@ -4,10 +4,11 @@ from dotenv import load_dotenv
 
 from rest_framework.viewsets import ReadOnlyModelViewSet
 from rest_framework import viewsets, permissions
-from rest_framework.decorators import action, api_view, permission_classes
+from rest_framework.decorators import action
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
-from django.http import StreamingHttpResponse
+from django.http import StreamingHttpResponse, JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
 
 from .models import Course, Lesson, Question, UserQuestionAttempt, UserLessonProgress
 from .serializers import CourseSerializer, LessonSerializer, QuestionSerializer, AttemptSerializer, LessonProgressSerializer
@@ -174,44 +175,104 @@ class StatsViewSet(viewsets.ViewSet):
         return Response(stats)
 
 
-@api_view(["POST"])
-@permission_classes([IsAuthenticated])
+@csrf_exempt
+@require_POST
 def score_answer(request):
+    print("[SCORE] Request received")
     from google import genai
+    from rest_framework_simplejwt.tokens import AccessToken
 
-    data = request.data
-    question = data.get("question", "")
-    correct_answer = data.get("correctAnswer", "")
-    user_answer = data.get("userAnswer", "")
+    # Manual auth check
+    auth_header = request.META.get("HTTP_AUTHORIZATION", "")
+    print(f"[SCORE] Auth header: {auth_header[:20]}..." if len(auth_header) > 20 else f"[SCORE] Auth header: {auth_header}")
+    if not auth_header.startswith("Bearer "):
+        print("[SCORE] No Bearer token found")
+        return JsonResponse({"error": "Authentication credentials were not provided"}, status=401)
 
-    if not all([question, correct_answer, user_answer]):
-        return Response(
-            {"error": "question, correctAnswer, and userAnswer are required"},
+    try:
+        token = auth_header.split(" ")[1]
+        access_token = AccessToken(token)
+        user_id = access_token["user_id"]
+        User = get_user_model()
+        user = User.objects.get(id=user_id)
+        print(f"[SCORE] Authenticated user: {user.email}")
+    except Exception as e:
+        print(f"[SCORE] Auth failed: {e}")
+        return JsonResponse({"error": "Invalid or expired token"}, status=401)
+
+    try:
+        data = json.loads(request.body)
+        print(f"[SCORE] Request body keys: {list(data.keys())}")
+    except json.JSONDecodeError as e:
+        print(f"[SCORE] Invalid JSON: {e}")
+        return JsonResponse({"error": "Invalid JSON"}, status=400)
+
+    # Parse useChat message format
+    try:
+        messages = data.get("messages", [])
+        print(f"[SCORE] Messages count: {len(messages)}")
+        last_user_msg = next(
+            (m for m in reversed(messages) if m.get("role") == "user"), None
+        )
+        text_content = last_user_msg["parts"][0]["text"]
+        print(f"[SCORE] Text content: {text_content[:100]}...")
+        payload = json.loads(text_content)
+        question = payload.get("question", "")
+        user_answer = payload.get("userAnswer", "")
+        print(f"[SCORE] Question: {question[:50]}...")
+        print(f"[SCORE] User answer: {user_answer[:50]}...")
+    except (StopIteration, IndexError, KeyError, json.JSONDecodeError) as e:
+        print(f"[SCORE] Failed to parse messages: {e}")
+        question = ""
+        user_answer = ""
+
+    if not all([question, user_answer]):
+        print("[SCORE] Missing question or userAnswer")
+        return JsonResponse(
+            {"error": "question and userAnswer are required"},
             status=400,
         )
 
-    client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
+    api_key = os.getenv("GEMINI_API_KEY")
+    print(f"[SCORE] API key present: {bool(api_key)}")
+
+    from openai import OpenAI
+    client = OpenAI(
+        base_url="http://localhost:11434/v1",
+        api_key="ollama",
+    )
+    print("[SCORE] Calling Ollama API...")
 
     def generate():
-        response = client.models.generate_content_stream(
-            model="gemini-2.0-flash",
-            contents=f"""You are an interview coach. Evaluate the user's answer to an interview question.
+        try:
+            response = client.chat.completions.create(
+                model="gemma2:2b",
+                stream=True,
+                messages=[
+                    {
+                        "role": "system",
+                        "content": (
+                            "You are an interview coach. Evaluate the user's answer to an interview question. "
+                            "Return ONLY a JSON object with two fields: "
+                            '"score" (integer 1-5, where 1=poor, 5=excellent) and '
+                            '"feedback" (a short paragraph explaining the score, what was good and what could be improved). '
+                            "Do not include any other text, markdown, or code fences."
+                        ),
+                    },
+                    {
+                        "role": "user",
+                        "content": f"Question: {question}\n\nUser's Answer: {user_answer}",
+                    },
+                ],
+            )
 
-Return ONLY a JSON object with two fields:
-- "score" (integer 1-5, where 1=poor, 5=excellent)
-- "feedback" (a short paragraph explaining the score)
-
-Do not include any other text, markdown, or code fences.
-
-Question: {question}
-
-Correct/Expected Answer: {correct_answer}
-
-User's Answer: {user_answer}""",
-        )
-
-        for chunk in response:
-            if chunk.text:
-                yield chunk.text
+            for chunk in response:
+                if chunk.choices[0].delta.content:
+                    print(f"[SCORE] Chunk: {chunk.choices[0].delta.content[:50]}...")
+                    yield chunk.choices[0].delta.content
+            print("[SCORE] Stream complete")
+        except Exception as e:
+            print(f"[SCORE] Ollama error: {e}")
+            yield json.dumps({"error": str(e)})
 
     return StreamingHttpResponse(generate(), content_type="text/plain")

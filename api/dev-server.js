@@ -27,9 +27,9 @@ app.post('/api/score', async (req, res) => {
     return res.status(400).json({ error: 'Invalid message format' });
   }
 
-  const { question, correctAnswer, userAnswer } = questionData;
+  const { question, userAnswer } = questionData;
 
-  if (!question || !correctAnswer || !userAnswer) {
+  if (!question || !userAnswer) {
     return res.status(400).json({ error: 'Missing required fields' });
   }
 
@@ -38,8 +38,6 @@ app.post('/api/score', async (req, res) => {
     prompt: `You are an interview coach evaluating a candidate's answer.
 
 Question: ${question}
-
-Correct Answer: ${correctAnswer}
 
 Candidate's Answer: ${userAnswer}
 
