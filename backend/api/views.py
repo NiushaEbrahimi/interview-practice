@@ -1,4 +1,6 @@
 import json
+import os
+from dotenv import load_dotenv
 
 from rest_framework.viewsets import ReadOnlyModelViewSet
 from rest_framework import viewsets, permissions
@@ -16,6 +18,8 @@ from django.db.models import Count, Subquery, OuterRef, Value, Q
 from django.db.models.functions import Coalesce
 
 from django.contrib.auth import get_user_model
+
+load_dotenv()
 
 class CourseViewSet(ReadOnlyModelViewSet):
     queryset = Course.objects.all()
@@ -229,11 +233,13 @@ def score_answer(request):
         )
 
     from openai import OpenAI
-    client = OpenAI(
-        base_url="http://localhost:11434/v1",
-        api_key="ollama",
-    )
-    print("[SCORE] Calling Ollama API...")
+
+    llm_base_url = os.getenv("LLM_BASE_URL", "http://localhost:11434/v1")
+    llm_api_key = os.getenv("LLM_API_KEY", "ollama")
+    llm_model = os.getenv("LLM_MODEL", "gemma2:2b")
+
+    client = OpenAI(base_url=llm_base_url, api_key=llm_api_key)
+    print(f"[SCORE] Using model: {llm_model} at {llm_base_url}")
 
     def generate():
         def sse(event_type, payload=None):
@@ -244,7 +250,7 @@ def score_answer(request):
 
         try:
             response = client.chat.completions.create(
-                model="gemma2:2b",
+                model=llm_model,
                 stream=True,
                 messages=[
                     {

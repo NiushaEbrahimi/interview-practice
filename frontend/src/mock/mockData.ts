@@ -238,3 +238,9 @@ export const DEMO_STATS = {
     { id: 11, question: "What is a closure?", correct_answer: "Function that remembers its outer scope", lesson: "Closure", level_display: "Medium", course: "JavaScript" },
   ],
 };
+
+export const DEMO_AI_SCORE = {
+  score: 4,
+  feedback: "Good answer! You demonstrated a solid understanding of the concept. Consider adding more specific examples to strengthen your explanation.",
+  answer: "A comprehensive answer would include a clear definition, practical examples, common use cases, and potential pitfalls to avoid.",
+};

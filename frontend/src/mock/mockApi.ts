@@ -8,6 +8,7 @@ import {
   DEMO_PROGRESS,
   DEMO_ATTEMPTS,
   DEMO_STATS,
+  DEMO_AI_SCORE,
 } from "./mockData";
 
 const API_BASE = "http://127.0.0.1:8000";
@@ -191,7 +192,47 @@ function handleMockFetch(url: string, options: RequestInit = {}): Response | nul
     return jsonResponse(newAttempt, 201);
   }
 
+  // AI Score (SSE streaming)
+  if (matchUrl(url, "/api/score/") && method === "POST") {
+    return mockAiScoreStream();
+  }
+
   return null;
+}
+
+function mockAiScoreStream(): Response {
+  const responseText = JSON.stringify(DEMO_AI_SCORE);
+  let sent = false;
+
+  const stream = new ReadableStream({
+    async pull(controller) {
+      if (sent) {
+        controller.close();
+        return;
+      }
+      const encoder = new TextEncoder();
+      const sse = (event: string) => encoder.encode(`data: ${event}\n\n`);
+      const lines = [
+        sse(JSON.stringify({ type: "start" })),
+        sse(JSON.stringify({ type: "start-step" })),
+        sse(JSON.stringify({ type: "text-start", id: "text-1" })),
+        sse(JSON.stringify({ type: "text-delta", id: "text-1", delta: responseText })),
+        sse(JSON.stringify({ type: "text-end", id: "text-1" })),
+        sse(JSON.stringify({ type: "finish-step" })),
+        sse(JSON.stringify({ type: "finish", finishReason: "stop" })),
+        encoder.encode("data: [DONE]\n\n"),
+      ];
+      for (const chunk of lines) {
+        controller.enqueue(chunk);
+      }
+      sent = true;
+    },
+  });
+
+  return new Response(stream, {
+    status: 200,
+    headers: { "Content-Type": "text/event-stream" },
+  });
 }
 
 function patchFetch(): void {

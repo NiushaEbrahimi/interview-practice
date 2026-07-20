@@ -1,4 +1,5 @@
 # Interview Practice
+
 <p align="center">
   <img src="https://img.shields.io/badge/status-in%20progress-lightgrey" alt="Status">
   <img src="https://img.shields.io/badge/project-not%20complete-orange" alt="Status">
@@ -8,8 +9,7 @@
   <img src="./frontend/src/assets/demo.gif" alt="Project Demo" width="900">
 </p>
 
-
-A React project built to explore and practice both frontend and backend, mostly frontend, with the concept of a platforn for practicing questions for interview.
+A full-stack web app for practicing technical interview questions with AI-powered scoring and feedback.
 
 ## Demo
 
@@ -23,9 +23,7 @@ Live demo: [https://interview-practice-demo-iota.vercel.app/](https://interview-
 
 Interview Practice is a full-stack web application designed to simulate technical interview experiences and help users improve their problem-solving skills.
 
-The project focuses on building a realistic interview workflow, including question management, practice sessions, and performance tracking. It serves as a practical environment for exploring modern frontend and backend development patterns while providing an interactive learning experience for users.
-
-The frontend is built with React, TypeScript, Tailwind CSS, and Vite, while the backend is powered by Django. The application includes an AI-powered answer scoring feature using Ollama for local LLM inference. The application is currently under active development, with additional features, deployment support, and production-ready improvements planned for future releases.
+The frontend is built with React, TypeScript, Tailwind CSS, and Vite. The backend is powered by Django REST Framework with JWT authentication. The AI scoring feature uses Ollama for local LLM inference, or any OpenAI-compatible API provider.
 
 ---
 
@@ -42,13 +40,11 @@ The frontend is built with React, TypeScript, Tailwind CSS, and Vite, while the 
 * Django + Django REST Framework
 * JWT authentication (`djangorestframework-simplejwt`)
 * CORS support (`django-cors-headers`)
-* Ollama (local LLM inference) via OpenAI-compatible API
+* OpenAI-compatible LLM API (Ollama, OpenAI, or any compatible provider)
 
 ---
 
 ## Requirements
-
-Before running the project locally, ensure the following tools are installed:
 
 ### Frontend
 
@@ -60,7 +56,10 @@ Before running the project locally, ensure the following tools are installed:
 * Python 3.11 or later
 * pip
 * Virtual environment support (`venv`)
-* Ollama (for AI scoring feature)
+* One of the following for AI scoring:
+  * **Ollama** (free, local) — recommended
+  * OpenAI API key
+  * Any OpenAI-compatible provider
 
 Verify your installation:
 
@@ -69,7 +68,6 @@ node -v
 npm -v
 python --version
 pip --version
-ollama --version
 ```
 
 ---
@@ -87,13 +85,11 @@ cd interview-practice
 
 ```bash
 cd frontend
-
 npm install
-
 npm run dev
 ```
 
-The frontend development server will start on the configured Vite port.
+The frontend dev server starts on `http://localhost:5173`.
 
 ### 3. Start the backend
 
@@ -101,20 +97,17 @@ Open a new terminal:
 
 ```bash
 cd backend
-
 python -m venv venv
 ```
 
 Activate the virtual environment:
 
 **Windows**
-
 ```bash
 venv\Scripts\activate
 ```
 
 **macOS / Linux**
-
 ```bash
 source venv/bin/activate
 ```
@@ -122,7 +115,7 @@ source venv/bin/activate
 Install dependencies:
 
 ```bash
-pip install django djangorestframework djangorestframework-simplejwt django-cors-headers python-dotenv openai google-generativeai
+pip install django djangorestframework djangorestframework-simplejwt django-cors-headers python-dotenv openai
 ```
 
 Apply migrations:
@@ -131,36 +124,56 @@ Apply migrations:
 python manage.py migrate
 ```
 
-Start the Django development server:
+Start the Django dev server:
 
 ```bash
 python manage.py runserver
 ```
 
-The backend API will be available on the configured Django development port.
+The backend API will be available on `http://127.0.0.1:8000`.
 
-### 4. Set up Ollama (AI scoring)
+### 4. Set up AI scoring
 
-Install Ollama from https://ollama.com/download, then pull a small model:
+The AI scoring feature requires an LLM provider. You have two options:
 
-```bash
-ollama pull gemma2:2b
-```
+#### Option A: Ollama (free, local)
 
-This downloads a ~1.7GB model. The AI scoring feature sends questions and user answers to this local model for evaluation and feedback.
+1. Install Ollama from https://ollama.com/download
+2. Pull a model:
+   ```bash
+   ollama pull gemma2:2b
+   ```
+   This downloads a ~1.7GB model. Other models work too — just update `LLM_MODEL` in `backend/.env`.
 
-### 5. Configure environment variables
+3. Make sure Ollama is running:
+   ```bash
+   ollama serve
+   ```
+   On Windows, Ollama usually starts automatically in the background.
 
-Create a `backend/.env` file (already in `.gitignore`):
+#### Option B: Your own API key
+
+If you have an OpenAI key or use another OpenAI-compatible provider (Groq, Together AI, etc.), edit `backend/.env`:
 
 ```env
-# Optional: Only needed if you want to use cloud AI providers instead of Ollama
-GEMINI_API_KEY=your-key-here
+# OpenAI
+LLM_BASE_URL=https://api.openai.com/v1
+LLM_API_KEY=sk-your-key-here
+LLM_MODEL=gpt-4o-mini
+
+# Or any OpenAI-compatible provider
+# LLM_BASE_URL=https://api.groq.com/openai/v1
+# LLM_API_KEY=gsk_your-key-here
+# LLM_MODEL=llama-3.1-8b-instant
 ```
 
-### Demo Mode
+The default configuration uses Ollama — if you leave `backend/.env` as-is, it will connect to `localhost:11434`.
 
-When the backend is not available (e.g. on Vercel), the frontend automatically activates **demo mode** with simulated data. No configuration needed — just deploy the `frontend/` directory to Vercel:
+---
+
+## Demo Mode
+
+When the backend is not available (e.g. on Vercel), the frontend automatically activates **demo mode** with simulated data including mock AI responses. No configuration needed — just deploy the `frontend/` directory to Vercel:
 
 1. Connect your GitHub repo to Vercel
 2. Set the **Root Directory** to `frontend`
@@ -175,10 +188,11 @@ The app will show a "Demo Mode" banner and all features will work with mock data
 
 * **Course & lesson browsing** — browse courses, lessons, and questions
 * **Self-assessment** — rate your confidence on each question (1-5) and mark for review
-* **AI scoring** — type your answer and get AI-powered feedback and scoring (1-5) using a local LLM via Ollama
+* **AI scoring** — type your answer and get AI-powered feedback, scoring (1-5), and a suggested better answer
 * **Progress tracking** — track which questions you've answered and your confidence over time
 * **Stats dashboard** — view your overall performance and weak areas
-* **Demo mode** — full app works without a backend using mock data
+* **Demo mode** — full app works without a backend using mock data (including AI responses)
+* **Responsive** — works on mobile, tablet, and desktop
 
 ---
 
@@ -186,8 +200,9 @@ The app will show a "Demo Mode" banner and all features will work with mock data
 
 * [x] mock data for vercel and preview
 * [x] deployment
-* [x] improving responsive
-* [x] AI-powered answer scoring with Ollama
+* [x] responsive design
+* [x] AI-powered answer scoring with Ollama / OpenAI-compatible providers
+* [x] configurable LLM provider via environment variables
 * [ ] improving prompt quality for better AI feedback
 * [ ] adding more question categories
 * [ ] user auth improvements (password reset, email verification)
