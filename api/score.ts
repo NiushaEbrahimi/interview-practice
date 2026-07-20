@@ -1,5 +1,10 @@
-import { openai } from '@ai-sdk/openai';
-import { createUIMessageStreamResponse, streamText } from 'ai';
+import { createOpenAI, createUIMessageStreamResponse, streamText } from 'ai';
+
+// Ollama configuration
+const ollama = createOpenAI({
+  baseURL: 'http://localhost:11434/v1',
+  apiKey: 'ollama',
+});
 
 // Allow streaming responses up to 30 seconds
 export const maxDuration = 30;
@@ -37,7 +42,7 @@ export default async function POST(request: Request) {
   }
 
   const result = streamText({
-    model: openai('gpt-4o-mini'),
+    model: ollama('gemma2:2b'),
     prompt: `You are an interview coach evaluating a candidate's answer.
 
 Question: ${question}

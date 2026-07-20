@@ -25,16 +25,24 @@ Interview Practice is a full-stack web application designed to simulate technica
 
 The project focuses on building a realistic interview workflow, including question management, practice sessions, and performance tracking. It serves as a practical environment for exploring modern frontend and backend development patterns while providing an interactive learning experience for users.
 
-The frontend is built with React, TypeScript, Tailwind CSS, and Vite, while the backend is powered by Django. The application is currently under active development, with additional features, deployment support, and production-ready improvements planned for future releases.
+The frontend is built with React, TypeScript, Tailwind CSS, and Vite, while the backend is powered by Django. The application includes an AI-powered answer scoring feature using Ollama for local LLM inference. The application is currently under active development, with additional features, deployment support, and production-ready improvements planned for future releases.
 
 ---
 
 ## Tech Stack
 
-* React, (TS)
-* tailwind
-* Vite
-* Django (planned)
+### Frontend
+* React 19 + TypeScript
+* Tailwind CSS 4
+* Vite 7
+* React Router 7
+* AI SDK UI (`@ai-sdk/react`) for chat-based AI scoring
+
+### Backend
+* Django + Django REST Framework
+* JWT authentication (`djangorestframework-simplejwt`)
+* CORS support (`django-cors-headers`)
+* Ollama (local LLM inference) via OpenAI-compatible API
 
 ---
 
@@ -52,6 +60,7 @@ Before running the project locally, ensure the following tools are installed:
 * Python 3.11 or later
 * pip
 * Virtual environment support (`venv`)
+* Ollama (for AI scoring feature)
 
 Verify your installation:
 
@@ -60,6 +69,7 @@ node -v
 npm -v
 python --version
 pip --version
+ollama --version
 ```
 
 ---
@@ -112,7 +122,7 @@ source venv/bin/activate
 Install dependencies:
 
 ```bash
-pip install -r requirements.txt
+pip install django djangorestframework djangorestframework-simplejwt django-cors-headers python-dotenv openai google-generativeai
 ```
 
 Apply migrations:
@@ -129,6 +139,25 @@ python manage.py runserver
 
 The backend API will be available on the configured Django development port.
 
+### 4. Set up Ollama (AI scoring)
+
+Install Ollama from https://ollama.com/download, then pull a small model:
+
+```bash
+ollama pull gemma2:2b
+```
+
+This downloads a ~1.7GB model. The AI scoring feature sends questions and user answers to this local model for evaluation and feedback.
+
+### 5. Configure environment variables
+
+Create a `backend/.env` file (already in `.gitignore`):
+
+```env
+# Optional: Only needed if you want to use cloud AI providers instead of Ollama
+GEMINI_API_KEY=your-key-here
+```
+
 ### Demo Mode
 
 When the backend is not available (e.g. on Vercel), the frontend automatically activates **demo mode** with simulated data. No configuration needed — just deploy the `frontend/` directory to Vercel:
@@ -142,12 +171,26 @@ The app will show a "Demo Mode" banner and all features will work with mock data
 
 ---
 
+## Features
+
+* **Course & lesson browsing** — browse courses, lessons, and questions
+* **Self-assessment** — rate your confidence on each question (1-5) and mark for review
+* **AI scoring** — type your answer and get AI-powered feedback and scoring (1-5) using a local LLM via Ollama
+* **Progress tracking** — track which questions you've answered and your confidence over time
+* **Stats dashboard** — view your overall performance and weak areas
+* **Demo mode** — full app works without a backend using mock data
+
+---
+
 ## Roadmap
 
 * [x] mock data for vercel and preview
 * [x] deployment
 * [x] improving responsive
-* [ ] adding AI SDK for checking the users answer and calculating the correctness
+* [x] AI-powered answer scoring with Ollama
+* [ ] improving prompt quality for better AI feedback
+* [ ] adding more question categories
+* [ ] user auth improvements (password reset, email verification)
 
 ---
 

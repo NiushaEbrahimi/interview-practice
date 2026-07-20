@@ -3,8 +3,13 @@
 
 import express from 'express';
 import cors from 'cors';
-import { openai } from '@ai-sdk/openai';
-import { streamText, createUIMessageStream, createUIMessageStreamResponse } from 'ai';
+import { createOpenAI, streamText, createUIMessageStream } from 'ai';
+
+// Ollama configuration
+const ollama = createOpenAI({
+  baseURL: 'http://localhost:11434/v1',
+  apiKey: 'ollama',
+});
 
 const app = express();
 app.use(cors());
@@ -34,7 +39,7 @@ app.post('/api/score', async (req, res) => {
   }
 
   const result = streamText({
-    model: openai('gpt-4o-mini'),
+    model: ollama('gemma2:2b'),
     prompt: `You are an interview coach evaluating a candidate's answer.
 
 Question: ${question}

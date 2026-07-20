@@ -1,6 +1,4 @@
 import json
-import os
-from dotenv import load_dotenv
 
 from rest_framework.viewsets import ReadOnlyModelViewSet
 from rest_framework import viewsets, permissions
@@ -18,8 +16,6 @@ from django.db.models import Count, Subquery, OuterRef, Value, Q
 from django.db.models.functions import Coalesce
 
 from django.contrib.auth import get_user_model
-
-load_dotenv()
 
 class CourseViewSet(ReadOnlyModelViewSet):
     queryset = Course.objects.all()
@@ -179,7 +175,6 @@ class StatsViewSet(viewsets.ViewSet):
 @require_POST
 def score_answer(request):
     print("[SCORE] Request received")
-    from google import genai
     from rest_framework_simplejwt.tokens import AccessToken
 
     # Manual auth check
@@ -233,9 +228,6 @@ def score_answer(request):
             status=400,
         )
 
-    api_key = os.getenv("GEMINI_API_KEY")
-    print(f"[SCORE] API key present: {bool(api_key)}")
-
     from openai import OpenAI
     client = OpenAI(
         base_url="http://localhost:11434/v1",
@@ -255,7 +247,7 @@ def score_answer(request):
                             "You are an interview coach. Evaluate the user's answer to an interview question. "
                             "Return ONLY a JSON object with two fields: "
                             '"score" (integer 1-5, where 1=poor, 5=excellent) and '
-                            '"feedback" (a short paragraph explaining the score, what was good and what could be improved). '
+                            '"feedback" (a short paragraph explaining the score, what was good and what could be improved and also an answer you would suggest, also seprate these with a / charachter ). '
                             "Do not include any other text, markdown, or code fences."
                         ),
                     },
