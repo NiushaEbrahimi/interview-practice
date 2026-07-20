@@ -129,7 +129,7 @@ export default function Lesson(){
                 ) : (
                     <Splide ref={splideRef}>
                     {questions && questions.map((question, index) => (
-                        <SplideSlide key={index}><Question key={index} id={question.id} question={question.question} answer={question.correct_answer}/></SplideSlide>
+                        <SplideSlide key={index}><Question key={index} id={question.id} question={question.question}/></SplideSlide>
                     ))}
                     </Splide>
                 )}

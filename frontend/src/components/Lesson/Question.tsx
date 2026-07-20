@@ -8,14 +8,14 @@ import { AI_API_URL } from "../../config";
 interface AIScoreResult {
     score: number;
     feedback: string;
+    answer: string;
 }
 
-export default function Question({ id, question, answer }: { id: number; question: string; answer: string }) {
+export default function Question({ id, question }: { id: number; question: string; }) {
     const paramsURL = useParams();
     const authFetch = useAuthFetch();
 
     const [score, setScore] = useState<number | null>(null);
-    const [answerDisplay, setAnswerDisplay] = useState(false);
     const [comeBack, setComeBack] = useState(false);
 
     // AI Scoring state
@@ -139,7 +139,10 @@ export default function Question({ id, question, answer }: { id: number; questio
         const textParts = lastMessage.parts?.filter(
             (part): part is { type: "text"; text: string } => part.type === "text"
         );
-        return textParts?.map((p) => p.text).join("") || "";
+        const final = textParts?.map((p) => p.text).join("") || "";
+        const cutFrom = (final.indexOf("\"feedback\": \""))+("\"feedback\": \"".length)
+        const cutTill = (final.indexOf(`"answer": "`))
+        return final.slice(cutFrom,cutTill-3)
     };
 
     const isStreaming = status === "streaming" || status === "submitted";
@@ -187,46 +190,21 @@ export default function Question({ id, question, answer }: { id: number; questio
                             </span>
                         </div>
                         <p className="mt-2 text-gray-700">{aiResult.feedback}</p>
+                        <div className="mt-3 border-t pt-3">
+                            <span className="font-medium">Suggested Answer:</span>
+                            <p className="mt-1 text-gray-700 whitespace-pre-wrap">{aiResult.answer}</p>
+                        </div>
                     </div>
                 )}
             </div>
 
-            <div>
-                <h6 className="font-medium text-lg">Answer:</h6>
-                <p className={answerDisplay ? "m-4" : " m-4 hidden"}>{answer}</p>
-                <button
-                    className="rounded shadow p-2 mt-4"
-                    style={{ backgroundColor: "#00bfff", color: "white" }}
-                    onClick={() => setAnswerDisplay(!answerDisplay)}
-                >
-                    {answerDisplay ? "Hide Answer" : "Reveal Answer"}
-                </button>
-            </div>
-            <div className="flex flex-col gap-3">
-                <p>How close was your answer?</p>
-
-                <div className="flex gap-4">
-                    {[1, 2, 3, 4, 5].map((value) => (
-                        <label key={value} className="flex items-center gap-1 cursor-pointer">
-                            <input
-                                type="radio"
-                                name={`answerScore-${id}`}
-                                value={value}
-                                checked={score === value}
-                                onChange={() => handleRate(value)}
-                            />
-                            {value}
-                        </label>
-                    ))}
-                </div>
-            </div>
             <div className="flex">
                 <div className="border-gray-400 border-1-css rounded-md p-2 shadow">
                     <label className="flex items-center text-sm">
                         <input
                             type="checkbox"
                             name={`comeBack-${id}`}
-                            className="mr-2 mt-1"
+                            className="mr-2 mt-1 bg-white"
                             checked={comeBack}
                             onChange={(e) => handleComeBack(e.target.checked)}
                         />
