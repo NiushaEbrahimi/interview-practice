@@ -115,13 +115,13 @@ export default function Progress() {
   );
 
   return (
-    <div className="min-h-screen bg-gray-100 flex py-6 px-15 ">      
+    <div className="min-h-screen bg-gray-100 flex py-4 sm:py-6 px-4 sm:px-6 lg:px-15 ">      
     
           <div className="flex-1 flex flex-col bg-gray-200 rounded-2xl overflow-hidden">
     
           <Header username={user?.profile.full_name || "User"} />
 
-          <main className=" py-6 px-10 space-y-6 grid gap-6 xl:grid-cols-[1.4fr_1fr] xl:items-start">
+          <main className="py-4 sm:py-6 px-4 sm:px-8 lg:px-10 space-y-6 grid gap-6 xl:grid-cols-[1.4fr_1fr] xl:items-start">
             <section className="rounded-3xl bg-white p-6 shadow-sm">
               <h1 className="text-gray-700 text-2xl font-semibold mb-4">Progress overview</h1>
 

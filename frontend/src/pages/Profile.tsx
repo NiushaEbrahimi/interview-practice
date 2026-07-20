@@ -72,25 +72,25 @@ export default function Profile(){
     }
 
     return(
-        <div className="min-h-screen bg-gray-100 flex py-6 px-15 ">      
+        <div className="min-h-screen bg-gray-100 flex py-4 sm:py-6 px-4 sm:px-6 lg:px-15 ">      
             <div className="flex-1 flex flex-col bg-gray-200 rounded-2xl overflow-hidden">
                 <Header username={username}/>
-                <main className={`flex-1 py-6 px-10 space-y-6 flex flex-col lg:flex-row gap-4 ${positionsCSS.mainHeight}`}>
-                    <section className=" flex-1 m-0 justify-center bg-gray-300 rounded-2xl shadow py-2">
-                        <div className="flex lg:justify-center px-6 lg:px-0 items-center flex-row lg:flex-col gap-10 lg:gap-4">
-                            <div className="relative">
+                <main className={`flex-1 py-4 sm:py-6 px-4 sm:px-6 lg:px-10 space-y-6 flex flex-col lg:flex-row gap-4 ${positionsCSS.mainHeight}`}>
+                    <section className=" flex-1 m-0 justify-center bg-gray-300 rounded-2xl shadow py-4 sm:py-2">
+                        <div className="flex lg:justify-center px-6 lg:px-0 items-center flex-row lg:flex-col gap-6 sm:gap-10 lg:gap-4">
+                            <div className="relative shrink-0">
                                 <img
                                 src={userProfileIMG}
-                                className="rounded-full object-cover w-40 h-40 lg:w-full lg:h-full"
+                                className="rounded-full object-cover w-24 h-24 sm:w-40 sm:h-40 lg:w-full lg:h-full"
                                 />
                                 <button className={`flex items-center gap-2 border-2 px-3 py-1 rounded-2xl text-gray-600 hover:border-transparent hover:bg-gray-600 hover:text-white cursor-pointer active:bg-gray-700 ${positionsCSS.editButton}`}>
                                     <EditIcon />edit
                                 </button>
                             </div>
                             <div className="flex gap-4 flex-col my-2">
-                                <h1 className="text-gray-700 lg:text-3xl font-medium">{username}</h1>
-                                <p className="text-gray-700">Email: {userProfile?.email || user?.email}</p>
-                                <p className="text-gray-700">Experience Level:  {userExp.replace(userExp.charAt(0),userExp.charAt(0).toUpperCase()) }</p>
+                                <h1 className="text-gray-700 text-xl lg:text-3xl font-medium">{username}</h1>
+                                <p className="text-gray-700 text-sm sm:text-base">Email: {userProfile?.email || user?.email}</p>
+                                <p className="text-gray-700 text-sm sm:text-base">Experience Level:  {userExp.replace(userExp.charAt(0),userExp.charAt(0).toUpperCase()) }</p>
                                 <div>
                                 <button className="bg-red-500 py-2 px-3 rounded-2xl hover:bg-red-600 cursor-pointer" onClick={()=>{logout()}}>Log Out</button>
                                 </div>
@@ -98,36 +98,36 @@ export default function Profile(){
                         </div>
                     </section>
                     <section className="flex-2 bg-gray-500 rounded-2xl shadow py-2 px-4 overflow-y-scroll">
-                        <h1 className="text-3xl font-medium p-4">Courses</h1>
-                        <div className="flex gap-4 px-8 flex-wrap">
+                        <h1 className="text-2xl sm:text-3xl font-medium p-4">Courses</h1>
+                        <div className="flex gap-4 px-4 sm:px-8 flex-wrap">
                             {isLoading ? (
                                 Array.from({ length: 3 }).map((_, i) => (
-                                    <Skeleton key={i} className="!w-50 !h-60" />
+                                    <Skeleton key={i} className="!w-40 !h-60 sm:!w-50" />
                                 ))
                             ) : stats?.topics ? (
                                 stats.topics.map((topic) => (
-                                    <CourseCard 
+                                    <CourseCard
                                         key={topic.topic}
-                                        label={topic.topic} 
-                                        courseName={topic.topic} 
-                                        level={`${topic.answered}/${topic.total}`} 
+                                        label={topic.topic}
+                                        courseName={topic.topic}
+                                        level={`${topic.answered}/${topic.total}`}
                                         percent={topic.percent}
                                     />
                                 ))
                             ) : null}
                         </div>
-                        <h1 className="text-3xl font-medium p-4">Will Study Later</h1>
-                        <div className="flex gap-4 px-8 flex-wrap">
+                        <h1 className="text-2xl sm:text-3xl font-medium p-4">Will Study Later</h1>
+                        <div className="flex gap-4 px-4 sm:px-8 flex-wrap">
                             {isLoading ? (
                                 Array.from({ length: 2 }).map((_, i) => (
-                                    <Skeleton key={i} className="!w-50 !h-60" />
+                                    <Skeleton key={i} className="!w-40 !h-60 sm:!w-50" />
                                 ))
                             ) : stats?.study_later_lessons && stats.study_later_lessons.length > 0 ? (
                                 stats.study_later_lessons.map((lesson) => (
-                                    <Link 
+                                    <Link
                                         key={lesson.id}
                                         to={`/courses/${lesson.course}/${lesson.level_display}/${lesson.name}`}
-                                        className="rounded-2xl bg-blue-50 w-50 h-60 text-center text-gray-500 px-4 py-2 shadow cursor-pointer grid grid-rows-4-3-2-1-1 hover:bg-blue-100"
+                                        className="rounded-2xl bg-blue-50 w-full sm:w-50 min-h-[200px] text-center text-gray-500 px-4 py-2 shadow cursor-pointer grid grid-rows-4-3-2-1-1 hover:bg-blue-100"
                                     >
                                         <div className="flex items-center justify-center">
                                             <div className="w-16 h-16 rounded-full bg-blue-200 flex items-center justify-center text-2xl font-bold text-blue-600">
@@ -143,8 +143,8 @@ export default function Profile(){
                                 <p className="text-gray-300 px-4">No lessons saved for later</p>
                             )}
                         </div>
-                        <div className="bg-white text-black mt-10 mb-10 rounded-2xl" style={{height:"70%"}}>
-                            <h1 className="text-3xl font-medium p-4">Go Back to These Questions</h1>
+                        <div className="bg-white text-black mt-6 sm:mt-10 mb-6 sm:mb-10 rounded-2xl">
+                            <h1 className="text-2xl sm:text-3xl font-medium p-4">Go Back to These Questions</h1>
                             <div className="flex gap-4 p-8 flex-col overflow-y-auto overflow-x-hidden" style={{maxHeight:"70%"}}>
                                 {isLoading ? (
                                     Array.from({ length: 3 }).map((_, i) => (

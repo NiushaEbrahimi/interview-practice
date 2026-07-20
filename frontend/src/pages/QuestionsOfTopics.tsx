@@ -70,11 +70,11 @@ export default function Questions() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex py-6 px-15 ">      
+    <div className="min-h-screen bg-gray-100 flex py-4 sm:py-6 px-4 sm:px-6 lg:px-15 ">      
       <div className="flex-1 flex flex-col bg-gray-200 rounded-2xl overflow-hidden">
         <Header username={user?.profile.full_name || "User"} />
         
-        <main className="flex-1 py-6 px-10 space-y-6">
+        <main className="flex-1 py-4 sm:py-6 px-4 sm:px-8 lg:px-10 space-y-6">
           {error && (
             <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
               {error}
@@ -82,8 +82,8 @@ export default function Questions() {
           )}
 
           <section>
-            <div className="flex justify-between">
-              <h1 className="text-gray-700 text-2xl font-medium p-3">Recent Searches</h1>
+            <div className="flex flex-col sm:flex-row sm:justify-between gap-3">
+              <h1 className="text-gray-700 text-xl sm:text-2xl font-medium p-3">Recent Searches</h1>
               <div className="flex gap-2 bg-gray-300 p-1 rounded-xl">
               <button
                 onClick={() => toggleFilter("course")}
@@ -126,32 +126,32 @@ export default function Questions() {
               </button>
             </div>
             </div>
-            <div className="flex flex-wrap justify-center gap-8 p-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 p-2">
             {loading
             ? Array.from({ length: 6 }).map((_, i) => (
-              <Skeleton key={i} className="w-50 h-80"/>
+              <Skeleton key={i} className="w-full h-80"/>
             ))
             : <>
               { showCourses && courses.map((course) => (
-                <CourseCard 
-                  key={course.id} 
-                  title={course.title} 
-                  lessons_number={course.lessons.length} 
+                <CourseCard
+                  key={course.id}
+                  title={course.title}
+                  lessons_number={course.lessons.length}
                   started={course.started}
                 />
               ))}
               {showLessons && lessons.map((lesson) => (
-                <LessonCard 
-                  key={lesson.id} 
-                  cardLable={lesson.course} 
-                  cardCourseName={lesson.name} 
-                  cardLevel={lesson.level_display} 
-                  cardLesson={lesson.name} 
+                <LessonCard
+                  key={lesson.id}
+                  cardLable={lesson.course}
+                  cardCourseName={lesson.name}
+                  cardLevel={lesson.level_display}
+                  cardLesson={lesson.name}
                   cardQuestionsTotal={lesson.questions_count}
                   cardQuestionsAnswered={lesson.questions_answered}
                   started={lesson.started}
-                  width="w-50"
-                  height="h-90"
+                  width="w-full"
+                  height=""
                 />
               ))}
             </>

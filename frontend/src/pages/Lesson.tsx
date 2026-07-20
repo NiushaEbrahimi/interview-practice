@@ -101,20 +101,20 @@ export default function Lesson(){
     }
 
     return(
-        <div className="min-h-screen bg-gray-100 flex py-6 px-15 ">      
+        <div className="min-h-screen bg-gray-100 flex py-4 sm:py-6 px-4 sm:px-6 lg:px-15 ">      
     
             <div className="flex-1 flex flex-col bg-gray-200 rounded-2xl overflow-hidden">
     
             <Header username={user?.profile.full_name || "User"} />
     
-            <main className={`flex-1 py-6 px-10 space-y-6 flex flex-col text-gray-900`}>
-                <section className="flex justify-between">
+            <main className={`flex-1 py-4 sm:py-6 px-4 sm:px-8 lg:px-10 space-y-6 flex flex-col text-gray-900`}>
+                <section className="flex flex-col sm:flex-row justify-between gap-3">
                     <div className="flex items-end">
-                        <h3 className="text-3xl text-md-5xl">{paramsURL.lesson}</h3>
-                        <p className="text-xl text-md-2xl ml-2 ml-md-4">{paramsURL.level}</p>
+                        <h3 className="text-2xl sm:text-3xl">{paramsURL.lesson}</h3>
+                        <p className="text-lg sm:text-xl ml-2">{paramsURL.level}</p>
                     </div>
-                    <button 
-                        className="bg-blue-200 rounded-2xl flex justify-center h-10 w-auto items-center border-2 border-blue-50 px-3 shadow gap-2"
+                    <button
+                        className="bg-blue-200 rounded-2xl flex justify-center h-10 w-auto items-center border-2 border-blue-50 px-3 shadow gap-2 self-start"
                         onClick={toggleStudyLater}
                     >
                         <span>Study Later</span>

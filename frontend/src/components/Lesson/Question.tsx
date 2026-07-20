@@ -148,7 +148,7 @@ export default function Question({ id, question }: { id: number; question: strin
     const isStreaming = status === "streaming" || status === "submitted";
 
     return (
-        <section className="bg-white px-20 p-6 rounded-lg shadow-md flex flex-col gap-4">
+        <section className="bg-white px-6 sm:px-12 lg:px-20 p-4 sm:p-6 rounded-lg shadow-md flex flex-col gap-4">
             <div className="flex items-center gap-4">
                 <h6 className="font-medium text-lg">Question:</h6>
                 <p>{question}</p>
@@ -204,7 +204,8 @@ export default function Question({ id, question }: { id: number; question: strin
                         <input
                             type="checkbox"
                             name={`comeBack-${id}`}
-                            className="mr-2 mt-1 bg-white"
+                            className="mr-2 mt-1"
+                            style={{ colorScheme: "light" }}
                             checked={comeBack}
                             onChange={(e) => handleComeBack(e.target.checked)}
                         />

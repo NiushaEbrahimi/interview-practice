@@ -80,12 +80,12 @@ export default function Dashboard(){
   }, [lessons, progressItems]);
 
   return (
-    <div className="min-h-screen bg-gray-100 flex py-6 px-15 ">      
+    <div className="min-h-screen bg-gray-100 flex py-4 sm:py-6 px-4 sm:px-6 lg:px-15 ">      
       <div className="flex-1 flex flex-col bg-gray-200 rounded-2xl overflow-hidden">
         <Header username={user?.profile.full_name || "User"} />
 
-        <main className="flex-1 py-6 px-10 space-y-6">
-          <h1 className="text-gray-700 text-2xl font-medium">Welcome Back, {user?.profile.full_name}</h1>
+        <main className="flex-1 py-4 sm:py-6 px-4 sm:px-8 lg:px-10 space-y-6">
+          <h1 className="text-gray-700 text-xl sm:text-2xl font-medium">Welcome Back, {user?.profile.full_name}</h1>
 
           <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {isLoading ? (
