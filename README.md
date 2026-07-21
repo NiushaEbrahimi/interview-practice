@@ -42,7 +42,7 @@ The frontend is built with React, TypeScript, Tailwind CSS, and Vite. The backen
 * Django + Django REST Framework
 * JWT authentication (`djangorestframework-simplejwt`)
 * CORS support (`django-cors-headers`)
-* OpenAI-compatible LLM API (Ollama, OpenAI, or any compatible provider)
+* OpenAI-compatible LLM API (Ollama, OpenAI, Groq, Together, DeepSeek, Fireworks, or any compatible provider)
 
 ---
 
@@ -60,8 +60,7 @@ The frontend is built with React, TypeScript, Tailwind CSS, and Vite. The backen
 * Virtual environment support (`venv`)
 * One of the following for AI scoring:
   * **Ollama** (free, local) — recommended
-  * OpenAI API key
-  * Any OpenAI-compatible provider
+  * Any OpenAI-compatible provider (OpenAI, Groq, Together AI, DeepSeek, Fireworks, OpenRouter, etc.)
 
 Verify your installation:
 
@@ -136,7 +135,7 @@ The backend API will be available on `http://127.0.0.1:8000`.
 
 ### 4. Set up AI scoring
 
-The AI scoring feature requires an LLM provider. You have two options:
+The AI scoring feature uses an OpenAI-compatible API. This means it works with most LLM providers out of the box.
 
 #### Option A: Ollama (free, local)
 
@@ -153,9 +152,9 @@ The AI scoring feature requires an LLM provider. You have two options:
    ```
    On Windows, Ollama usually starts automatically in the background.
 
-#### Option B: Your own API key
+#### Option B: Cloud provider API key
 
-If you have an OpenAI key or use another OpenAI-compatible provider (Groq, Together AI, etc.), edit `backend/.env`:
+The backend uses the OpenAI-compatible API format, so it works with any provider that supports it. Edit `backend/.env` with your provider:
 
 ```env
 # OpenAI
@@ -163,13 +162,40 @@ LLM_BASE_URL=https://api.openai.com/v1
 LLM_API_KEY=sk-your-key-here
 LLM_MODEL=gpt-4o-mini
 
-# Or any OpenAI-compatible provider
-# LLM_BASE_URL=https://api.groq.com/openai/v1
-# LLM_API_KEY=gsk_your-key-here
-# LLM_MODEL=llama-3.1-8b-instant
+# Groq (fast, free tier available)
+LLM_BASE_URL=https://api.groq.com/openai/v1
+LLM_API_KEY=gsk_your-key-here
+LLM_MODEL=llama-3.1-8b-instant
+
+# Together AI
+LLM_BASE_URL=https://api.together.xyz/v1
+LLM_API_KEY=your-key-here
+LLM_MODEL=meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo
+
+# Fireworks AI
+LLM_BASE_URL=https://api.fireworks.ai/inference/v1
+LLM_API_KEY=your-key-here
+LLM_MODEL=accounts/fireworks/models/llama-v3p1-8b-instruct
+
+# DeepSeek
+LLM_BASE_URL=https://api.deepseek.com
+LLM_API_KEY=your-key-here
+LLM_MODEL=deepseek-chat
+
+# OpenRouter (access to many models)
+LLM_BASE_URL=https://openrouter.ai/api/v1
+LLM_API_KEY=sk-or-your-key-here
+LLM_MODEL=meta-llama/llama-3.1-8b-instruct
+
+# Any OpenAI-compatible API (vLLM, LiteLLM, etc.)
+LLM_BASE_URL=http://your-server:8000/v1
+LLM_API_KEY=your-key-here
+LLM_MODEL=your-model-name
 ```
 
 The default configuration uses Ollama — if you leave `backend/.env` as-is, it will connect to `localhost:11434`.
+
+> **Note:** Anthropic (Claude) does not use an OpenAI-compatible API, so it is not directly supported. Use one of the providers above or a proxy like [LiteLLM](https://github.com/BerriAI/litellm) to bridge the gap.
 
 ### 5. Seed the database with questions
 
