@@ -13,7 +13,9 @@ A full-stack web app for practicing technical interview questions with AI-powere
 
 ## Demo
 
-Live demo: [https://interview-practice-demo-iota.vercel.app/](https://interview-practice-demo-iota.vercel.app/)
+Live demo: [https://interview-practice-new-demo.vercel.app/](https://interview-practice-new-demo.vercel.app/)
+
+Old demo (without ai scoring): [https://interview-practice-demo-iota.vercel.app/](https://interview-practice-demo-iota.vercel.app/)
 
 > The demo runs in **mock mode** — no backend required. All data is simulated locally in your browser.
 
