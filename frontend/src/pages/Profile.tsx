@@ -85,7 +85,7 @@ export default function Profile(){
                                 src={userProfileIMG}
                                 className="rounded-full object-cover w-24 h-24 sm:w-40 sm:h-40 lg:w-full lg:h-full"
                                 />
-                                <button className={`flex items-center gap-2 border-2 px-3 py-1 rounded-2xl text-gray-600 dark:text-gray-300 hover:border-transparent hover:bg-gray-600 hover:text-white cursor-pointer active:bg-gray-700 ${positionsCSS.editButton}`}>
+                                <button className={`flex items-center gap-1 sm:gap-2 border-2 px-1 sm:px-3 py-1 rounded-2xl text-gray-600 dark:text-gray-300 dark:bg-gray-800 hover:border-transparent hover:bg-gray-600 hover:text-white cursor-pointer active:bg-gray-700 absolute bottom-0 right-0`}>
                                     <EditIcon />edit
                                 </button>
                             </div>
@@ -144,7 +144,7 @@ export default function Profile(){
                                     <Link
                                         key={lesson.id}
                                         to={`/courses/${lesson.course}/${lesson.level_display}/${lesson.name}`}
-                                        className="rounded-2xl bg-blue-50 dark:bg-blue-900/30 w-full sm:w-50 min-h-[200px] text-center text-gray-500 dark:text-gray-400 px-4 py-2 shadow cursor-pointer grid grid-rows-4-3-2-1-1 hover:bg-blue-100 dark:hover:bg-blue-900/50"
+                                        className="rounded-2xl bg-blue-50 dark:bg-gray-800 w-full sm:w-50 min-h-[200px] text-center text-gray-500 dark:text-gray-400 px-4 py-2 shadow cursor-pointer grid grid-rows-4-3-2-1-1 hover:bg-blue-100 dark:hover:bg-blue-900/50"
                                     >
                                         <div className="flex items-center justify-center">
                                             <div className="w-16 h-16 rounded-full bg-blue-200 dark:bg-blue-800 flex items-center justify-center text-2xl font-bold text-blue-600 dark:text-blue-300">

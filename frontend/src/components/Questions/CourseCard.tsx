@@ -9,7 +9,7 @@ export default function CourseCard(
     ){
     return(
         <Link to={`/courses/${title}`}>
-            <div className="rounded bg-white dark:bg-gray-800 w-full h-80 text-center text-gray-500 dark:text-gray-400 p-4 shadow cursor-pointer grid grid-rows-4-3-2-1-1">
+            <div className="rounded bg-white dark:bg-gray-700 w-full h-80 text-center text-gray-500 dark:text-gray-400 p-4 shadow cursor-pointer grid grid-rows-4-3-2-1-1">
                 <div className="flex justify-center items-center" style={{width : "100%"}}>
                     <img src={returnImageSrc({name: title})} className="rounded max-h-40 min-h-40 mb-3 object-contain"/>
                 </div>
