@@ -56,14 +56,30 @@ function jsonResponse(data: unknown, status = 200): Response {
   });
 }
 
+/** Normalize any URL (absolute or relative) to a clean path starting with /api/ */
+function normalizePath(url: string): string {
+  // Already a relative path
+  if (url.startsWith("/api/")) return url;
+  // Absolute URL — strip the origin
+  try {
+    const u = new URL(url);
+    return u.pathname + u.search;
+  } catch {
+    // Not a valid URL, try as-is
+    return url;
+  }
+}
+
 function matchUrl(url: string, pattern: string): boolean {
-  const clean = url.replace(API_BASE, "");
+  const clean = normalizePath(url);
   return clean.startsWith(pattern);
 }
 
 function getParam(url: string, key: string): string | null {
   try {
-    const u = new URL(url, API_BASE);
+    // Handle relative URLs by prepending a dummy origin
+    const href = url.startsWith("/") ? `http://localhost${url}` : url;
+    const u = new URL(href);
     return u.searchParams.get(key);
   } catch {
     return null;
@@ -72,7 +88,7 @@ function getParam(url: string, key: string): string | null {
 
 function handleMockFetch(url: string, options: RequestInit = {}): Response | null {
   const method = (options.method || "GET").toUpperCase();
-  const cleanUrl = url.replace(API_BASE, "");
+  const cleanUrl = normalizePath(url);
 
   // Auth endpoints
   if (matchUrl(url, "/api/auth/login/") && method === "POST") {
@@ -240,7 +256,9 @@ function patchFetch(): void {
   window.fetch = async (input: RequestInfo | URL, init?: RequestInit): Promise<Response> => {
     const url = typeof input === "string" ? input : input instanceof URL ? input.toString() : input.url;
 
-    if (url.startsWith(API_BASE)) {
+    // Intercept both absolute (http://127.0.0.1:8000/api/...) and relative (/api/...) URLs
+    const path = normalizePath(url);
+    if (path.startsWith("/api/")) {
       const mockResponse = handleMockFetch(url, init);
       if (mockResponse) return mockResponse;
     }
@@ -264,7 +282,9 @@ function patchAxios(): void {
   XHR.send = function (this: XMLHttpRequest, body?: Document | XMLHttpRequestBodyInit | null) {
     const url = ((this as unknown as Record<string, unknown>)._mockUrl as string) || "";
 
-    if (url.startsWith(API_BASE)) {
+    // Intercept both absolute and relative API URLs
+    const path = normalizePath(url);
+    if (path.startsWith("/api/")) {
       const mockResponse = handleMockFetch(url, {
         method: ((this as unknown as Record<string, unknown>)._mockMethod as string) || "GET",
         body: typeof body === "string" ? body : undefined,
