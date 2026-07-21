@@ -46,14 +46,13 @@ export default function Course(){
 
 
     return(
-        <div className="min-h-screen bg-gray-100 flex py-4 sm:py-6 px-4 sm:px-6 lg:px-15 ">      
-    
-            <div className="flex-1 flex flex-col bg-gray-200 rounded-2xl overflow-hidden">
-    
+        <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex py-0 px-0 sm:py-6 sm:px-6 lg:px-15 ">
+            <div className="flex-1 flex flex-col bg-gray-200 dark:bg-gray-800 rounded-0 sm:rounded-2xl overflow-hidden">
+
             <Header username={user?.profile.full_name || "User"} />
-    
+
             <main className={`flex-1 py-4 sm:py-6 px-4 sm:px-8 lg:px-10 space-y-6 flex flex-col`}>
-                <section className="flex flex-col sm:flex-row text-gray-700 justify-start items-start sm:items-center gap-3">
+                <section className="flex flex-col sm:flex-row text-gray-700 dark:text-gray-200 justify-start items-start sm:items-center gap-3">
                     <div className="flex items-center gap-2">
                         <button
                             onClick={()=> navigate(-1)}
@@ -65,14 +64,14 @@ export default function Course(){
                         <Dropdown label={paramsURL.label || "undefined"}/>
                     </div>
                     <div className="flex w-full sm:w-auto sm:flex-1 sm:ms-8 rounded-2xl overflow-hidden shadow">
-                        <input type="search" placeholder="Lesson (e.g. closure )..." className="flex-1 rounded-tl-2xl rounded-bl-2xl text-gray-500 bg-white px-4 py-2 min-w-0" />
+                        <input type="search" placeholder="Lesson (e.g. closure )..." className="flex-1 rounded-tl-2xl rounded-bl-2xl text-gray-500 dark:text-gray-300 bg-white dark:bg-gray-700 px-4 py-2 min-w-0" />
                         <input type="button" value="" className="w-10 bg-blue-300 cursor-pointer px-4 py-2 shrink-0" />
                     </div>
                 </section>
-                <section className="grid gap-4 sm:gap-7 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                <section className="grid gap-3 sm:gap-7 grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                     {isLoading ? (
                         Array.from({ length: 8 }).map((_, i) => (
-                            <Skeleton key={i} className="!w-full !h-60" />
+                            <Skeleton key={i} className="!w-full !h-48 sm:!h-60" />
                         ))
                     ) : lessons && lessons.map((e) => (
                         <LessonCard

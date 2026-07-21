@@ -70,29 +70,29 @@ export default function Questions() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex py-4 sm:py-6 px-4 sm:px-6 lg:px-15 ">      
-      <div className="flex-1 flex flex-col bg-gray-200 rounded-2xl overflow-hidden">
+    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex py-0 px-0 sm:py-6 sm:px-6 lg:px-15 ">
+            <div className="flex-1 flex flex-col bg-gray-200 dark:bg-gray-800 rounded-0 sm:rounded-2xl overflow-hidden">
         <Header username={user?.profile.full_name || "User"} />
-        
+
         <main className="flex-1 py-4 sm:py-6 px-4 sm:px-8 lg:px-10 space-y-6">
           {error && (
-            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+            <div className="bg-red-100 dark:bg-red-900/30 border border-red-400 dark:border-red-600 text-red-700 dark:text-red-300 px-4 py-3 rounded mb-4">
               {error}
             </div>
           )}
 
           <section>
             <div className="flex flex-col sm:flex-row sm:justify-between gap-3">
-              <h1 className="text-gray-700 text-xl sm:text-2xl font-medium p-3">Recent Searches</h1>
-              <div className="flex gap-2 bg-gray-300 p-1 rounded-xl">
+              <h1 className="text-gray-700 dark:text-gray-100 text-xl sm:text-2xl font-medium p-3">Recent Searches</h1>
+              <div className="flex gap-2 bg-gray-300 dark:bg-gray-600 p-1 rounded-xl">
               <button
                 onClick={() => toggleFilter("course")}
                 className={`
                   px-4 py-1.5 rounded-lg text-sm font-medium transition-all
                   flex items-center gap-2
                   ${showCourses
-                    ? "bg-white text-gray-900 shadow"
-                    : "text-gray-600 hover:text-gray-900"
+                    ? "bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 shadow"
+                    : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200"
                   }
                 `}
               >
@@ -111,8 +111,8 @@ export default function Questions() {
                   px-4 py-1.5 rounded-lg text-sm font-medium transition-all
                   flex items-center gap-2
                   ${showLessons
-                    ? "bg-white text-gray-900 shadow"
-                    : "text-gray-600 hover:text-gray-900"
+                    ? "bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 shadow"
+                    : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200"
                   }
                 `}
               >

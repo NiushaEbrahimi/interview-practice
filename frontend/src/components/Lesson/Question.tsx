@@ -148,20 +148,20 @@ export default function Question({ id, question }: { id: number; question: strin
     const isStreaming = status === "streaming" || status === "submitted";
 
     return (
-        <section className="bg-white px-6 sm:px-12 lg:px-20 p-4 sm:p-6 rounded-lg shadow-md flex flex-col gap-4">
+        <section className="bg-white dark:bg-gray-800 px-6 sm:px-12 lg:px-20 p-4 sm:p-6 rounded-lg shadow-md flex flex-col gap-4">
             <div className="flex items-center gap-4">
-                <h6 className="font-medium text-lg">Question:</h6>
-                <p>{question}</p>
+                <h6 className="font-medium text-lg text-gray-900 dark:text-gray-100">Question:</h6>
+                <p className="text-gray-800 dark:text-gray-200">{question}</p>
             </div>
 
             {/* AI Scoring Section */}
-            <div className="border-t pt-4">
-                <h6 className="font-medium text-lg mb-2">Your Answer:</h6>
+            <div className="border-t border-gray-200 dark:border-gray-600 pt-4">
+                <h6 className="font-medium text-lg mb-2 text-gray-900 dark:text-gray-100">Your Answer:</h6>
                 <textarea
                     value={userAnswer}
                     onChange={(e) => setUserAnswer(e.target.value)}
                     placeholder="Type your answer here..."
-                    className="w-full p-3 border border-gray-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    className="w-full p-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-400"
                     rows={4}
                 />
                 <button
@@ -174,38 +174,38 @@ export default function Question({ id, question }: { id: number; question: strin
 
                 {/* Streaming text display */}
                 {isStreaming && (
-                    <div className="mt-4 p-4 bg-gray-50 rounded-lg">
-                        <p className="text-gray-500 text-sm italic">AI is thinking...</p>
-                        <p className="mt-2 text-gray-700 whitespace-pre-wrap">{getStreamedText()}</p>
+                    <div className="mt-4 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                        <p className="text-gray-500 dark:text-gray-400 text-sm italic">AI is thinking...</p>
+                        <p className="mt-2 text-gray-700 dark:text-gray-200 whitespace-pre-wrap">{getStreamedText()}</p>
                     </div>
                 )}
 
                 {/* Final result */}
                 {aiResult && !isStreaming && (
-                    <div className="mt-4 p-4 bg-gray-50 rounded-lg">
+                    <div className="mt-4 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
                         <div className="flex items-center gap-2">
-                            <span className="font-medium">AI Score:</span>
+                            <span className="font-medium text-gray-900 dark:text-gray-100">AI Score:</span>
                             <span className={`text-2xl font-bold ${getScoreColor(aiResult.score)}`}>
                                 {aiResult.score}/5
                             </span>
                         </div>
-                        <p className="mt-2 text-gray-700">{aiResult.feedback}</p>
-                        <div className="mt-3 border-t pt-3">
-                            <span className="font-medium">Suggested Answer:</span>
-                            <p className="mt-1 text-gray-700 whitespace-pre-wrap">{aiResult.answer}</p>
+                        <p className="mt-2 text-gray-700 dark:text-gray-200">{aiResult.feedback}</p>
+                        <div className="mt-3 border-t border-gray-200 dark:border-gray-600 pt-3">
+                            <span className="font-medium text-gray-900 dark:text-gray-100">Suggested Answer:</span>
+                            <p className="mt-1 text-gray-700 dark:text-gray-200 whitespace-pre-wrap">{aiResult.answer}</p>
                         </div>
                     </div>
                 )}
             </div>
 
             <div className="flex">
-                <div className="border-gray-400 border-1-css rounded-md p-2 shadow">
-                    <label className="flex items-center text-sm">
+                <div className="border-gray-400 dark:border-gray-500 border-1-css rounded-md p-2 shadow">
+                    <label className="flex items-center text-sm text-gray-800 dark:text-gray-200">
                         <input
                             type="checkbox"
                             name={`comeBack-${id}`}
                             className="mr-2 mt-1"
-                            style={{ colorScheme: "light" }}
+                            style={{ colorScheme: "light dark" }}
                             checked={comeBack}
                             onChange={(e) => handleComeBack(e.target.checked)}
                         />

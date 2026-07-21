@@ -5,5 +5,11 @@
 }
 
 .mainHeight{
-    max-height: 84vh;
+    height: auto;
+}
+
+@media (min-width: 1024px) {
+    .mainHeight{
+        max-height: 84vh;
+    }
 }

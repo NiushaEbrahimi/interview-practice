@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
+import { ThemeProvider } from "./context/ThemeContext";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import DemoBanner from "./components/DemoBanner";
 
@@ -15,6 +16,7 @@ import SignUp from "./pages/authentication/signup";
 export default function App() {
   return (
     <BrowserRouter>
+      <ThemeProvider>
       <AuthProvider>
         <DemoBanner />
         <Routes>
@@ -63,6 +65,7 @@ export default function App() {
           } />
         </Routes>
       </AuthProvider>
+      </ThemeProvider>
     </BrowserRouter>
   );
 }

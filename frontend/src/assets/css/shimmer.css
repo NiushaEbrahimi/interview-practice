@@ -5,6 +5,10 @@
   overflow: hidden;
 }
 
+:root.dark .skeleton-card {
+  background: #374151;
+}
+
 .skeleton-card::after {
   content: "";
   position: absolute;

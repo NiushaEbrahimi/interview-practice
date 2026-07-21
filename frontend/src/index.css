@@ -1,10 +1,8 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @import '@splidejs/react-splide/css/skyblue';
-
-/* import '@splidejs/react-splide/css/skyblue'; 
-import '@splidejs/react-splide/css/sea-green';*/
-
 
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -12,8 +10,6 @@ import '@splidejs/react-splide/css/sea-green';*/
   font-weight: 400;
 
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;

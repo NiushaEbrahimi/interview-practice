@@ -80,14 +80,14 @@ export default function Dashboard(){
   }, [lessons, progressItems]);
 
   return (
-    <div className="min-h-screen bg-gray-100 flex py-4 sm:py-6 px-4 sm:px-6 lg:px-15 ">      
-      <div className="flex-1 flex flex-col bg-gray-200 rounded-2xl overflow-hidden">
+    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex py-0 px-0 sm:py-6 sm:px-6 lg:px-15 ">
+            <div className="flex-1 flex flex-col bg-gray-200 dark:bg-gray-800 rounded-0 sm:rounded-2xl overflow-hidden">
         <Header username={user?.profile.full_name || "User"} />
 
         <main className="flex-1 py-4 sm:py-6 px-4 sm:px-8 lg:px-10 space-y-6">
-          <h1 className="text-gray-700 text-xl sm:text-2xl font-medium">Welcome Back, {user?.profile.full_name}</h1>
+          <h1 className="text-gray-700 dark:text-gray-100 text-xl sm:text-2xl font-medium">Welcome Back, {user?.profile.full_name}</h1>
 
-          <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <section className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
             {isLoading ? (
               Array.from({ length: 4 }).map((_, i) => (
                 <Skeleton key={i} className="!w-full !h-28" />
@@ -96,9 +96,9 @@ export default function Dashboard(){
               Object.entries(stats).map(([key, value]) => {
                 if( key==="questions_practiced" || key==="accuracy_rate" || key==="days_streak" || key==="courses"){
                 return (
-                  <div key={key} className="bg-white rounded-3xl shadow-sm p-5">
-                    <p className="text-sm text-gray-500">{key.replaceAll("_", " ")}</p>
-                    <p className="mt-3 text-3xl font-semibold text-gray-900">
+                  <div key={key} className="bg-white dark:bg-gray-700 rounded-2xl sm:rounded-3xl shadow-sm p-3 sm:p-5">
+                    <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">{key.replaceAll("_", " ")}</p>
+                    <p className="mt-1 sm:mt-3 text-xl sm:text-3xl font-semibold text-gray-900 dark:text-gray-100">
                       {formatValue(key, Number(value))}
                     </p>
                   </div>
@@ -108,8 +108,8 @@ export default function Dashboard(){
             ) : null}
           </section>
           <div className="grid grid-cols-1 md:grid-cols-2 w-full gap-4">
-            <section className="flex-1 rounded-3xl bg-white p-5 shadow-sm">
-              <h2 className="text-gray-700 text-xl font-semibold mb-4">Continue Practicing</h2>
+            <section className="flex-1 rounded-3xl bg-white dark:bg-gray-700 p-5 shadow-sm">
+              <h2 className="text-gray-700 dark:text-gray-100 text-xl font-semibold mb-4">Continue Practicing</h2>
               <div className="space-y-4">
                 {isLoading ? (
                   Array.from({ length: 3 }).map((_, i) => (
@@ -117,16 +117,16 @@ export default function Dashboard(){
                   ))
                 ) : continuePracticing.length ? (
                   continuePracticing.map((item) => (
-                    <div key={item.id} className="rounded-3xl bg-gray-50 p-4">
+                    <div key={item.id} className="rounded-3xl bg-gray-50 dark:bg-gray-600 p-4">
                       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                         <div>
-                          <p className="font-medium text-gray-800">{item.lesson_name}</p>
-                          <p className="text-sm text-gray-500">
+                          <p className="font-medium text-gray-800 dark:text-gray-100">{item.lesson_name}</p>
+                          <p className="text-sm text-gray-500 dark:text-gray-400">
                             {item.course_title} · {item.lesson_level_display}
                           </p>
                         </div>
                         <div className="flex items-center gap-3">
-                          <span className="text-sm font-semibold text-gray-800">
+                          <span className="text-sm font-semibold text-gray-800 dark:text-gray-100">
                             {item.progress_percent}%
                           </span>
                           <button
@@ -138,7 +138,7 @@ export default function Dashboard(){
                         </div>
                       </div>
 
-                      <div className="mt-4 h-3 w-full overflow-hidden rounded-full bg-gray-200">
+                      <div className="mt-4 h-3 w-full overflow-hidden rounded-full bg-gray-200 dark:bg-gray-500">
                         <div
                           className="h-full rounded-full bg-gradient-to-r from-green-400 to-emerald-500"
                           style={{ width: `${Math.min(Math.max(item.progress_percent, 0), 100)}%` }}
@@ -147,14 +147,14 @@ export default function Dashboard(){
                     </div>
                   ))
                 ) : (
-                  <p className="text-sm text-gray-600">No active lessons to continue yet.</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">No active lessons to continue yet.</p>
                 )}
               </div>
             </section>
 
-            <section className="flex-1 rounded-3xl bg-white p-5 shadow-sm">
-              <h2 className="text-gray-700 text-xl font-semibold mb-4">Explore More</h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 rounded-3xl bg-gray-50 p-4">
+            <section className="flex-1 rounded-3xl bg-white dark:bg-gray-700 p-5 shadow-sm">
+              <h2 className="text-gray-700 dark:text-gray-100 text-xl font-semibold mb-4">Explore More</h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 rounded-3xl bg-gray-50 dark:bg-gray-600 p-4">
                 {isLoading ? (
                   Array.from({ length: 2 }).map((_, i) => (
                     <Skeleton key={i} className="!w-full !h-40" />
@@ -175,7 +175,7 @@ export default function Dashboard(){
                     />
                   ))
                 ) : (
-                  <p className="text-sm text-gray-600">No additional lessons recommended yet.</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">No additional lessons recommended yet.</p>
                 )}
               </div>
             </section>

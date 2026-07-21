@@ -32,11 +32,11 @@ export default function DemoBanner() {
   }
   
   return (
-    <div className="fixed top-5 left-5 text-center py-2 px-4 text-sm font-medium flex">
-      <button className={`px-4 py-3 rounded-2xl cursor-pointer shadow bg-black hover:bg-gray-800 ${style.demoBadge}`} onClick={() => toggle()}>
+    <div className="fixed top-13 sm:top-1 left-1 text-center p-0 text-xs font-light flex">
+      <button className={`px-2 py-1 sm:px-4 sm:py-3 rounded-2xl cursor-pointer shadow bg-black hover:bg-gray-800 ${style.demoBadge}`} onClick={() => toggle()}>
         Demo
       </button>
-      <div className={`rounded-2xl px-4 py-3 bg-black text-white ${style.demoBadgeTooltip} ${styleDemo}`} >
+      <div className={`rounded-2xl px-1 py-1 sm:px-4 sm:py-3 bg-black text-white ${style.demoBadgeTooltip} ${styleDemo}`}>
         Demo Mode — Data is simulated.{" "}
         <a
           href="https://github.com/NiushaEbrahimi/interview-practice"

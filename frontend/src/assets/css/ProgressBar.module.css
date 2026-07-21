@@ -16,6 +16,10 @@
     z-index: 10;
 }
 
+:root.dark .progressBackground{
+    background-color: #4b5563;
+}
+
 .progressBar{
     position: absolute;
     top: 0;

@@ -115,144 +115,143 @@ export default function Progress() {
   );
 
   return (
-    <div className="min-h-screen bg-gray-100 flex py-4 sm:py-6 px-4 sm:px-6 lg:px-15 ">      
-    
-          <div className="flex-1 flex flex-col bg-gray-200 rounded-2xl overflow-hidden">
-    
-          <Header username={user?.profile.full_name || "User"} />
+    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex py-0 px-0 sm:py-6 sm:px-6 lg:px-15 ">
+            <div className="flex-1 flex flex-col bg-gray-200 dark:bg-gray-800 rounded-0 sm:rounded-2xl overflow-hidden">
 
-          <main className="py-4 sm:py-6 px-4 sm:px-8 lg:px-10 space-y-6 grid gap-6 xl:grid-cols-[1.4fr_1fr] xl:items-start">
-            <section className="rounded-3xl bg-white p-6 shadow-sm">
-              <h1 className="text-gray-700 text-2xl font-semibold mb-4">Progress overview</h1>
+        <Header username={user?.profile.full_name || "User"} />
 
-              <div className="grid gap-4 sm:grid-cols-2">
-                <div className="rounded-3xl bg-gray-50 p-4">
-                  <p className="text-sm text-gray-500">Questions practiced</p>
-                  <p className="mt-2 text-3xl font-semibold text-gray-900">
-                    {stats?.questions_practiced ?? "–"}
-                  </p>
-                </div>
-                <div className="rounded-3xl bg-gray-50 p-4">
-                  <p className="text-sm text-gray-500">Average confidence</p>
-                  <p className="mt-2 text-3xl font-semibold text-gray-900">
-                    {Math.round((stats?.accuracy_rate ?? 0)/5) * 100}%
-                  </p>
-                </div>
-                <div className="rounded-3xl bg-gray-50 p-4">
-                  <p className="text-sm text-gray-500">Days streak</p>
-                  <p className="mt-2 text-3xl font-semibold text-gray-900">
-                    {stats?.days_streak ?? "–"}
-                  </p>
-                </div>
-                <div className="rounded-3xl bg-gray-50 p-4">
-                  <p className="text-sm text-gray-500">Courses practiced</p>
-                  <p className="mt-2 text-3xl font-semibold text-gray-900">
-                    {stats?.courses ?? "–"}
-                  </p>
-                </div>
+        <main className="py-4 sm:py-6 px-4 sm:px-8 lg:px-10 space-y-6 grid gap-6 xl:grid-cols-[1.4fr_1fr] xl:items-start">
+          <section className="rounded-3xl bg-white dark:bg-gray-700 p-6 shadow-sm">
+            <h1 className="text-gray-700 dark:text-gray-100 text-2xl font-semibold mb-4">Progress overview</h1>
+
+            <div className="grid grid-cols-2 gap-3 sm:gap-4">
+              <div className="rounded-2xl sm:rounded-3xl bg-gray-50 dark:bg-gray-600 p-3 sm:p-4">
+                <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">Questions practiced</p>
+                <p className="mt-1 sm:mt-2 text-xl sm:text-3xl font-semibold text-gray-900 dark:text-gray-100">
+                  {stats?.questions_practiced ?? "–"}
+                </p>
               </div>
+              <div className="rounded-2xl sm:rounded-3xl bg-gray-50 dark:bg-gray-600 p-3 sm:p-4">
+                <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">Average confidence</p>
+                <p className="mt-1 sm:mt-2 text-xl sm:text-3xl font-semibold text-gray-900 dark:text-gray-100">
+                  {Math.round((stats?.accuracy_rate ?? 0)/5) * 100}%
+                </p>
+              </div>
+              <div className="rounded-2xl sm:rounded-3xl bg-gray-50 dark:bg-gray-600 p-3 sm:p-4">
+                <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">Days streak</p>
+                <p className="mt-1 sm:mt-2 text-xl sm:text-3xl font-semibold text-gray-900 dark:text-gray-100">
+                  {stats?.days_streak ?? "–"}
+                </p>
+              </div>
+              <div className="rounded-2xl sm:rounded-3xl bg-gray-50 dark:bg-gray-600 p-3 sm:p-4">
+                <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">Courses practiced</p>
+                <p className="mt-1 sm:mt-2 text-xl sm:text-3xl font-semibold text-gray-900 dark:text-gray-100">
+                  {stats?.courses ?? "–"}
+                </p>
+              </div>
+            </div>
 
-              {error ? (
-                <p className="mt-6 text-sm text-red-600">{error}</p>
-              ) : isLoading ? (
-                <div className="mt-8 grid gap-6 sm:grid-cols-2">
-                  {Array.from({ length: 2 }).map((_, i) => (
-                    <Skeleton key={i} className="!w-full !h-48" />
-                  ))}
-                </div>
-              ) : (
-                <div className="mt-8 grid gap-6 sm:grid-cols-2">
-                  <div className="rounded-3xl bg-gray-50 p-5">
-                    <h2 className="text-lg font-semibold text-gray-700 mb-4">Progress by Level</h2>
-                    <div className="space-y-4">
-                      {progressByLevel.map((level) => (
-                        <div key={level.level} className="space-y-2">
-                          <div className="flex items-center justify-between text-sm text-gray-600">
-                            <span>{level.level}</span>
-                            <span>{level.percent}%</span>
-                          </div>
-                          <div className="relative h-4 w-full overflow-hidden rounded-full bg-gray-300">
-                            <div
-                              className="absolute left-0 top-0 h-full rounded-full bg-gradient-to-r from-green-400 to-emerald-500 transition-all duration-300"
-                              style={{ width: `${Math.min(Math.max(level.percent, 0), 100)}%` }}
-                            />
-                          </div>
+            {error ? (
+              <p className="mt-6 text-sm text-red-600 dark:text-red-400">{error}</p>
+            ) : isLoading ? (
+              <div className="mt-8 grid gap-6 sm:grid-cols-2">
+                {Array.from({ length: 2 }).map((_, i) => (
+                  <Skeleton key={i} className="!w-full !h-48" />
+                ))}
+              </div>
+            ) : (
+              <div className="mt-8 grid gap-6 sm:grid-cols-2">
+                <div className="rounded-3xl bg-gray-50 dark:bg-gray-600 p-5">
+                  <h2 className="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-4">Progress by Level</h2>
+                  <div className="space-y-4">
+                    {progressByLevel.map((level) => (
+                      <div key={level.level} className="space-y-2">
+                        <div className="flex items-center justify-between text-sm text-gray-600 dark:text-gray-300">
+                          <span>{level.level}</span>
+                          <span>{level.percent}%</span>
                         </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="rounded-3xl bg-gray-50 p-5">
-                    <h2 className="text-lg font-semibold text-gray-700 mb-4">Progress by Topic</h2>
-                    <div className="space-y-4">
-                      {progressByTopic.length ? (
-                        progressByTopic.map((topic) => (
-                          <div key={topic.topic} className="space-y-2">
-                            <div className="flex items-center justify-between text-sm text-gray-600">
-                              <span>{topic.topic}</span>
-                              <span>{topic.percent}%</span>
-                            </div>
-                            <div className="relative h-4 w-full overflow-hidden rounded-full bg-gray-300">
-                              <div
-                                className="absolute left-0 top-0 h-full rounded-full bg-blue-400 transition-all duration-300"
-                                style={{ width: `${Math.min(Math.max(topic.percent, 0), 100)}%` }}
-                              />
-                            </div>
-                          </div>
-                        ))
-                      ) : (
-                        <p className="text-sm text-gray-600">No topic progress available yet.</p>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              )}
-            </section>
-
-            <section className="rounded-3xl bg-white p-6 shadow-sm">
-              <div className="flex flex-col gap-4">
-                <div>
-                  <h2 className="text-gray-700 text-2xl font-semibold">Needs Review</h2>
-                  <p className="text-sm text-gray-500">Lessons with lower progress percent</p>
-                </div>
-                <div className="space-y-4">
-                  {isLoading ? (
-                    Array.from({ length: 3 }).map((_, i) => (
-                      <Skeleton key={i} className="!w-full !h-24" />
-                    ))
-                  ) : needsReview.length ? (
-                    needsReview.map((item) => (
-                      <div key={item.id} className="rounded-3xl bg-gray-50 p-4">
-                        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                          <div>
-                            <p className="font-medium text-gray-800">{item.lesson_name}</p>
-                            <p className="text-sm text-gray-500">
-                              {item.course_title} · {item.lesson_level_display}
-                            </p>
-                          </div>
-                          <button
-                            onClick={()=>navigate(`/courses/${item.course_title}/${item.lesson_level_display}/${item.lesson_name}`)}
-                            className="inline-flex items-center justify-center rounded-full bg-blue-500 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-600"
-                          >
-                            Resume
-                          </button>
-                        </div>
-                        <div className="mt-4 h-3 w-full overflow-hidden rounded-full bg-gray-300">
+                        <div className="relative h-4 w-full overflow-hidden rounded-full bg-gray-300 dark:bg-gray-500">
                           <div
-                            className="h-full rounded-full bg-blue-400"
-                            style={{ width: `${Math.min(Math.max(item.progress_percent, 0), 100)}%` }}
+                            className="absolute left-0 top-0 h-full rounded-full bg-gradient-to-r from-green-400 to-emerald-500 transition-all duration-300"
+                            style={{ width: `${Math.min(Math.max(level.percent, 0), 100)}%` }}
                           />
                         </div>
                       </div>
-                    ))
-                  ) : (
-                    <p className="text-sm text-gray-600">No items need review yet. Keep practicing to build progress data.</p>
-                  )}
+                    ))}
+                  </div>
+                </div>
+
+                <div className="rounded-3xl bg-gray-50 dark:bg-gray-600 p-5">
+                  <h2 className="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-4">Progress by Topic</h2>
+                  <div className="space-y-4">
+                    {progressByTopic.length ? (
+                      progressByTopic.map((topic) => (
+                        <div key={topic.topic} className="space-y-2">
+                          <div className="flex items-center justify-between text-sm text-gray-600 dark:text-gray-300">
+                            <span>{topic.topic}</span>
+                            <span>{topic.percent}%</span>
+                          </div>
+                          <div className="relative h-4 w-full overflow-hidden rounded-full bg-gray-300 dark:bg-gray-500">
+                            <div
+                              className="absolute left-0 top-0 h-full rounded-full bg-blue-400 transition-all duration-300"
+                              style={{ width: `${Math.min(Math.max(topic.percent, 0), 100)}%` }}
+                            />
+                          </div>
+                        </div>
+                      ))
+                    ) : (
+                      <p className="text-sm text-gray-600 dark:text-gray-400">No topic progress available yet.</p>
+                    )}
+                  </div>
                 </div>
               </div>
-            </section>
-          </main>
-        </div>
+            )}
+          </section>
+
+          <section className="rounded-3xl bg-white dark:bg-gray-700 p-6 shadow-sm">
+            <div className="flex flex-col gap-4">
+              <div>
+                <h2 className="text-gray-700 dark:text-gray-100 text-2xl font-semibold">Needs Review</h2>
+                <p className="text-sm text-gray-500 dark:text-gray-400">Lessons with lower progress percent</p>
+              </div>
+              <div className="space-y-4">
+                {isLoading ? (
+                  Array.from({ length: 3 }).map((_, i) => (
+                    <Skeleton key={i} className="!w-full !h-24" />
+                  ))
+                ) : needsReview.length ? (
+                  needsReview.map((item) => (
+                    <div key={item.id} className="rounded-3xl bg-gray-50 dark:bg-gray-600 p-4">
+                      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                        <div>
+                          <p className="font-medium text-gray-800 dark:text-gray-100">{item.lesson_name}</p>
+                          <p className="text-sm text-gray-500 dark:text-gray-400">
+                            {item.course_title} · {item.lesson_level_display}
+                          </p>
+                        </div>
+                        <button
+                          onClick={()=>navigate(`/courses/${item.course_title}/${item.lesson_level_display}/${item.lesson_name}`)}
+                          className="inline-flex items-center justify-center rounded-full bg-blue-500 px-4 py-2 text-sm font-medium text-white transition hover:bg-blue-600"
+                        >
+                          Resume
+                        </button>
+                      </div>
+                      <div className="mt-4 h-3 w-full overflow-hidden rounded-full bg-gray-300 dark:bg-gray-500">
+                        <div
+                          className="h-full rounded-full bg-blue-400"
+                          style={{ width: `${Math.min(Math.max(item.progress_percent, 0), 100)}%` }}
+                        />
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <p className="text-sm text-gray-600 dark:text-gray-400">No items need review yet. Keep practicing to build progress data.</p>
+                )}
+              </div>
+            </div>
+          </section>
+        </main>
       </div>
+    </div>
   );
 }
