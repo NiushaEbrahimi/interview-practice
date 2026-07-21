@@ -1,0 +1,144 @@
+{
+  "course": "Django",
+  "description": "Django Python web framework",
+  "lessons": [
+    {
+      "name": "Django Introductions",
+      "level": 1,
+      "questions": [
+        {
+          "question": "What is Django?",
+          "correct_answer": "A high-level Python web framework that encourages rapid development and clean, pragmatic design."
+        },
+        {
+          "question": "What is Django used for?",
+          "correct_answer": "Building backend web applications, REST APIs, and content management systems."
+        },
+        {
+          "question": "What is the MTV pattern in Django?",
+          "correct_answer": "Model-Template-View — Django's architecture where Models handle data, Templates handle presentation, and Views handle logic."
+        },
+        {
+          "question": "What is the Django admin?",
+          "correct_answer": "A built-in interface for managing application data, automatically generated from your models."
+        },
+        {
+          "question": "What is manage.py?",
+          "correct_answer": "A command-line utility for interacting with your Django project — running servers, migrations, and management commands."
+        },
+        {
+          "question": "What is a Django project?",
+          "correct_answer": "A collection of settings and applications that define a website. Created with django-admin startproject."
+        },
+        {
+          "question": "What is a Django app?",
+          "correct_answer": "A modular component that handles a specific feature. A project contains multiple apps."
+        },
+        {
+          "question": "What is the Django ORM?",
+          "correct_answer": "Object-Relational Mapping — lets you interact with the database using Python objects instead of SQL."
+        },
+        {
+          "question": "What is settings.py?",
+          "correct_answer": "The configuration file for a Django project, containing database settings, installed apps, middleware, and more."
+        },
+        {
+          "question": "What is the Django request-response cycle?",
+          "correct_answer": "URL → Middleware → View → Model (optional) → Template → Response → Middleware → Client."
+        }
+      ]
+    },
+    {
+      "name": "views",
+      "level": 1,
+      "questions": [
+        {
+          "question": "What is a Django view?",
+          "correct_answer": "A function or class that receives an HTTP request and returns an HTTP response."
+        },
+        {
+          "question": "What does a view return?",
+          "correct_answer": "An HTTP response — typically an HttpResponse object, JsonResponse, or rendered template."
+        },
+        {
+          "question": "What is the difference between function-based and class-based views?",
+          "correct_answer": "FBVs are simple functions. CBVs use classes with methods like get() and post(), offering built-in patterns."
+        },
+        {
+          "question": "What is a Django URL pattern?",
+          "correct_answer": "A mapping between a URL path and a view, defined in urls.py using path() or re_path()."
+        },
+        {
+          "question": "What is the @require_http_methods decorator?",
+          "correct_answer": "Restricts a view to only accept specified HTTP methods (GET, POST, etc.)."
+        },
+        {
+          "question": "What is a JsonResponse?",
+          "correct_answer": "A specialized HttpResponse for sending JSON data, used for API endpoints."
+        },
+        {
+          "question": "What is the difference between render() and HttpResponse()?",
+          "correct_answer": "render() processes a template and returns an HttpResponse with the rendered content. HttpResponse returns raw content."
+        },
+        {
+          "question": "What is reverse() in Django?",
+          "correct_answer": "A function that resolves a URL name back to its URL path, useful for redirects."
+        },
+        {
+          "question": "What is Django REST Framework?",
+          "correct_answer": "A toolkit for building Web APIs in Django, providing serializers, viewsets, and authentication."
+        },
+        {
+          "question": "What is a DRF serializer?",
+          "correct_answer": "Converts complex data (QuerySets, models) to JSON and validates incoming data."
+        }
+      ]
+    },
+    {
+      "name": "models",
+      "level": 1,
+      "questions": [
+        {
+          "question": "What is a Django model?",
+          "correct_answer": "A Python class that represents a database table, defining its fields and behaviors."
+        },
+        {
+          "question": "What does ORM mean in Django?",
+          "correct_answer": "Object Relational Mapping — lets you write database queries in Python instead of raw SQL."
+        },
+        {
+          "question": "What is a ForeignKey in Django?",
+          "correct_answer": "A field that creates a many-to-one relationship between two models."
+        },
+        {
+          "question": "What is the difference between OneToOneField and ForeignKey?",
+          "correct_answer": "OneToOneField creates a 1:1 relationship. ForeignKey creates a many-to-one relationship."
+        },
+        {
+          "question": "What is a migration in Django?",
+          "correct_answer": "A file that describes changes to your models (new fields, tables) that Django applies to the database."
+        },
+        {
+          "question": "How do you create migrations?",
+          "correct_answer": "Run python manage.py makemigrations to generate migration files from model changes."
+        },
+        {
+          "question": "What does python manage.py migrate do?",
+          "correct_answer": "Applies pending migration files to the database, creating or updating tables."
+        },
+        {
+          "question": "What is QuerySet?",
+          "correct_answer": "A lazy collection of database queries that can be filtered, ordered, and evaluated."
+        },
+        {
+          "question": "What is the difference between .filter() and .get()?",
+          "correct_answer": ".filter() returns a QuerySet of matching records. .get() returns a single record or raises DoesNotExist."
+        },
+        {
+          "question": "What is the Meta class in a model?",
+          "correct_answer": "An inner class that defines metadata like database table name, ordering, and constraints."
+        }
+      ]
+    }
+  ]
+}

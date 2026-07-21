@@ -169,16 +169,93 @@ LLM_MODEL=gpt-4o-mini
 
 The default configuration uses Ollama — if you leave `backend/.env` as-is, it will connect to `localhost:11434`.
 
+### 5. Seed the database with questions
+
+The app comes with 220+ interview questions across 7 courses. Seed them with:
+
+```bash
+cd backend
+python manage.py seed_from_json
+```
+
+Available courses and question counts:
+
+| Course | Lessons | Questions |
+|--------|---------|-----------|
+| React | 4 | 40 |
+| JavaScript | 4 | 40 |
+| HTML & CSS | 5 | 50 |
+| Python | 2 | 20 |
+| Django | 3 | 30 |
+| Next.js | 2 | 20 |
+| TypeScript | 2 | 20 |
+
+Useful flags:
+
+```bash
+python manage.py seed_from_json --list             # show available JSON files
+python manage.py seed_from_json --course React      # seed only one course
+python manage.py seed_from_json --incremental       # skip existing questions
+```
+
+#### Adding your own questions
+
+Edit or create JSON files in `backend/api/seed_data/`. No Python knowledge needed:
+
+```json
+{
+  "course": "Go",
+  "description": "Go programming language",
+  "lessons": [
+    {
+      "name": "Go Introduction",
+      "level": 1,
+      "questions": [
+        {
+          "question": "What is Go?",
+          "correct_answer": "A statically typed, compiled language designed for simplicity and performance."
+        },
+        {
+          "question": "What is a goroutine?",
+          "correct_answer": "A lightweight thread managed by the Go runtime for concurrent execution."
+        }
+      ]
+    }
+  ]
+}
+```
+
+Then seed it:
+
+```bash
+python manage.py seed_from_json --course Go
+```
+
+#### Generating questions with AI
+
+If you have Ollama running, you can generate questions for any topic:
+
+```bash
+# Generate 10 questions for an existing lesson
+python manage.py generate_questions --lesson "React Hooks" --count 10
+
+# Preview without saving
+python manage.py generate_questions --lesson "CSS Grid" --count 5 --dry-run
+
+# Export to JSON for review before seeding
+python manage.py generate_questions --lesson "Django REST" --count 8 --export rest_questions.json
+
+# Generate only hard questions
+python manage.py generate_questions --lesson "Python Decorators" --count 10 --difficulty hard
+```
+
+The lesson must already exist in the database. Generate questions, review them, then add the good ones to a JSON file for permanent storage.
+
 ---
 
 ## Demo Mode
 
-When the backend is not available (e.g. on Vercel), the frontend automatically activates **demo mode** with simulated data including mock AI responses. No configuration needed — just deploy the `frontend/` directory to Vercel:
-
-1. Connect your GitHub repo to Vercel
-2. Set the **Root Directory** to `frontend`
-3. Framework: Vite (auto-detected)
-4. Deploy
+When the backend is not available (e.g. on Vercel), the frontend automatically activates **demo mode** with simulated data including mock AI responses. 
 
 The app will show a "Demo Mode" banner and all features will work with mock data.
 
@@ -191,6 +268,9 @@ The app will show a "Demo Mode" banner and all features will work with mock data
 * **AI scoring** — type your answer and get AI-powered feedback, scoring (1-5), and a suggested better answer
 * **Progress tracking** — track which questions you've answered and your confidence over time
 * **Stats dashboard** — view your overall performance and weak areas
+* **Dark/light theme** — toggle manually or follow system preference
+* **Question seeding** — 220+ questions across 7 courses, easily expandable via JSON files
+* **AI question generation** — generate questions for any topic using Ollama
 * **Demo mode** — full app works without a backend using mock data (including AI responses)
 * **Responsive** — works on mobile, tablet, and desktop
 
@@ -203,6 +283,9 @@ The app will show a "Demo Mode" banner and all features will work with mock data
 * [x] responsive design
 * [x] AI-powered answer scoring with Ollama / OpenAI-compatible providers
 * [x] configurable LLM provider via environment variables
+* [x] JSON-based question seeding system (220+ questions across 7 courses)
+* [x] AI question generation via Ollama
+* [x] dark/light theme with system preference detection
 * [ ] improving prompt quality for better AI feedback
 * [ ] adding more question categories
 * [ ] user auth improvements (password reset, email verification)

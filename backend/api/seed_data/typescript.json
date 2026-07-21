@@ -1,0 +1,98 @@
+{
+  "course": "TypeScript",
+  "description": "TypeScript typed superset of JavaScript",
+  "lessons": [
+    {
+      "name": "TypeScript Introduction",
+      "level": 1,
+      "questions": [
+        {
+          "question": "What is TypeScript?",
+          "correct_answer": "A typed superset of JavaScript that compiles to plain JavaScript, adding static type checking."
+        },
+        {
+          "question": "Why use TypeScript?",
+          "correct_answer": "To catch errors during development, improve code readability, enable better tooling, and make refactoring safer."
+        },
+        {
+          "question": "What is the difference between TypeScript and JavaScript?",
+          "correct_answer": "TypeScript adds static types, interfaces, enums, and generics. JavaScript is dynamically typed."
+        },
+        {
+          "question": "How do you install TypeScript?",
+          "correct_answer": "npm install -g typescript or as a dev dependency: npm install -D typescript."
+        },
+        {
+          "question": "What is the tsconfig.json file?",
+          "correct_answer": "The TypeScript configuration file that defines compiler options, file inclusion, and project settings."
+        },
+        {
+          "question": "What does the 'any' type do?",
+          "correct_answer": "Disables type checking for a variable, allowing it to hold any value. Use sparingly as it defeats the purpose of TypeScript."
+        },
+        {
+          "question": "What is type inference?",
+          "correct_answer": "TypeScript automatically determining the type of a variable based on its assigned value."
+        },
+        {
+          "question": "What is the difference between unknown and any?",
+          "correct_answer": "unknown forces you to check the type before using it. any bypasses all type checking."
+        },
+        {
+          "question": "What is a union type?",
+          "correct_answer": "A type that can be one of several types, defined with the | operator: string | number."
+        },
+        {
+          "question": "What is a type assertion?",
+          "correct_answer": "Telling the compiler to treat a value as a specific type: value as string or <string>value."
+        }
+      ]
+    },
+    {
+      "name": "interface vs type",
+      "level": 1,
+      "questions": [
+        {
+          "question": "What is an interface in TypeScript?",
+          "correct_answer": "A way to define the shape of an object — its properties, methods, and types."
+        },
+        {
+          "question": "What is the difference between type and interface?",
+          "correct_answer": "Interfaces are extendable with extends and can be merged. Types are more flexible (unions, intersections) but can't be merged."
+        },
+        {
+          "question": "When should you use interface over type?",
+          "correct_answer": "Use interface for object shapes that may need extension or declaration merging. Use type for unions, intersections, or computed types."
+        },
+        {
+          "question": "Can you extend an interface?",
+          "correct_answer": "Yes, using the extends keyword: interface B extends A { ... }."
+        },
+        {
+          "question": "Can you extend a type?",
+          "correct_answer": "Not directly with extends, but you can use intersection types: type B = A & { extra: string }."
+        },
+        {
+          "question": "What is declaration merging?",
+          "correct_answer": "When TypeScript combines multiple interface declarations with the same name into one. Types don't support this."
+        },
+        {
+          "question": "What is a generic type?",
+          "correct_answer": "A type that accepts type parameters, like Array<T> or Box<T>, allowing reusable type-safe code."
+        },
+        {
+          "question": "What is a mapped type?",
+          "correct_answer": "A type created by transforming properties of an existing type, e.g., { [K in keyof T]: boolean }."
+        },
+        {
+          "question": "What is a conditional type?",
+          "correct_answer": "A type that selects one of two types based on a condition: T extends U ? X : Y."
+        },
+        {
+          "question": "What is the utility type Partial<T>?",
+          "correct_answer": "Makes all properties of type T optional."
+        }
+      ]
+    }
+  ]
+}

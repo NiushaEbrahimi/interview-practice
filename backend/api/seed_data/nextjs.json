@@ -1,0 +1,98 @@
+{
+  "course": "Next.js",
+  "description": "React framework for production",
+  "lessons": [
+    {
+      "name": "Next.js Introduction",
+      "level": 1,
+      "questions": [
+        {
+          "question": "What is Next.js?",
+          "correct_answer": "A React framework for production apps that provides server-side rendering, static generation, and file-based routing."
+        },
+        {
+          "question": "What feature does Next.js provide over plain React?",
+          "correct_answer": "Server-side rendering (SSR), static site generation (SSG), API routes, and automatic code splitting."
+        },
+        {
+          "question": "What is the App Router in Next.js?",
+          "correct_answer": "The newer routing system (Next.js 13+) using a folder-based structure in the app/ directory with React Server Components."
+        },
+        {
+          "question": "What is the difference between pages/ and app/ directory?",
+          "correct_answer": "pages/ is the older Pages Router. app/ is the newer App Router with server components, layouts, and streaming."
+        },
+        {
+          "question": "What are React Server Components?",
+          "correct_answer": "Components that render on the server, reducing client-side JavaScript and improving initial load performance."
+        },
+        {
+          "question": "What is ISR (Incremental Static Regeneration)?",
+          "correct_answer": "A strategy that lets you update static pages after build time by revalidating them at specified intervals."
+        },
+        {
+          "question": "What is the difference between SSR and SSG?",
+          "correct_answer": "SSR renders pages on every request. SSG pre-builds pages at build time for faster delivery."
+        },
+        {
+          "question": "What is middleware in Next.js?",
+          "correct_answer": "Code that runs before a request is completed, useful for authentication, redirects, and rewriting URLs."
+        },
+        {
+          "question": "What is next.config.js?",
+          "correct_answer": "The configuration file for customizing Next.js behavior, like redirects, rewrites, and build settings."
+        },
+        {
+          "question": "What is the Image component in Next.js?",
+          "correct_answer": "An optimized <img> component that provides lazy loading, resizing, and modern format support."
+        }
+      ]
+    },
+    {
+      "name": "Routes and folder structure",
+      "level": 1,
+      "questions": [
+        {
+          "question": "How does routing work in Next.js?",
+          "correct_answer": "File-based routing — each file in the app/ or pages/ directory automatically becomes a route."
+        },
+        {
+          "question": "What is the purpose of the app folder?",
+          "correct_answer": "Defines routes using folder structure. Each folder is a route segment, and page.tsx files define the UI."
+        },
+        {
+          "question": "What is a layout in Next.js?",
+          "correct_answer": "A component that wraps child routes, preserving state and UI across navigations (defined in layout.tsx)."
+        },
+        {
+          "question": "What is a loading.tsx file?",
+          "correct_answer": "A special file that shows a loading UI while the route's content is being fetched."
+        },
+        {
+          "question": "What is an error.tsx file?",
+          "correct_answer": "A special file that acts as an error boundary for a route segment, showing fallback UI on errors."
+        },
+        {
+          "question": "What is a page.tsx file?",
+          "correct_answer": "The unique UI for a route. Without it, the segment doesn't become a publicly accessible route."
+        },
+        {
+          "question": "How do you create dynamic routes?",
+          "correct_answer": "Use bracket syntax in folder names, like [id]/page.tsx for dynamic segments."
+        },
+        {
+          "question": "What is the difference between layout.tsx and page.tsx?",
+          "correct_answer": "layout.tsx wraps all children in a segment and persists across navigation. page.tsx is the unique content for that route."
+        },
+        {
+          "question": "What is route groups in Next.js?",
+          "correct_answer": "Folders wrapped in parentheses like (marketing) that organize routes without affecting the URL structure."
+        },
+        {
+          "question": "How do you catch all routes?",
+          "correct_answer": "Use the [...slug] folder syntax to match any number of path segments."
+        }
+      ]
+    }
+  ]
+}

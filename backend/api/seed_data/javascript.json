@@ -1,0 +1,190 @@
+{
+  "course": "JavaScript",
+  "description": "JavaScript programming language",
+  "lessons": [
+    {
+      "name": "JavaScript Introduction",
+      "level": 1,
+      "questions": [
+        {
+          "question": "What is JavaScript?",
+          "correct_answer": "A high-level, interpreted programming language primarily used for web development to make pages interactive."
+        },
+        {
+          "question": "Is JavaScript synchronous?",
+          "correct_answer": "JavaScript is single-threaded and synchronous by default, but supports asynchronous behavior via callbacks, promises, and async/await."
+        },
+        {
+          "question": "What is the difference between var, let, and const?",
+          "correct_answer": "var is function-scoped and hoisted. let is block-scoped. const is block-scoped and cannot be reassigned."
+        },
+        {
+          "question": "What is hoisting?",
+          "correct_answer": "JavaScript moves declarations to the top of their scope during compilation, so variables and functions are available before their declaration line."
+        },
+        {
+          "question": "What is the DOM?",
+          "correct_answer": "Document Object Model — a tree-structured representation of the HTML document that JavaScript can manipulate."
+        },
+        {
+          "question": "What is the difference between null and undefined?",
+          "correct_answer": "null is an intentional absence of value. undefined means a variable has been declared but not assigned a value."
+        },
+        {
+          "question": "What is type coercion?",
+          "correct_answer": "Automatic conversion of values from one type to another, e.g., '5' + 3 becomes '53' (string concatenation)."
+        },
+        {
+          "question": "What is the difference between == and ===?",
+          "correct_answer": "== performs type coercion before comparison. === checks both value and type without coercion."
+        },
+        {
+          "question": "What is the event loop?",
+          "correct_answer": "The mechanism that handles asynchronous operations by checking the callback queue and pushing callbacks to the call stack when it's empty."
+        },
+        {
+          "question": "What is a Promise?",
+          "correct_answer": "An object representing the eventual completion or failure of an asynchronous operation and its resulting value."
+        }
+      ]
+    },
+    {
+      "name": "Closure",
+      "level": 2,
+      "questions": [
+        {
+          "question": "What is a closure?",
+          "correct_answer": "A function that retains access to its outer scope's variables even after the outer function has returned."
+        },
+        {
+          "question": "Why are closures useful?",
+          "correct_answer": "They enable data encapsulation, private variables, function factories, and maintaining state in async operations."
+        },
+        {
+          "question": "What is a practical example of closures?",
+          "correct_answer": "Event handlers that remember the state at creation time, or counters that maintain private state."
+        },
+        {
+          "question": "Do arrow functions create closures?",
+          "correct_answer": "Yes, all functions in JavaScript create closures. Arrow functions also lexically bind 'this'."
+        },
+        {
+          "question": "What is the module pattern?",
+          "correct_answer": "Using closures to create private scope — an IIFE that returns an object with public methods while keeping internal state private."
+        },
+        {
+          "question": "Can closures cause memory leaks?",
+          "correct_answer": "Yes, if closures reference large objects that are no longer needed but remain in memory because the closure still holds a reference."
+        },
+        {
+          "question": "What is the difference between a closure and a scope?",
+          "correct_answer": "Scope is the current context of execution. A closure is when a function remembers its scope even after that scope is gone."
+        },
+        {
+          "question": "How do you create a private variable with closures?",
+          "correct_answer": "Define a variable inside a function and return inner functions that access it. The variable cannot be accessed from outside."
+        },
+        {
+          "question": "What is a function factory?",
+          "correct_answer": "A function that returns other functions with pre-configured behavior, using closures to remember the configuration."
+        },
+        {
+          "question": "Do closures affect performance?",
+          "correct_answer": "Closures keep references to outer variables in memory. Overusing them with large data can increase memory usage."
+        }
+      ]
+    },
+    {
+      "name": "this",
+      "level": 2,
+      "questions": [
+        {
+          "question": "What does 'this' refer to in JavaScript?",
+          "correct_answer": "The execution context object — in a method it's the object, in a function it's undefined (strict) or global, in an event it's the target element."
+        },
+        {
+          "question": "Does 'this' behave the same in arrow functions?",
+          "correct_answer": "No. Arrow functions inherit 'this' from their enclosing lexical scope, unlike regular functions."
+        },
+        {
+          "question": "What is 'this' in a class constructor?",
+          "correct_answer": "The newly created instance of the class."
+        },
+        {
+          "question": "What is 'this' in an event handler?",
+          "correct_answer": "The DOM element that received the event (for regular functions). In arrow functions, it's the enclosing scope's 'this'."
+        },
+        {
+          "question": "How do you explicitly set 'this'?",
+          "correct_answer": "Using call(), apply(), or bind() methods."
+        },
+        {
+          "question": "What is the difference between call and apply?",
+          "correct_answer": "Both invoke a function with a given 'this'. call() takes arguments individually, apply() takes an array of arguments."
+        },
+        {
+          "question": "What does bind() do?",
+          "correct_answer": "Returns a new function with 'this' permanently bound to the provided value."
+        },
+        {
+          "question": "What is 'this' in a regular function call?",
+          "correct_answer": "undefined in strict mode, or the global object (window) in non-strict mode."
+        },
+        {
+          "question": "What is 'this' in an object method?",
+          "correct_answer": "The object that owns the method."
+        },
+        {
+          "question": "Why do people use const self = this?",
+          "correct_answer": "To capture the outer 'this' in a variable so it can be accessed inside callbacks where 'this' changes context."
+        }
+      ]
+    },
+    {
+      "name": "Prototype",
+      "level": 2,
+      "questions": [
+        {
+          "question": "What is a prototype in JavaScript?",
+          "correct_answer": "An object from which other objects inherit properties and methods, forming the prototype chain."
+        },
+        {
+          "question": "What is prototype chain?",
+          "correct_answer": "The chain of linked prototypes that JavaScript traverses when looking up a property that doesn't exist on an object."
+        },
+        {
+          "question": "What is the difference between __proto__ and prototype?",
+          "correct_answer": "__proto__ is the actual prototype of an instance. prototype is a property of constructor functions used to set up inheritance."
+        },
+        {
+          "question": "What is prototypal inheritance?",
+          "correct_answer": "Objects can directly inherit from other objects without classes — a more flexible alternative to classical inheritance."
+        },
+        {
+          "question": "What does Object.create() do?",
+          "correct_answer": "Creates a new object with the specified prototype object as its prototype."
+        },
+        {
+          "question": "What is the difference between prototype and __proto__?",
+          "correct_answer": "prototype is a property on constructor functions. __proto__ is the internal reference from an instance to its prototype."
+        },
+        {
+          "question": "How do you check if a property belongs to an object vs its prototype?",
+          "correct_answer": "Use hasOwnProperty() — it returns true only if the property is directly on the object, not inherited."
+        },
+        {
+          "question": "What is method overriding in prototypes?",
+          "correct_answer": "Defining a method on a child object that shadows the same-named method on its prototype."
+        },
+        {
+          "question": "What is the relationship between classes and prototypes?",
+          "correct_answer": "ES6 classes are syntactic sugar over prototypal inheritance. Under the hood, they still use prototypes."
+        },
+        {
+          "question": "What is the Performance impact of deep prototype chains?",
+          "correct_answer": "Longer chains mean more lookups when accessing inherited properties, which can slow down property resolution."
+        }
+      ]
+    }
+  ]
+}

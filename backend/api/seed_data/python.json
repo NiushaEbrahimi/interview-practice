@@ -1,0 +1,98 @@
+{
+  "course": "Python",
+  "description": "Python programming language",
+  "lessons": [
+    {
+      "name": "Python Introduction",
+      "level": 1,
+      "questions": [
+        {
+          "question": "What is Python?",
+          "correct_answer": "A high-level, interpreted, general-purpose programming language known for its readability and simplicity."
+        },
+        {
+          "question": "Is Python compiled or interpreted?",
+          "correct_answer": "Interpreted. Python code is executed line by line by the interpreter."
+        },
+        {
+          "question": "What are Python's main data types?",
+          "correct_answer": "int, float, str, bool, list, tuple, dict, set, None."
+        },
+        {
+          "question": "What is the difference between a list and a tuple?",
+          "correct_answer": "Lists are mutable (can be changed), tuples are immutable (cannot be changed after creation)."
+        },
+        {
+          "question": "What is PEP 8?",
+          "correct_answer": "Python's style guide that defines coding conventions for readability and consistency."
+        },
+        {
+          "question": "What is dynamic typing?",
+          "correct_answer": "Python determines variable types at runtime, so you don't need to declare types explicitly."
+        },
+        {
+          "question": "What is the Zen of Python?",
+          "correct_answer": "A collection of guiding principles for writing Python code, accessible via import this."
+        },
+        {
+          "question": "What is the difference between == and is?",
+          "correct_answer": "== checks value equality, is checks identity (whether two variables point to the same object in memory)."
+        },
+        {
+          "question": "What is a docstring?",
+          "correct_answer": "A string literal placed as the first statement in a function, class, or module to document what it does."
+        },
+        {
+          "question": "What is the difference between a module and a package?",
+          "correct_answer": "A module is a single .py file. A package is a directory of modules with an __init__.py file."
+        }
+      ]
+    },
+    {
+      "name": "VirtualEnv",
+      "level": 1,
+      "questions": [
+        {
+          "question": "What is a virtual environment?",
+          "correct_answer": "An isolated Python environment with its own packages and dependencies, separate from the system Python."
+        },
+        {
+          "question": "Why use virtualenv?",
+          "correct_answer": "To avoid dependency conflicts between projects and keep project dependencies isolated."
+        },
+        {
+          "question": "How do you create a virtual environment?",
+          "correct_answer": "Run python -m venv <name> (or python3 -m venv <name>)."
+        },
+        {
+          "question": "How do you activate a virtual environment on Windows?",
+          "correct_answer": "Run <name>\\Scripts\\activate in the terminal."
+        },
+        {
+          "question": "How do you deactivate a virtual environment?",
+          "correct_answer": "Run the deactivate command in the terminal."
+        },
+        {
+          "question": "What is the difference between venv and virtualenv?",
+          "correct_answer": "venv is built into Python 3.3+. virtualenv is a third-party tool that supports Python 2 and has more features."
+        },
+        {
+          "question": "Should you commit the virtual environment to Git?",
+          "correct_answer": "No. Add the venv directory to .gitignore and use requirements.txt to share dependencies."
+        },
+        {
+          "question": "What does requirements.txt contain?",
+          "correct_answer": "A list of Python packages and versions needed for the project, generated via pip freeze > requirements.txt."
+        },
+        {
+          "question": "What is pip?",
+          "correct_answer": "Python's package installer used to install and manage packages from PyPI."
+        },
+        {
+          "question": "How do you install packages from requirements.txt?",
+          "correct_answer": "Run pip install -r requirements.txt."
+        }
+      ]
+    }
+  ]
+}

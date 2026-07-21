@@ -1,0 +1,190 @@
+{
+  "course": "React",
+  "description": "React.js frontend framework",
+  "lessons": [
+    {
+      "name": "React Introduction",
+      "level": 1,
+      "questions": [
+        {
+          "question": "What is React mainly used for?",
+          "correct_answer": "Building user interfaces, especially single-page applications with dynamic, interactive UIs."
+        },
+        {
+          "question": "What problem does React solve?",
+          "correct_answer": "Efficient UI rendering and state management by using a virtual DOM to minimize expensive DOM operations."
+        },
+        {
+          "question": "What is the virtual DOM?",
+          "correct_answer": "A lightweight JavaScript representation of the real DOM that React uses to diff changes and minimize direct DOM manipulation."
+        },
+        {
+          "question": "What is a component in React?",
+          "correct_answer": "A reusable, self-contained piece of UI that can manage its own state and accept props."
+        },
+        {
+          "question": "What is JSX?",
+          "correct_answer": "A syntax extension for JavaScript that looks like HTML and lets you write UI elements directly in JS code."
+        },
+        {
+          "question": "What is the difference between a class component and a functional component?",
+          "correct_answer": "Class components use ES6 classes and can have lifecycle methods and local state. Functional components are simpler functions that use hooks for state and effects."
+        },
+        {
+          "question": "What is unidirectional data flow in React?",
+          "correct_answer": "Data passes from parent to child components via props. Child components cannot modify parent data directly."
+        },
+        {
+          "question": "What is the entry point of a React application?",
+          "correct_answer": "The root component rendered by ReactDOM.createRoot() attached to a DOM element, typically in index.js or main.tsx."
+        },
+        {
+          "question": "What is React's reconciliation process?",
+          "correct_answer": "The algorithm React uses to diff the virtual DOM tree and determine the minimal set of real DOM updates needed."
+        },
+        {
+          "question": "Why is React called a library and not a framework?",
+          "correct_answer": "React only handles the view layer. It doesn't prescribe routing, HTTP, or state management solutions — you choose those yourself."
+        }
+      ]
+    },
+    {
+      "name": "Memoization",
+      "level": 2,
+      "questions": [
+        {
+          "question": "What is memoization in React?",
+          "correct_answer": "Caching the result of an expensive computation so it only recalculates when its dependencies change."
+        },
+        {
+          "question": "When should you use memoization?",
+          "correct_answer": "When a computation is expensive and repeats often, or when passing callbacks/stable references to child components."
+        },
+        {
+          "question": "What does useMemo do?",
+          "correct_answer": "Caches a computed value between re-renders, only recomputing when its dependency array changes."
+        },
+        {
+          "question": "What does useCallback do?",
+          "correct_answer": "Caches a function definition between re-renders, returning the same function reference unless dependencies change."
+        },
+        {
+          "question": "What does React.memo do?",
+          "correct_answer": "A higher-order component that prevents re-rendering if props haven't changed (shallow comparison)."
+        },
+        {
+          "question": "What is the difference between useMemo and useCallback?",
+          "correct_answer": "useMemo caches a value (result of a function), useCallback caches the function itself."
+        },
+        {
+          "question": "When does useMemo recompute?",
+          "correct_answer": "When any value in its dependency array changes between renders."
+        },
+        {
+          "question": "Can overusing memoization hurt performance?",
+          "correct_answer": "Yes. Memoization has overhead for caching and comparison. It can slow things down if applied to cheap computations."
+        },
+        {
+          "question": "What is referential equality and why does it matter?",
+          "correct_answer": "Two references are equal only if they point to the same object in memory. React.memo and useEffect depend on this for change detection."
+        },
+        {
+          "question": "Does useMemo guarantee the cached value won't change?",
+          "correct_answer": "No. React may discard cached values under memory pressure. useMemo is a performance optimization, not a correctness guarantee."
+        }
+      ]
+    },
+    {
+      "name": "Hooks",
+      "level": 1,
+      "questions": [
+        {
+          "question": "What is a React Hook?",
+          "correct_answer": "A function that lets you use state and lifecycle features in functional components."
+        },
+        {
+          "question": "Can hooks be used inside loops or conditions?",
+          "correct_answer": "No. Hooks must always be called at the top level of a component, never inside loops, conditions, or nested functions."
+        },
+        {
+          "question": "What does useState return?",
+          "correct_answer": "An array with the current state value and a function to update it."
+        },
+        {
+          "question": "What does useEffect do?",
+          "correct_answer": "Lets you perform side effects in functional components, like data fetching, subscriptions, or DOM manipulation."
+        },
+        {
+          "question": "What is the cleanup function in useEffect?",
+          "correct_answer": "A function returned from the useEffect callback that runs before the component unmounts or before the effect re-runs."
+        },
+        {
+          "question": "What is the dependency array in useEffect?",
+          "correct_answer": "An array of values that the effect depends on. The effect only re-runs when these values change."
+        },
+        {
+          "question": "What does useRef do?",
+          "correct_answer": "Creates a mutable reference object that persists across re-renders without triggering a re-render when changed."
+        },
+        {
+          "question": "What is the difference between useState and useRef?",
+          "correct_answer": "useState triggers a re-render when updated. useRef does not trigger a re-render."
+        },
+        {
+          "question": "What is useContext?",
+          "correct_answer": "A hook that lets you read and subscribe to a React context value from any component in the tree."
+        },
+        {
+          "question": "What are custom hooks?",
+          "correct_answer": "Functions that start with 'use' and extract reusable stateful logic from components. They can call other hooks."
+        }
+      ]
+    },
+    {
+      "name": "react-router-dom",
+      "level": 1,
+      "questions": [
+        {
+          "question": "What is react-router-dom used for?",
+          "correct_answer": "Client-side routing in React applications, enabling navigation without full page reloads."
+        },
+        {
+          "question": "What does the Link component do?",
+          "correct_answer": "Navigates to a different route without triggering a full page reload, like an <a> tag but SPA-friendly."
+        },
+        {
+          "question": "What is the difference between Link and NavLink?",
+          "correct_answer": "NavLink automatically adds an 'active' class when its route matches the current URL."
+        },
+        {
+          "question": "What does useParams do?",
+          "correct_answer": "Returns an object of URL parameters from the current route, e.g., { id: '123' } from /users/:id."
+        },
+        {
+          "question": "What does useNavigate do?",
+          "correct_answer": "Returns a function that lets you programmatically navigate to different routes."
+        },
+        {
+          "question": "What is a nested route?",
+          "correct_answer": "A route defined inside another route, rendered within the parent's <Outlet /> component."
+        },
+        {
+          "question": "What is the Outlet component?",
+          "correct_answer": "A placeholder in a parent route where child routes get rendered."
+        },
+        {
+          "question": "What does useSearchParams do?",
+          "correct_answer": "Reads and modifies URL query parameters, e.g., ?page=2&sort=name."
+        },
+        {
+          "question": "What is the difference between BrowserRouter and HashRouter?",
+          "correct_answer": "BrowserRouter uses the History API (clean URLs like /about). HashRouter uses the hash fragment (#/about) and works without server configuration."
+        },
+        {
+          "question": "How do you create a catch-all/404 route?",
+          "correct_answer": "Use a route with path='*' that matches any URL not matched by other routes."
+        }
+      ]
+    }
+  ]
+}

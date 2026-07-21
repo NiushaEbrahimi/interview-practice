@@ -1,0 +1,236 @@
+{
+  "course": "HTML & CSS",
+  "description": "Web markup and styling",
+  "lessons": [
+    {
+      "name": "HTML Introduction",
+      "level": 1,
+      "questions": [
+        {
+          "question": "What is HTML?",
+          "correct_answer": "HyperText Markup Language — the standard language for structuring content on web pages."
+        },
+        {
+          "question": "What does HTML stand for?",
+          "correct_answer": "HyperText Markup Language."
+        },
+        {
+          "question": "What is the difference between HTML and HTML5?",
+          "correct_answer": "HTML5 is the latest version with new semantic elements, native media support, canvas, and APIs."
+        },
+        {
+          "question": "What are semantic HTML elements?",
+          "correct_answer": "Elements that describe their meaning, like <header>, <nav>, <article>, <section>, <footer>."
+        },
+        {
+          "question": "What is the purpose of the DOCTYPE declaration?",
+          "correct_answer": "Tells the browser which HTML version to use for rendering the page."
+        },
+        {
+          "question": "What is the difference between block and inline elements?",
+          "correct_answer": "Block elements take full width and start on a new line. Inline elements flow within text without breaking the line."
+        },
+        {
+          "question": "What is the alt attribute used for?",
+          "correct_answer": "Provides alternative text for images, used by screen readers and displayed when the image fails to load."
+        },
+        {
+          "question": "What is the difference between <div> and <span>?",
+          "correct_answer": "<div> is a block-level container. <span> is an inline container."
+        },
+        {
+          "question": "What is the <meta> tag used for?",
+          "correct_answer": "Provides metadata about the HTML document, like character set, viewport settings, and descriptions."
+        },
+        {
+          "question": "What is the difference between <section> and <div>?",
+          "correct_answer": "<section> represents a thematic group of content with semantic meaning. <div> is a generic container with no inherent meaning."
+        }
+      ]
+    },
+    {
+      "name": "Accessibility",
+      "level": 1,
+      "questions": [
+        {
+          "question": "What is web accessibility?",
+          "correct_answer": "Making websites usable by everyone, including people with disabilities, through proper HTML, ARIA, and design."
+        },
+        {
+          "question": "Why is alt text important?",
+          "correct_answer": "It helps screen readers describe images to visually impaired users and shows when images fail to load."
+        },
+        {
+          "question": "What is ARIA?",
+          "correct_answer": "Accessible Rich Internet Applications — attributes that make dynamic content more accessible to assistive technologies."
+        },
+        {
+          "question": "What is the role of tabindex?",
+          "correct_answer": "Controls whether an element can receive keyboard focus and the order of tab navigation."
+        },
+        {
+          "question": "What is the difference between role and aria-label?",
+          "correct_answer": "role defines the element's purpose (e.g., role='button'). aria-label provides a text description for screen readers."
+        },
+        {
+          "question": "Why should you use proper heading hierarchy?",
+          "correct_answer": "Screen readers use headings for navigation. Skipping levels (h1 to h3) confuses the document structure."
+        },
+        {
+          "question": "What is focus visible?",
+          "correct_answer": "A CSS pseudo-class (:focus-visible) that styles elements only when focused via keyboard, not mouse clicks."
+        },
+        {
+          "question": "What is skip navigation?",
+          "correct_answer": "A link at the top of a page that lets keyboard users skip past repetitive navigation to the main content."
+        },
+        {
+          "question": "What is the lang attribute?",
+          "correct_answer": "Set on <html> to declare the page's language, helping screen readers pronounce content correctly."
+        },
+        {
+          "question": "What is WCAG?",
+          "correct_answer": "Web Content Accessibility Guidelines — a set of standards for making web content accessible to people with disabilities."
+        }
+      ]
+    },
+    {
+      "name": "CSS Introduction",
+      "level": 1,
+      "questions": [
+        {
+          "question": "What is CSS?",
+          "correct_answer": "Cascading Style Sheets — a language used to style and layout HTML elements."
+        },
+        {
+          "question": "What does CSS control?",
+          "correct_answer": "Layout, colors, spacing, typography, and visual design of web pages."
+        },
+        {
+          "question": "What is the box model?",
+          "correct_answer": "Every element is a box with content, padding, border, and margin layers."
+        },
+        {
+          "question": "What is the difference between margin and padding?",
+          "correct_answer": "Margin is outside the border (space between elements). Padding is inside the border (space between content and border)."
+        },
+        {
+          "question": "What is the difference between display: block and display: inline?",
+          "correct_answer": "Block elements take full width and start on a new line. Inline elements flow within text without breaking the line."
+        },
+        {
+          "question": "What is the difference between position: relative and position: absolute?",
+          "correct_answer": "Relative positions relative to its normal position. Absolute positions relative to the nearest positioned ancestor."
+        },
+        {
+          "question": "What is CSS specificity?",
+          "correct_answer": "A set of rules that determines which CSS selector wins when multiple selectors target the same element."
+        },
+        {
+          "question": "What is the !important rule?",
+          "correct_answer": "A declaration that overrides all other declarations for that property, regardless of specificity."
+        },
+        {
+          "question": "What is Flexbox?",
+          "correct_answer": "A CSS layout model for arranging items in a single row or column with alignment and distribution controls."
+        },
+        {
+          "question": "What is CSS Grid?",
+          "correct_answer": "A two-dimensional layout system for creating complex page layouts with rows and columns."
+        }
+      ]
+    },
+    {
+      "name": "css animations",
+      "level": 2,
+      "questions": [
+        {
+          "question": "What are CSS animations used for?",
+          "correct_answer": "Creating motion effects on web elements using keyframes and animation properties."
+        },
+        {
+          "question": "What property defines animation duration?",
+          "correct_answer": "animation-duration — specifies how long one animation cycle takes."
+        },
+        {
+          "question": "What is @keyframes?",
+          "correct_answer": "A CSS at-rule that defines the stages and properties of an animation sequence."
+        },
+        {
+          "question": "What is the difference between transition and animation?",
+          "correct_answer": "Transitions animate between two states on trigger. Animations can run automatically, loop, and have multiple keyframes."
+        },
+        {
+          "question": "What does animation-iteration-count do?",
+          "correct_answer": "Specifies how many times an animation should run. Use 'infinite' for endless looping."
+        },
+        {
+          "question": "What is animation-fill-mode?",
+          "correct_answer": "Controls how the element applies styles before and after the animation runs."
+        },
+        {
+          "question": "What is animation-timing-function?",
+          "correct_answer": "Defines the speed curve of the animation, like ease, linear, ease-in, ease-out."
+        },
+        {
+          "question": "Can you animate CSS transforms?",
+          "correct_answer": "Yes. Transform properties like translate, rotate, and scale are commonly animated for smooth performance."
+        },
+        {
+          "question": "What is will-change?",
+          "correct_answer": "A CSS property that hints to the browser an element will change, allowing it to optimize rendering performance."
+        },
+        {
+          "question": "What is the performance cost of CSS animations?",
+          "correct_answer": "Animating transform and opacity is cheap (GPU-accelerated). Animating layout properties like width or top is expensive."
+        }
+      ]
+    },
+    {
+      "name": "Selectors",
+      "level": 1,
+      "questions": [
+        {
+          "question": "What is a CSS selector?",
+          "correct_answer": "A pattern used to select and target HTML elements for styling."
+        },
+        {
+          "question": "What is the difference between class and id selectors?",
+          "correct_answer": "Class (.class) is reusable on multiple elements. ID (#id) should be unique per page."
+        },
+        {
+          "question": "What is the universal selector?",
+          "correct_answer": "The * selector targets all elements on the page."
+        },
+        {
+          "question": "What is the difference between .a.b and .a .b?",
+          "correct_answer": ".a.b selects an element with both classes. .a .b selects .b elements inside .a elements."
+        },
+        {
+          "question": "What is the > combinator?",
+          "correct_answer": "The child combinator — selects elements that are direct children of the parent."
+        },
+        {
+          "question": "What is the ~ combinator?",
+          "correct_answer": "The general sibling combinator — selects all siblings that come after the first element."
+        },
+        {
+          "question": "What is :nth-child()?",
+          "correct_answer": "A pseudo-class that selects elements based on their position among siblings."
+        },
+        {
+          "question": "What is ::before and ::after?",
+          "correct_answer": "Pseudo-elements that create virtual elements before or after an element's content for decorative purposes."
+        },
+        {
+          "question": "What is attribute selector?",
+          "correct_answer": "Selects elements based on their attributes, e.g., [type='text'] or [href^='https']."
+        },
+        {
+          "question": "What is specificity order for selectors?",
+          "correct_answer": "Inline styles > IDs > Classes > Elements > Universal. Higher specificity wins."
+        }
+      ]
+    }
+  ]
+}
